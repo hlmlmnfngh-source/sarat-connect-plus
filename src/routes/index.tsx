@@ -1,29 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Landing } from "@/components/site/Landing";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "سرعات — منصة الخدمات والمشاريع المستقلة" },
+      { name: "description", content: "منصة سرعات تجمع الخدمات الجاهزة والمشاريع المخصصة. اشترِ خدمة جاهزة أو انشر مشروعك واستقبل عروض المستقلين العرب." },
+      { property: "og:title", content: "سرعات — منصة الخدمات والمشاريع المستقلة" },
+      { property: "og:description", content: "اعثر على الخدمة المثالية أو انشر مشروعك على أول منصة عربية موحّدة للعمل الحر." },
     ],
   }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+  return <Landing />;
 }
