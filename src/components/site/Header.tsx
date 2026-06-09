@@ -1,8 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { Search, Menu, Bell, Briefcase, Sparkles } from "lucide-react";
+import { Search, Menu, Briefcase, Sparkles, MessageCircle, LogOut, User } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/use-auth";
+import { useNavigate } from "@tanstack/react-router";
+import { toast } from "sonner";
 
 export type Mode = "services" | "projects";
 
@@ -13,6 +16,14 @@ interface HeaderProps {
 
 export function Header({ mode, onModeChange }: HeaderProps) {
   const [open, setOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast.success("تم تسجيل الخروج");
+    navigate({ to: "/" });
+  };
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/85 backdrop-blur-md">
       <div className="container mx-auto flex h-16 items-center gap-4 px-4 lg:px-6">
@@ -68,8 +79,25 @@ export function Header({ mode, onModeChange }: HeaderProps) {
             <Briefcase className="h-4 w-4" />
             انشر مشروعك
           </Button>
-          <Button variant="ghost" size="default" className="hidden sm:inline-flex">دخول</Button>
-          <Button variant="navy" size="default">سجل الآن</Button>
+          {user ? (
+            <>
+              <Link to="/messages" className="hidden h-9 w-9 items-center justify-center rounded-full text-foreground/70 hover:bg-muted sm:inline-flex">
+                <MessageCircle className="h-5 w-5" />
+              </Link>
+              <div className="hidden h-9 w-9 items-center justify-center rounded-full bg-gradient-accent text-sm font-bold text-accent-foreground sm:inline-flex">
+                {(user.user_metadata?.full_name ?? user.email ?? "?")[0].toUpperCase()}
+              </div>
+              <Button variant="ghost" size="default" onClick={handleSignOut} className="hidden sm:inline-flex">
+                <LogOut className="h-4 w-4" />
+                خروج
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link to="/auth"><Button variant="ghost" size="default" className="hidden sm:inline-flex">دخول</Button></Link>
+              <Link to="/auth"><Button variant="navy" size="default">سجل الآن</Button></Link>
+            </>
+          )}
           <button onClick={() => setOpen(!open)} className="rounded-md p-2 lg:hidden">
             <Menu className="h-5 w-5" />
           </button>
