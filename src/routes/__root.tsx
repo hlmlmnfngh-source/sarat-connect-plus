@@ -82,10 +82,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "سرعات — منصة الخدمات والمشاريع المستقلة" },
       { name: "description", content: "سرعات: سوق العمل الحر العربي الأول. اطلب الخدمات الجاهزة أو انشر مشروعك واستقبل عروض المستقلين." },
       { property: "og:title", content: "سرعات — منصة الخدمات والمشاريع المستقلة" },
-      { property: "og:description", content: "اعثر على الخدمة المثالية أو انشر مشروعك واستقبل عروض أفضل المستقلين العرب." },
+      { property: "og:description", content: "سرعات: سوق العمل الحر العربي الأول. اطلب الخدمات الجاهزة أو انشر مشروعك واستقبل عروض المستقلين." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "سرعات — منصة الخدمات والمشاريع المستقلة" },
+      { name: "twitter:description", content: "سرعات: سوق العمل الحر العربي الأول. اطلب الخدمات الجاهزة أو انشر مشروعك واستقبل عروض المستقلين." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/02c350b3-9207-48f6-b93a-445db31a716d/id-preview-05a678f0--ab5d721f-74a9-42b9-b28c-6c21286a9693.lovable.app-1781024231596.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/02c350b3-9207-48f6-b93a-445db31a716d/id-preview-05a678f0--ab5d721f-74a9-42b9-b28c-6c21286a9693.lovable.app-1781024231596.png" },
     ],
     links: [
       {
