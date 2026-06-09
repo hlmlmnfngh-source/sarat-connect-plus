@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Search, Menu, Briefcase, Sparkles, MessageCircle, LogOut, User } from "lucide-react";
+import { Search, Menu, Briefcase, Sparkles, MessageCircle, LogOut } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
