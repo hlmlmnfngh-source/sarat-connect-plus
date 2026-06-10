@@ -70,7 +70,7 @@ export function Landing() {
   const [mode, setMode] = useState<Mode>("services");
   const [animatedText, setAnimatedText] = useState(0);
   const headlines = mode === "services"
-    ? ["اعثر على الخدمة المثالية", "بأسعار تبدأ من 50 ريال", "وتسليم خلال 24 ساعة"]
+    ? ["اعثر على الخدمة المثالية", "بأسعار تبدأ من 50 دولار", "وتسليم خلال 24 ساعة"]
     : ["انشر مشروعك الآن", "واستقبل عروض المستقلين", "خلال دقائق معدودة"];
 
   useEffect(() => {
@@ -172,7 +172,7 @@ export function Landing() {
                 </div>
                 <div className="flex items-baseline justify-between">
                   <span className="text-xs text-muted-foreground">يبدأ من</span>
-                  <span className="text-xl font-extrabold text-accent">350 ر.س</span>
+                  <span className="text-xl font-extrabold text-accent">$350</span>
                 </div>
               </div>
 
@@ -180,7 +180,7 @@ export function Landing() {
                 <div className="mb-2 text-xs font-semibold opacity-90">مشروع جديد</div>
                 <div className="mb-3 font-bold leading-snug">تطوير منصة تجارة إلكترونية</div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="rounded-full bg-white/20 px-3 py-1 font-bold">8,000 - 15,000 ر.س</span>
+                  <span className="rounded-full bg-white/20 px-3 py-1 font-bold">$8,000 - $15,000</span>
                   <span className="opacity-90">23 عرض</span>
                 </div>
               </div>
@@ -190,7 +190,7 @@ export function Landing() {
                   <CheckCircle2 className="h-9 w-9 text-success" />
                   <div>
                     <div className="text-sm font-bold">تم التسليم</div>
-                    <div className="text-xs text-muted-foreground">دفعة 1,200 ر.س محرّرة</div>
+                    <div className="text-xs text-muted-foreground">دفعة $1,200 محرّرة</div>
                   </div>
                 </div>
               </div>
@@ -330,7 +330,7 @@ export function Landing() {
                 <div className="flex items-end justify-between border-t border-border pt-4">
                   <div>
                     <div className="text-xs text-muted-foreground">يبدأ من</div>
-                    <div className="text-2xl font-extrabold text-accent">{s.price} <span className="text-sm">ر.س</span></div>
+                    <div className="text-2xl font-extrabold text-accent"><span className="text-sm">$</span>{s.price}</div>
                   </div>
                   <Button variant="navy" size="sm">اطلب الآن</Button>
                 </div>
@@ -365,7 +365,7 @@ export function Landing() {
                 <div className="flex items-center justify-between border-t border-border pt-4 text-sm">
                   <div>
                     <div className="text-xs text-muted-foreground">الميزانية</div>
-                    <div className="font-extrabold text-accent">{p.budget} ر.س</div>
+                    <div className="font-extrabold text-accent">${p.budget}</div>
                   </div>
                   <div className="flex items-center gap-4 text-muted-foreground">
                     <span className="flex items-center gap-1"><Users className="h-3.5 w-3.5" /> {p.proposals} عرض</span>
