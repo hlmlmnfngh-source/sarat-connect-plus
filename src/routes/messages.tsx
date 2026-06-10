@@ -90,19 +90,14 @@ export default function MessagesPage() {
   // Realtime subscription for new messages in the active conversation
   useEffect(() => {
     if (!activeId) return;
+    // Private broadcast channel — authorized by RLS on realtime.messages
+    supabase.realtime.setAuth();
     const channel = supabase
-      .channel(`messages:${activeId}`)
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "messages", filter: `conversation_id=eq.${activeId}` },
-        (payload) => {
-          setMessages((prev) => {
-            const m = payload.new as Message;
-            if (prev.some((x) => x.id === m.id)) return prev;
-            return [...prev, m];
-          });
-        },
-      )
+      .channel(`conversation:${activeId}`, { config: { private: true } })
+      .on("broadcast", { event: "new_message" }, (payload) => {
+        const m = payload.payload as Message;
+        setMessages((prev) => (prev.some((x) => x.id === m.id) ? prev : [...prev, m]));
+      })
       .subscribe();
     return () => { supabase.removeChannel(channel); };
   }, [activeId]);
@@ -110,19 +105,25 @@ export default function MessagesPage() {
   // Realtime subscription for conversation updates (last_message)
   useEffect(() => {
     if (!user) return;
+    supabase.realtime.setAuth();
     const channel = supabase
-      .channel("conv-updates")
-      .on(
-        "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "conversations" },
-        (payload) => {
-          const c = payload.new as Conversation;
-          setConvs((prev) =>
-            prev.map((p) => (p.id === c.id ? { ...p, last_message: c.last_message, last_message_at: c.last_message_at } : p))
-              .sort((a, b) => (b.last_message_at ?? "").localeCompare(a.last_message_at ?? "")),
-          );
-        },
-      )
+      .channel(`user:${user.id}`, { config: { private: true } })
+      .on("broadcast", { event: "conversation_updated" }, (payload) => {
+        const u = payload.payload as {
+          conversation_id: string;
+          last_message: string | null;
+          last_message_at: string | null;
+        };
+        setConvs((prev) =>
+          prev
+            .map((p) =>
+              p.id === u.conversation_id
+                ? { ...p, last_message: u.last_message, last_message_at: u.last_message_at }
+                : p,
+            )
+            .sort((a, b) => (b.last_message_at ?? "").localeCompare(a.last_message_at ?? "")),
+        );
+      })
       .subscribe();
     return () => { supabase.removeChannel(channel); };
   }, [user]);
