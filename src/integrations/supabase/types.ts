@@ -200,12 +200,17 @@ export type Database = {
           delivered_at: string | null
           id: string
           package_type: Database["public"]["Enums"]["package_type"] | null
+          paid_at: string | null
           price: number
           project_id: string | null
+          refunded_at: string | null
           requirements: string | null
           seller_id: string
           service_id: string | null
           status: Database["public"]["Enums"]["order_status"]
+          stripe_payment_intent_id: string | null
+          stripe_refund_id: string | null
+          stripe_session_id: string | null
           updated_at: string
         }
         Insert: {
@@ -216,12 +221,17 @@ export type Database = {
           delivered_at?: string | null
           id?: string
           package_type?: Database["public"]["Enums"]["package_type"] | null
+          paid_at?: string | null
           price: number
           project_id?: string | null
+          refunded_at?: string | null
           requirements?: string | null
           seller_id: string
           service_id?: string | null
           status?: Database["public"]["Enums"]["order_status"]
+          stripe_payment_intent_id?: string | null
+          stripe_refund_id?: string | null
+          stripe_session_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -232,12 +242,17 @@ export type Database = {
           delivered_at?: string | null
           id?: string
           package_type?: Database["public"]["Enums"]["package_type"] | null
+          paid_at?: string | null
           price?: number
           project_id?: string | null
+          refunded_at?: string | null
           requirements?: string | null
           seller_id?: string
           service_id?: string | null
           status?: Database["public"]["Enums"]["order_status"]
+          stripe_payment_intent_id?: string | null
+          stripe_refund_id?: string | null
+          stripe_session_id?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -595,30 +610,42 @@ export type Database = {
         Row: {
           amount: number
           created_at: string
+          currency: string
           description: string | null
           id: string
           reference_id: string | null
           status: Database["public"]["Enums"]["transaction_status"]
+          stripe_payment_intent_id: string | null
+          stripe_refund_id: string | null
+          stripe_session_id: string | null
           type: Database["public"]["Enums"]["transaction_type"]
           user_id: string
         }
         Insert: {
           amount: number
           created_at?: string
+          currency?: string
           description?: string | null
           id?: string
           reference_id?: string | null
           status?: Database["public"]["Enums"]["transaction_status"]
+          stripe_payment_intent_id?: string | null
+          stripe_refund_id?: string | null
+          stripe_session_id?: string | null
           type: Database["public"]["Enums"]["transaction_type"]
           user_id: string
         }
         Update: {
           amount?: number
           created_at?: string
+          currency?: string
           description?: string | null
           id?: string
           reference_id?: string | null
           status?: Database["public"]["Enums"]["transaction_status"]
+          stripe_payment_intent_id?: string | null
+          stripe_refund_id?: string | null
+          stripe_session_id?: string | null
           type?: Database["public"]["Enums"]["transaction_type"]
           user_id?: string
         }
