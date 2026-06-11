@@ -9,10 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
+import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled'
 
+const WalletRoute = WalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MessagesRoute = MessagesRouteImport.update({
   id: '/messages',
   path: '/messages',
@@ -28,39 +36,87 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PaymentSuccessRoute = PaymentSuccessRouteImport.update({
+  id: '/payment/success',
+  path: '/payment/success',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentCancelledRoute = PaymentCancelledRouteImport.update({
+  id: '/payment/cancelled',
+  path: '/payment/cancelled',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/messages': typeof MessagesRoute
+  '/wallet': typeof WalletRoute
+  '/payment/cancelled': typeof PaymentCancelledRoute
+  '/payment/success': typeof PaymentSuccessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/messages': typeof MessagesRoute
+  '/wallet': typeof WalletRoute
+  '/payment/cancelled': typeof PaymentCancelledRoute
+  '/payment/success': typeof PaymentSuccessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/messages': typeof MessagesRoute
+  '/wallet': typeof WalletRoute
+  '/payment/cancelled': typeof PaymentCancelledRoute
+  '/payment/success': typeof PaymentSuccessRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/messages'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/messages'
+    | '/wallet'
+    | '/payment/cancelled'
+    | '/payment/success'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/messages'
-  id: '__root__' | '/' | '/auth' | '/messages'
+  to:
+    | '/'
+    | '/auth'
+    | '/messages'
+    | '/wallet'
+    | '/payment/cancelled'
+    | '/payment/success'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/messages'
+    | '/wallet'
+    | '/payment/cancelled'
+    | '/payment/success'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   MessagesRoute: typeof MessagesRoute
+  WalletRoute: typeof WalletRoute
+  PaymentCancelledRoute: typeof PaymentCancelledRoute
+  PaymentSuccessRoute: typeof PaymentSuccessRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/wallet': {
+      id: '/wallet'
+      path: '/wallet'
+      fullPath: '/wallet'
+      preLoaderRoute: typeof WalletRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/messages': {
       id: '/messages'
       path: '/messages'
@@ -82,6 +138,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/payment/success': {
+      id: '/payment/success'
+      path: '/payment/success'
+      fullPath: '/payment/success'
+      preLoaderRoute: typeof PaymentSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payment/cancelled': {
+      id: '/payment/cancelled'
+      path: '/payment/cancelled'
+      fullPath: '/payment/cancelled'
+      preLoaderRoute: typeof PaymentCancelledRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,17 +159,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   MessagesRoute: MessagesRoute,
+  WalletRoute: WalletRoute,
+  PaymentCancelledRoute: PaymentCancelledRoute,
+  PaymentSuccessRoute: PaymentSuccessRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
