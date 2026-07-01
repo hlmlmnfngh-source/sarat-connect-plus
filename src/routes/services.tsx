@@ -8,6 +8,14 @@ import { Footer } from "@/components/site/Footer";
 import { Star, Clock, Search, SlidersHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+type SearchParams = {
+  q?: string;
+  category?: string;
+  sort?: "newest" | "price_asc" | "price_desc" | "rating";
+  min?: number;
+  max?: number;
+};
+
 const searchSchema = z.object({
   q: z.string().optional(),
   category: z.string().optional(),
@@ -98,7 +106,7 @@ function ServicesPage() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              navigate({ search: (prev) => ({ ...prev, q: qDraft || undefined }) });
+              navigate({ search: (prev: SearchParams) => ({ ...prev, q: qDraft || undefined }) });
             }}
             className="flex gap-2 rounded-2xl bg-white/95 p-2 shadow-elevated"
           >
@@ -142,14 +150,14 @@ function ServicesPage() {
                 type="number"
                 placeholder="من"
                 defaultValue={search.min ?? ""}
-                onBlur={(e) => navigate({ search: (p) => ({ ...p, min: e.target.value ? Number(e.target.value) : undefined }) })}
+                onBlur={(e) => navigate({ search: (p: SearchParams) => ({ ...p, min: e.target.value ? Number(e.target.value) : undefined }) })}
                 className="h-9 w-full rounded-md border border-input bg-background px-2 text-sm"
               />
               <input
                 type="number"
                 placeholder="إلى"
                 defaultValue={search.max ?? ""}
-                onBlur={(e) => navigate({ search: (p) => ({ ...p, max: e.target.value ? Number(e.target.value) : undefined }) })}
+                onBlur={(e) => navigate({ search: (p: SearchParams) => ({ ...p, max: e.target.value ? Number(e.target.value) : undefined }) })}
                 className="h-9 w-full rounded-md border border-input bg-background px-2 text-sm"
               />
             </div>
@@ -158,7 +166,7 @@ function ServicesPage() {
             <div className="mb-2 text-sm font-bold text-primary">الترتيب</div>
             <select
               value={search.sort ?? "newest"}
-              onChange={(e) => navigate({ search: (p) => ({ ...p, sort: e.target.value as z.infer<typeof searchSchema>["sort"] }) })}
+              onChange={(e) => navigate({ search: (p: SearchParams) => ({ ...p, sort: e.target.value as SearchParams["sort"] }) })}
               className="h-9 w-full rounded-md border border-input bg-background px-2 text-sm"
             >
               <option value="newest">الأحدث</option>
