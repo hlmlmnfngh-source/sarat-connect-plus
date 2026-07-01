@@ -69,16 +69,18 @@ export function Header({ mode, onModeChange }: HeaderProps) {
         </div>
 
         <nav className="hidden items-center gap-1 text-sm font-medium lg:flex">
-          <Link to="/" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">التصنيفات</Link>
-          <Link to="/" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">كيف يعمل</Link>
-          <Link to="/" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">الأسعار</Link>
+          <Link to="/services" search={{ q: undefined, category: undefined }} className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">الخدمات</Link>
+          <Link to="/projects" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">المشاريع</Link>
+          <Link to="/" hash="how" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">كيف يعمل</Link>
         </nav>
 
         <div className="mr-auto flex items-center gap-2">
-          <Button variant="hero" size="default" className="hidden md:inline-flex">
-            <Briefcase className="h-4 w-4" />
-            انشر مشروعك
-          </Button>
+          <Link to="/projects" className="hidden md:inline-flex">
+            <Button variant="hero" size="default">
+              <Briefcase className="h-4 w-4" />
+              انشر مشروعك
+            </Button>
+          </Link>
           {user ? (
             <>
               <Link to="/messages" className="hidden h-9 w-9 items-center justify-center rounded-full text-foreground/70 hover:bg-muted sm:inline-flex">
