@@ -11,16 +11,16 @@ import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 
 const CATEGORIES = [
-  { icon: Code2, name: "البرمجة والتطوير", count: "4,820", color: "from-blue-500/10 to-blue-500/5" },
-  { icon: Palette, name: "التصميم", count: "3,140", color: "from-pink-500/10 to-pink-500/5" },
-  { icon: Megaphone, name: "التسويق الرقمي", count: "2,560", color: "from-orange-500/10 to-orange-500/5" },
-  { icon: PenTool, name: "الكتابة والمحتوى", count: "1,980", color: "from-violet-500/10 to-violet-500/5" },
-  { icon: Video, name: "فيديو ومونتاج", count: "1,450", color: "from-red-500/10 to-red-500/5" },
-  { icon: Music, name: "صوتيات", count: "890", color: "from-emerald-500/10 to-emerald-500/5" },
-  { icon: Languages, name: "ترجمة", count: "1,210", color: "from-cyan-500/10 to-cyan-500/5" },
-  { icon: Briefcase, name: "أعمال واستشارات", count: "760", color: "from-amber-500/10 to-amber-500/5" },
-  { icon: Bot, name: "خدمات الذكاء الاصطناعي", count: "520", color: "from-indigo-500/10 to-indigo-500/5" },
-  { icon: BarChart3, name: "تحليل البيانات", count: "640", color: "from-teal-500/10 to-teal-500/5" },
+  { icon: Code2, name: "البرمجة والتطوير", slug: "programming", count: "4,820", color: "from-blue-500/10 to-blue-500/5" },
+  { icon: Palette, name: "التصميم", slug: "design", count: "3,140", color: "from-pink-500/10 to-pink-500/5" },
+  { icon: Megaphone, name: "التسويق الرقمي", slug: "marketing", count: "2,560", color: "from-orange-500/10 to-orange-500/5" },
+  { icon: PenTool, name: "الكتابة والمحتوى", slug: "writing", count: "1,980", color: "from-violet-500/10 to-violet-500/5" },
+  { icon: Video, name: "فيديو ومونتاج", slug: "video", count: "1,450", color: "from-red-500/10 to-red-500/5" },
+  { icon: Music, name: "صوتيات", slug: "audio", count: "890", color: "from-emerald-500/10 to-emerald-500/5" },
+  { icon: Languages, name: "ترجمة", slug: "translation", count: "1,210", color: "from-cyan-500/10 to-cyan-500/5" },
+  { icon: Briefcase, name: "أعمال واستشارات", slug: "business", count: "760", color: "from-amber-500/10 to-amber-500/5" },
+  { icon: Bot, name: "خدمات الذكاء الاصطناعي", slug: "ai", count: "520", color: "from-indigo-500/10 to-indigo-500/5" },
+  { icon: BarChart3, name: "تحليل البيانات", slug: "data", count: "640", color: "from-teal-500/10 to-teal-500/5" },
 ];
 
 const SERVICES = [
@@ -141,7 +141,7 @@ export function Landing() {
                     className="h-12 w-full rounded-xl border-0 bg-transparent pr-12 pl-4 text-base text-foreground outline-none placeholder:text-muted-foreground"
                   />
                 </div>
-                <Link to="/auth">
+                <Link to="/services" search={{ q: undefined, category: undefined }}>
                   <Button variant="hero" size="xl" className="rounded-xl w-full">
                     بحث
                     <ArrowLeft className="h-4 w-4" />
@@ -152,7 +152,7 @@ export function Landing() {
               <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/70">
                 <span className="font-semibold text-white/90">الأكثر طلباً:</span>
                 {["تصميم شعار", "موقع إلكتروني", "حملة إعلانية", "تطبيق جوال"].map((t) => (
-                  <Link key={t} to="/auth" className="rounded-full border border-white/15 px-3 py-1 hover:border-accent hover:text-accent">{t}</Link>
+                  <Link key={t} to="/services" search={{ q: t, category: undefined }} className="rounded-full border border-white/15 px-3 py-1 hover:border-accent hover:text-accent">{t}</Link>
                 ))}
               </div>
             </div>
@@ -233,13 +233,13 @@ export function Landing() {
             <h2 className="mb-2 text-3xl font-extrabold text-primary md:text-4xl">تصفّح حسب التصنيف</h2>
             <p className="text-muted-foreground">عشرات التصنيفات لتلبية كل احتياجاتك المهنية</p>
           </div>
-          <Link to="/auth" className="hidden items-center gap-1 text-sm font-bold text-accent hover:underline md:inline-flex">
+          <Link to="/services" search={{ q: undefined, category: undefined }} className="hidden items-center gap-1 text-sm font-bold text-accent hover:underline md:inline-flex">
             عرض الكل <ChevronLeft className="h-4 w-4" />
           </Link>
         </div>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
           {CATEGORIES.map((c) => (
-            <Link key={c.name} to="/auth" className={cn(
+            <Link key={c.name} to="/services" search={{ q: undefined, category: c.slug }} className={cn(
               "group relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br p-5 transition-all hover:-translate-y-1 hover:shadow-elevated",
               c.color,
             )}>
@@ -294,13 +294,13 @@ export function Landing() {
             <h2 className="mb-2 text-3xl font-extrabold text-primary md:text-4xl">خدمات مميزة</h2>
             <p className="text-muted-foreground">أعلى الخدمات تقييماً هذا الأسبوع</p>
           </div>
-          <Link to="/auth" className="hidden items-center gap-1 text-sm font-bold text-accent hover:underline md:inline-flex">
+          <Link to="/services" search={{ q: undefined, category: undefined }} className="hidden items-center gap-1 text-sm font-bold text-accent hover:underline md:inline-flex">
             عرض الكل <ChevronLeft className="h-4 w-4" />
           </Link>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICES.map((s, i) => (
-            <Link to="/auth" key={i}>
+            <Link to="/services" search={{ q: undefined, category: undefined }} key={i}>
               <article className="group overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition hover:-translate-y-1 hover:shadow-elevated">
                 <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-primary/90 to-primary-glow">
                   <div className="absolute inset-0 flex items-center justify-center text-6xl font-black text-white/10">سرعات</div>
@@ -353,13 +353,13 @@ export function Landing() {
               <h2 className="mb-2 text-3xl font-extrabold text-primary md:text-4xl">أحدث المشاريع</h2>
               <p className="text-muted-foreground">فرص جديدة تنتظر المستقلين الموهوبين</p>
             </div>
-            <Link to="/auth">
+            <Link to="/projects">
               <Button variant="hero">انشر مشروعك</Button>
             </Link>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             {PROJECTS.map((p, i) => (
-              <Link to="/auth" key={i}>
+              <Link to="/projects" key={i}>
                 <article className="rounded-2xl border border-border bg-background p-6 shadow-soft transition hover:border-accent/40 hover:shadow-elevated">
                   <div className="mb-3 flex items-start justify-between gap-3">
                     <h3 className="text-lg font-bold leading-snug text-primary">{p.title}</h3>
@@ -395,7 +395,7 @@ export function Landing() {
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {TOP_FREELANCERS.map((f, i) => (
-            <Link to="/auth" key={i}>
+            <Link to="/services" search={{ q: undefined, category: undefined }} key={i}>
               <div className="group rounded-2xl border border-border bg-card p-6 text-center shadow-soft transition hover:-translate-y-1 hover:shadow-elevated">
                 <div className="relative mx-auto mb-4 h-20 w-20">
                   <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-accent text-2xl font-extrabold text-accent-foreground shadow-glow">
@@ -478,7 +478,7 @@ export function Landing() {
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Link to="/auth"><Button variant="hero" size="xl">سجّل كمستقل</Button></Link>
-              <Link to="/auth"><Button variant="heroOutline" size="xl">انشر مشروعاً</Button></Link>
+              <Link to="/projects"><Button variant="heroOutline" size="xl">انشر مشروعاً</Button></Link>
             </div>
           </div>
         </div>
