@@ -29,6 +29,7 @@ import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
 import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
 import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled'
 import { Route as DashboardSellerRouteImport } from './routes/dashboard.seller'
+import { Route as DashboardBuyerRouteImport } from './routes/dashboard.buyer'
 
 const WalletRoute = WalletRouteImport.update({
   id: '/wallet',
@@ -130,6 +131,11 @@ const DashboardSellerRoute = DashboardSellerRouteImport.update({
   path: '/dashboard/seller',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardBuyerRoute = DashboardBuyerRouteImport.update({
+  id: '/dashboard/buyer',
+  path: '/dashboard/buyer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -147,6 +153,7 @@ export interface FileRoutesByFullPath {
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
+  '/dashboard/buyer': typeof DashboardBuyerRoute
   '/dashboard/seller': typeof DashboardSellerRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
@@ -169,6 +176,7 @@ export interface FileRoutesByTo {
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
+  '/dashboard/buyer': typeof DashboardBuyerRoute
   '/dashboard/seller': typeof DashboardSellerRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
@@ -192,6 +200,7 @@ export interface FileRoutesById {
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
+  '/dashboard/buyer': typeof DashboardBuyerRoute
   '/dashboard/seller': typeof DashboardSellerRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
@@ -216,6 +225,7 @@ export interface FileRouteTypes {
     | '/skills-test'
     | '/terms'
     | '/wallet'
+    | '/dashboard/buyer'
     | '/dashboard/seller'
     | '/payment/cancelled'
     | '/payment/success'
@@ -238,6 +248,7 @@ export interface FileRouteTypes {
     | '/skills-test'
     | '/terms'
     | '/wallet'
+    | '/dashboard/buyer'
     | '/dashboard/seller'
     | '/payment/cancelled'
     | '/payment/success'
@@ -260,6 +271,7 @@ export interface FileRouteTypes {
     | '/skills-test'
     | '/terms'
     | '/wallet'
+    | '/dashboard/buyer'
     | '/dashboard/seller'
     | '/payment/cancelled'
     | '/payment/success'
@@ -283,6 +295,7 @@ export interface RootRouteChildren {
   SkillsTestRoute: typeof SkillsTestRoute
   TermsRoute: typeof TermsRoute
   WalletRoute: typeof WalletRoute
+  DashboardBuyerRoute: typeof DashboardBuyerRoute
   DashboardSellerRoute: typeof DashboardSellerRoute
   PaymentCancelledRoute: typeof PaymentCancelledRoute
   PaymentSuccessRoute: typeof PaymentSuccessRoute
@@ -430,6 +443,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSellerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/buyer': {
+      id: '/dashboard/buyer'
+      path: '/dashboard/buyer'
+      fullPath: '/dashboard/buyer'
+      preLoaderRoute: typeof DashboardBuyerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -473,6 +493,7 @@ const rootRouteChildren: RootRouteChildren = {
   SkillsTestRoute: SkillsTestRoute,
   TermsRoute: TermsRoute,
   WalletRoute: WalletRoute,
+  DashboardBuyerRoute: DashboardBuyerRoute,
   DashboardSellerRoute: DashboardSellerRoute,
   PaymentCancelledRoute: PaymentCancelledRoute,
   PaymentSuccessRoute: PaymentSuccessRoute,
