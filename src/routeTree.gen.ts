@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SkillsTestRouteImport } from './routes/skills-test'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as ProjectsRouteImport } from './routes/projects'
@@ -35,6 +36,11 @@ const WalletRoute = WalletRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SkillsTestRoute = SkillsTestRouteImport.update({
+  id: '/skills-test',
+  path: '/skills-test',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -125,6 +131,7 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRouteWithChildren
   '/security': typeof SecurityRoute
   '/services': typeof ServicesRouteWithChildren
+  '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
@@ -144,6 +151,7 @@ export interface FileRoutesByTo {
   '/projects': typeof ProjectsRouteWithChildren
   '/security': typeof SecurityRoute
   '/services': typeof ServicesRouteWithChildren
+  '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
@@ -164,6 +172,7 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRouteWithChildren
   '/security': typeof SecurityRoute
   '/services': typeof ServicesRouteWithChildren
+  '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
@@ -185,6 +194,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/security'
     | '/services'
+    | '/skills-test'
     | '/terms'
     | '/wallet'
     | '/payment/cancelled'
@@ -204,6 +214,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/security'
     | '/services'
+    | '/skills-test'
     | '/terms'
     | '/wallet'
     | '/payment/cancelled'
@@ -223,6 +234,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/security'
     | '/services'
+    | '/skills-test'
     | '/terms'
     | '/wallet'
     | '/payment/cancelled'
@@ -243,6 +255,7 @@ export interface RootRouteChildren {
   ProjectsRoute: typeof ProjectsRouteWithChildren
   SecurityRoute: typeof SecurityRoute
   ServicesRoute: typeof ServicesRouteWithChildren
+  SkillsTestRoute: typeof SkillsTestRoute
   TermsRoute: typeof TermsRoute
   WalletRoute: typeof WalletRoute
   PaymentCancelledRoute: typeof PaymentCancelledRoute
@@ -263,6 +276,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/skills-test': {
+      id: '/skills-test'
+      path: '/skills-test'
+      fullPath: '/skills-test'
+      preLoaderRoute: typeof SkillsTestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -409,6 +429,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRoute: ProjectsRouteWithChildren,
   SecurityRoute: SecurityRoute,
   ServicesRoute: ServicesRouteWithChildren,
+  SkillsTestRoute: SkillsTestRoute,
   TermsRoute: TermsRoute,
   WalletRoute: WalletRoute,
   PaymentCancelledRoute: PaymentCancelledRoute,
