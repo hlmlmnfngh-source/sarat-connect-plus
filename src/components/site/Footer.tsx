@@ -1,6 +1,39 @@
-import { Sparkles, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
+import { Sparkles } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 export function Footer() {
+  const sections: { title: string; links: { label: string; to: string }[] }[] = [
+    {
+      title: "المنصة",
+      links: [
+        { label: "كيف تعمل", to: "/" },
+        { label: "الأسعار", to: "/pricing" },
+        { label: "خدمات سريعة", to: "/fast-services" },
+        { label: "اختبارات المهارات", to: "/skills-test" },
+        { label: "المدونة", to: "/blog" },
+      ],
+    },
+    {
+      title: "التصنيفات",
+      links: [
+        { label: "برمجة وتطوير", to: "/services" },
+        { label: "تصميم", to: "/services" },
+        { label: "تسويق", to: "/services" },
+        { label: "كتابة وترجمة", to: "/services" },
+        { label: "فيديو وصوت", to: "/services" },
+      ],
+    },
+    {
+      title: "الدعم",
+      links: [
+        { label: "مركز المساعدة", to: "/help" },
+        { label: "تواصل معنا", to: "/contact" },
+        { label: "الشروط والأحكام", to: "/terms" },
+        { label: "سياسة الخصوصية", to: "/privacy" },
+        { label: "الأمان", to: "/security" },
+      ],
+    },
+  ];
   return (
     <footer className="border-t border-border bg-primary text-primary-foreground">
       <div className="container mx-auto grid gap-10 px-4 py-14 md:grid-cols-4 lg:px-6">
@@ -14,33 +47,21 @@ export function Footer() {
           <p className="text-sm text-primary-foreground/70">
             منصة سرعات تجمع الخدمات الجاهزة والمشاريع المخصصة في مكان واحد. سوق العمل الحر العربي بمعايير عالمية.
           </p>
-          <div className="mt-5 flex gap-3">
-            {[Twitter, Instagram, Linkedin, Youtube].map((I, i) => (
-              <a key={i} href="#" className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 transition hover:bg-accent">
-                <I className="h-4 w-4" />
-              </a>
-            ))}
-          </div>
         </div>
-        {[
-          { title: "المنصة", links: ["كيف تعمل", "الأسعار", "خدمات سريعة", "اختبارات المهارات", "المدونة"] },
-          { title: "التصنيفات", links: ["برمجة وتطوير", "تصميم", "تسويق", "كتابة وترجمة", "فيديو وصوت"] },
-          { title: "الدعم", links: ["مركز المساعدة", "تواصل معنا", "الشروط والأحكام", "سياسة الخصوصية", "الأمان"] },
-        ].map((col) => (
+        {sections.map((col) => (
           <div key={col.title}>
             <h4 className="mb-4 text-base font-bold">{col.title}</h4>
             <ul className="space-y-2.5 text-sm text-primary-foreground/70">
               {col.links.map((l) => (
-                <li key={l}><a href="#" className="hover:text-accent">{l}</a></li>
+                <li key={l.label}><Link to={l.to} className="hover:text-accent">{l.label}</Link></li>
               ))}
             </ul>
           </div>
         ))}
       </div>
       <div className="border-t border-white/10">
-        <div className="container mx-auto flex flex-col items-center justify-between gap-3 px-4 py-5 text-sm text-primary-foreground/60 md:flex-row lg:px-6">
-          <p>© {new Date().getFullYear()} سرعات. جميع الحقوق محفوظة.</p>
-          <p>صُنع بحب في المملكة العربية السعودية 🇸🇦</p>
+        <div className="container mx-auto px-4 py-5 text-center text-sm text-primary-foreground/60 lg:px-6">
+          <p>© 2026 سرعات. جميع الحقوق محفوظة</p>
         </div>
       </div>
     </footer>

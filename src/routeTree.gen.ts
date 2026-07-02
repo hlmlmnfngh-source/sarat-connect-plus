@@ -10,19 +10,40 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WalletRouteImport } from './routes/wallet'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SkillsTestRouteImport } from './routes/skills-test'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SecurityRouteImport } from './routes/security'
 import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as MessagesRouteImport } from './routes/messages'
+import { Route as HelpRouteImport } from './routes/help'
+import { Route as FastServicesRouteImport } from './routes/fast-services'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicesIdRouteImport } from './routes/services.$id'
 import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
 import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
 import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled'
+import { Route as DashboardSellerRouteImport } from './routes/dashboard.seller'
+import { Route as DashboardBuyerRouteImport } from './routes/dashboard.buyer'
 
 const WalletRoute = WalletRouteImport.update({
   id: '/wallet',
   path: '/wallet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SkillsTestRoute = SkillsTestRouteImport.update({
+  id: '/skills-test',
+  path: '/skills-test',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -30,14 +51,49 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SecurityRoute = SecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectsRoute = ProjectsRouteImport.update({
   id: '/projects',
   path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MessagesRoute = MessagesRouteImport.update({
   id: '/messages',
   path: '/messages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FastServicesRoute = FastServicesRouteImport.update({
+  id: '/fast-services',
+  path: '/fast-services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -70,14 +126,35 @@ const PaymentCancelledRoute = PaymentCancelledRouteImport.update({
   path: '/payment/cancelled',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardSellerRoute = DashboardSellerRouteImport.update({
+  id: '/dashboard/seller',
+  path: '/dashboard/seller',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardBuyerRoute = DashboardBuyerRouteImport.update({
+  id: '/dashboard/buyer',
+  path: '/dashboard/buyer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
+  '/fast-services': typeof FastServicesRoute
+  '/help': typeof HelpRoute
   '/messages': typeof MessagesRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/security': typeof SecurityRoute
   '/services': typeof ServicesRouteWithChildren
+  '/skills-test': typeof SkillsTestRoute
+  '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
+  '/dashboard/buyer': typeof DashboardBuyerRoute
+  '/dashboard/seller': typeof DashboardSellerRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/projects/$id': typeof ProjectsIdRoute
@@ -86,10 +163,21 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
+  '/fast-services': typeof FastServicesRoute
+  '/help': typeof HelpRoute
   '/messages': typeof MessagesRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/security': typeof SecurityRoute
   '/services': typeof ServicesRouteWithChildren
+  '/skills-test': typeof SkillsTestRoute
+  '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
+  '/dashboard/buyer': typeof DashboardBuyerRoute
+  '/dashboard/seller': typeof DashboardSellerRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/projects/$id': typeof ProjectsIdRoute
@@ -99,10 +187,21 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
+  '/fast-services': typeof FastServicesRoute
+  '/help': typeof HelpRoute
   '/messages': typeof MessagesRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/security': typeof SecurityRoute
   '/services': typeof ServicesRouteWithChildren
+  '/skills-test': typeof SkillsTestRoute
+  '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
+  '/dashboard/buyer': typeof DashboardBuyerRoute
+  '/dashboard/seller': typeof DashboardSellerRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/projects/$id': typeof ProjectsIdRoute
@@ -113,10 +212,21 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/blog'
+    | '/contact'
+    | '/fast-services'
+    | '/help'
     | '/messages'
+    | '/pricing'
+    | '/privacy'
     | '/projects'
+    | '/security'
     | '/services'
+    | '/skills-test'
+    | '/terms'
     | '/wallet'
+    | '/dashboard/buyer'
+    | '/dashboard/seller'
     | '/payment/cancelled'
     | '/payment/success'
     | '/projects/$id'
@@ -125,10 +235,21 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/blog'
+    | '/contact'
+    | '/fast-services'
+    | '/help'
     | '/messages'
+    | '/pricing'
+    | '/privacy'
     | '/projects'
+    | '/security'
     | '/services'
+    | '/skills-test'
+    | '/terms'
     | '/wallet'
+    | '/dashboard/buyer'
+    | '/dashboard/seller'
     | '/payment/cancelled'
     | '/payment/success'
     | '/projects/$id'
@@ -137,10 +258,21 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/auth'
+    | '/blog'
+    | '/contact'
+    | '/fast-services'
+    | '/help'
     | '/messages'
+    | '/pricing'
+    | '/privacy'
     | '/projects'
+    | '/security'
     | '/services'
+    | '/skills-test'
+    | '/terms'
     | '/wallet'
+    | '/dashboard/buyer'
+    | '/dashboard/seller'
     | '/payment/cancelled'
     | '/payment/success'
     | '/projects/$id'
@@ -150,10 +282,21 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
+  BlogRoute: typeof BlogRoute
+  ContactRoute: typeof ContactRoute
+  FastServicesRoute: typeof FastServicesRoute
+  HelpRoute: typeof HelpRoute
   MessagesRoute: typeof MessagesRoute
+  PricingRoute: typeof PricingRoute
+  PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
+  SecurityRoute: typeof SecurityRoute
   ServicesRoute: typeof ServicesRouteWithChildren
+  SkillsTestRoute: typeof SkillsTestRoute
+  TermsRoute: typeof TermsRoute
   WalletRoute: typeof WalletRoute
+  DashboardBuyerRoute: typeof DashboardBuyerRoute
+  DashboardSellerRoute: typeof DashboardSellerRoute
   PaymentCancelledRoute: typeof PaymentCancelledRoute
   PaymentSuccessRoute: typeof PaymentSuccessRoute
 }
@@ -167,11 +310,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WalletRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/skills-test': {
+      id: '/skills-test'
+      path: '/skills-test'
+      fullPath: '/skills-test'
+      preLoaderRoute: typeof SkillsTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/security': {
+      id: '/security'
+      path: '/security'
+      fullPath: '/security'
+      preLoaderRoute: typeof SecurityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects': {
@@ -181,11 +345,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/messages': {
       id: '/messages'
       path: '/messages'
       fullPath: '/messages'
       preLoaderRoute: typeof MessagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fast-services': {
+      id: '/fast-services'
+      path: '/fast-services'
+      fullPath: '/fast-services'
+      preLoaderRoute: typeof FastServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -230,6 +436,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PaymentCancelledRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/seller': {
+      id: '/dashboard/seller'
+      path: '/dashboard/seller'
+      fullPath: '/dashboard/seller'
+      preLoaderRoute: typeof DashboardSellerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/buyer': {
+      id: '/dashboard/buyer'
+      path: '/dashboard/buyer'
+      fullPath: '/dashboard/buyer'
+      preLoaderRoute: typeof DashboardBuyerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -260,10 +480,21 @@ const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
+  BlogRoute: BlogRoute,
+  ContactRoute: ContactRoute,
+  FastServicesRoute: FastServicesRoute,
+  HelpRoute: HelpRoute,
   MessagesRoute: MessagesRoute,
+  PricingRoute: PricingRoute,
+  PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
+  SecurityRoute: SecurityRoute,
   ServicesRoute: ServicesRouteWithChildren,
+  SkillsTestRoute: SkillsTestRoute,
+  TermsRoute: TermsRoute,
   WalletRoute: WalletRoute,
+  DashboardBuyerRoute: DashboardBuyerRoute,
+  DashboardSellerRoute: DashboardSellerRoute,
   PaymentCancelledRoute: PaymentCancelledRoute,
   PaymentSuccessRoute: PaymentSuccessRoute,
 }
