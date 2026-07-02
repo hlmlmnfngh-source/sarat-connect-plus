@@ -19,6 +19,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as HelpRouteImport } from './routes/help'
+import { Route as FastServicesRouteImport } from './routes/fast-services'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -78,6 +79,11 @@ const HelpRoute = HelpRouteImport.update({
   path: '/help',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FastServicesRoute = FastServicesRouteImport.update({
+  id: '/fast-services',
+  path: '/fast-services',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -124,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
+  '/fast-services': typeof FastServicesRoute
   '/help': typeof HelpRoute
   '/messages': typeof MessagesRoute
   '/pricing': typeof PricingRoute
@@ -144,6 +151,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
+  '/fast-services': typeof FastServicesRoute
   '/help': typeof HelpRoute
   '/messages': typeof MessagesRoute
   '/pricing': typeof PricingRoute
@@ -165,6 +173,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
+  '/fast-services': typeof FastServicesRoute
   '/help': typeof HelpRoute
   '/messages': typeof MessagesRoute
   '/pricing': typeof PricingRoute
@@ -187,6 +196,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/contact'
+    | '/fast-services'
     | '/help'
     | '/messages'
     | '/pricing'
@@ -207,6 +217,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/contact'
+    | '/fast-services'
     | '/help'
     | '/messages'
     | '/pricing'
@@ -227,6 +238,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/contact'
+    | '/fast-services'
     | '/help'
     | '/messages'
     | '/pricing'
@@ -248,6 +260,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRoute
   ContactRoute: typeof ContactRoute
+  FastServicesRoute: typeof FastServicesRoute
   HelpRoute: typeof HelpRoute
   MessagesRoute: typeof MessagesRoute
   PricingRoute: typeof PricingRoute
@@ -332,6 +345,13 @@ declare module '@tanstack/react-router' {
       path: '/help'
       fullPath: '/help'
       preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fast-services': {
+      id: '/fast-services'
+      path: '/fast-services'
+      fullPath: '/fast-services'
+      preLoaderRoute: typeof FastServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -422,6 +442,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BlogRoute: BlogRoute,
   ContactRoute: ContactRoute,
+  FastServicesRoute: FastServicesRoute,
   HelpRoute: HelpRoute,
   MessagesRoute: MessagesRoute,
   PricingRoute: PricingRoute,
