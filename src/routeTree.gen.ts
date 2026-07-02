@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SecurityRouteImport } from './routes/security'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as MessagesRouteImport } from './routes/messages'
@@ -37,6 +38,11 @@ const TermsRoute = TermsRouteImport.update({
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SecurityRoute = SecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsRoute = ProjectsRouteImport.update({
@@ -103,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/messages': typeof MessagesRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/security': typeof SecurityRoute
   '/services': typeof ServicesRouteWithChildren
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
@@ -119,6 +126,7 @@ export interface FileRoutesByTo {
   '/messages': typeof MessagesRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/security': typeof SecurityRoute
   '/services': typeof ServicesRouteWithChildren
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
@@ -136,6 +144,7 @@ export interface FileRoutesById {
   '/messages': typeof MessagesRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/security': typeof SecurityRoute
   '/services': typeof ServicesRouteWithChildren
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
@@ -154,6 +163,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/privacy'
     | '/projects'
+    | '/security'
     | '/services'
     | '/terms'
     | '/wallet'
@@ -170,6 +180,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/privacy'
     | '/projects'
+    | '/security'
     | '/services'
     | '/terms'
     | '/wallet'
@@ -186,6 +197,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/privacy'
     | '/projects'
+    | '/security'
     | '/services'
     | '/terms'
     | '/wallet'
@@ -203,6 +215,7 @@ export interface RootRouteChildren {
   MessagesRoute: typeof MessagesRoute
   PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
+  SecurityRoute: typeof SecurityRoute
   ServicesRoute: typeof ServicesRouteWithChildren
   TermsRoute: typeof TermsRoute
   WalletRoute: typeof WalletRoute
@@ -231,6 +244,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/security': {
+      id: '/security'
+      path: '/security'
+      fullPath: '/security'
+      preLoaderRoute: typeof SecurityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects': {
@@ -345,6 +365,7 @@ const rootRouteChildren: RootRouteChildren = {
   MessagesRoute: MessagesRoute,
   PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
+  SecurityRoute: SecurityRoute,
   ServicesRoute: ServicesRouteWithChildren,
   TermsRoute: TermsRoute,
   WalletRoute: WalletRoute,
