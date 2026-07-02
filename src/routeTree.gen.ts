@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WalletRouteImport } from './routes/wallet'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as MessagesRouteImport } from './routes/messages'
@@ -25,6 +26,11 @@ import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled
 const WalletRoute = WalletRouteImport.update({
   id: '/wallet',
   path: '/wallet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -91,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/messages': typeof MessagesRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/services': typeof ServicesRouteWithChildren
+  '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
@@ -105,6 +112,7 @@ export interface FileRoutesByTo {
   '/messages': typeof MessagesRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/services': typeof ServicesRouteWithChildren
+  '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
@@ -120,6 +128,7 @@ export interface FileRoutesById {
   '/messages': typeof MessagesRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/services': typeof ServicesRouteWithChildren
+  '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
@@ -136,6 +145,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/projects'
     | '/services'
+    | '/terms'
     | '/wallet'
     | '/payment/cancelled'
     | '/payment/success'
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/projects'
     | '/services'
+    | '/terms'
     | '/wallet'
     | '/payment/cancelled'
     | '/payment/success'
@@ -164,6 +175,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/projects'
     | '/services'
+    | '/terms'
     | '/wallet'
     | '/payment/cancelled'
     | '/payment/success'
@@ -179,6 +191,7 @@ export interface RootRouteChildren {
   MessagesRoute: typeof MessagesRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
   ServicesRoute: typeof ServicesRouteWithChildren
+  TermsRoute: typeof TermsRoute
   WalletRoute: typeof WalletRoute
   PaymentCancelledRoute: typeof PaymentCancelledRoute
   PaymentSuccessRoute: typeof PaymentSuccessRoute
@@ -191,6 +204,13 @@ declare module '@tanstack/react-router' {
       path: '/wallet'
       fullPath: '/wallet'
       preLoaderRoute: typeof WalletRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -305,6 +325,7 @@ const rootRouteChildren: RootRouteChildren = {
   MessagesRoute: MessagesRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
   ServicesRoute: ServicesRouteWithChildren,
+  TermsRoute: TermsRoute,
   WalletRoute: WalletRoute,
   PaymentCancelledRoute: PaymentCancelledRoute,
   PaymentSuccessRoute: PaymentSuccessRoute,
