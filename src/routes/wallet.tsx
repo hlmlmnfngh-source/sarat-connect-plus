@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import { TransactionDetailsDialog, type TxnLike } from "@/components/TransactionDetailsDialog";
 
 type Txn = {
   id: string;
@@ -12,6 +13,9 @@ type Txn = {
   description: string | null;
   reference_id: string | null;
   created_at: string;
+  stripe_session_id: string | null;
+  stripe_payment_intent_id: string | null;
+  stripe_refund_id: string | null;
 };
 
 export const Route = createFileRoute("/wallet")({
@@ -44,6 +48,7 @@ function WalletPage() {
   const { user, loading: authLoading } = useAuth();
   const [txns, setTxns] = useState<Txn[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [selected, setSelected] = useState<TxnLike | null>(null);
 
   useEffect(() => {
     if (authLoading) return;
@@ -51,7 +56,7 @@ function WalletPage() {
     (async () => {
       const { data, error } = await supabase
         .from("transactions")
-        .select("id,type,amount,currency,status,description,reference_id,created_at")
+        .select("id,type,amount,currency,status,description,reference_id,created_at,stripe_session_id,stripe_payment_intent_id,stripe_refund_id")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false })
         .limit(100);
@@ -111,7 +116,12 @@ function WalletPage() {
         ) : (
           <ul className="divide-y divide-border">
             {txns.map((t) => (
-              <li key={t.id} className="flex items-center justify-between gap-4 px-4 py-3">
+              <li key={t.id}>
+                <button
+                  type="button"
+                  onClick={() => setSelected(t)}
+                  className="flex w-full items-center justify-between gap-4 px-4 py-3 text-right hover:bg-muted/40"
+                >
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 text-sm">
                     <span className="font-medium capitalize">{t.type}</span>
@@ -144,11 +154,17 @@ function WalletPage() {
                   {t.type === "earning" || t.type === "refund" ? "+" : "-"}
                   {fmt(Number(t.amount), t.currency || "usd")}
                 </div>
+                </button>
               </li>
             ))}
           </ul>
         )}
       </section>
+      <TransactionDetailsDialog
+        txn={selected}
+        open={selected !== null}
+        onOpenChange={(v) => !v && setSelected(null)}
+      />
     </main>
   );
 }
