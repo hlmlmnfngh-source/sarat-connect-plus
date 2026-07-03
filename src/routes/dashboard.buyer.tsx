@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { PageShell } from "@/components/site/PageShell";
 import { Button } from "@/components/ui/button";
+import { TransactionDetailsDialog, type TxnLike } from "@/components/TransactionDetailsDialog";
 
 export const Route = createFileRoute("/dashboard/buyer")({
   head: () => ({ meta: [{ title: "لوحة تحكم المشتري — سرعات" }, { name: "robots", content: "noindex" }] }),
@@ -22,6 +23,9 @@ type Txn = {
   description: string | null;
   reference_id: string | null;
   created_at: string;
+  stripe_session_id?: string | null;
+  stripe_payment_intent_id?: string | null;
+  stripe_refund_id?: string | null;
 };
 
 function BuyerDashboard() {
@@ -34,6 +38,7 @@ function BuyerDashboard() {
   const [refunded, setRefunded] = useState(0);
   const [pending, setPending] = useState(0);
   const [txns, setTxns] = useState<Txn[]>([]);
+  const [selected, setSelected] = useState<TxnLike | null>(null);
 
   useEffect(() => { if (!loading && !user) navigate({ to: "/auth" }); }, [loading, user, navigate]);
 
@@ -46,7 +51,7 @@ function BuyerDashboard() {
         supabase.from("favorites").select("id", { count: "exact", head: true }).eq("user_id", user.id),
         supabase
           .from("transactions")
-          .select("id,type,amount,currency,status,description,reference_id,created_at")
+          .select("id,type,amount,currency,status,description,reference_id,created_at,stripe_session_id,stripe_payment_intent_id,stripe_refund_id")
           .eq("user_id", user.id)
           .order("created_at", { ascending: false })
           .limit(50),
@@ -119,7 +124,12 @@ function BuyerDashboard() {
                 const label =
                   t.type === "purchase" ? "شراء" : t.type === "refund" ? "استرداد" : t.type === "earning" ? "أرباح" : "سحب";
                 return (
-                  <li key={t.id} className="flex items-center justify-between gap-3 p-4">
+                  <li key={t.id}>
+                    <button
+                      type="button"
+                      onClick={() => setSelected(t)}
+                      className="flex w-full items-center justify-between gap-3 p-4 text-right hover:bg-muted/40"
+                    >
                     <div className="flex min-w-0 items-center gap-3">
                       <span className={`grid h-9 w-9 place-items-center rounded-full ${credit ? "bg-success/10 text-success" : "bg-muted text-primary"}`}>
                         <Icon className="h-4 w-4" />
@@ -140,12 +150,19 @@ function BuyerDashboard() {
                         {credit ? "+" : "-"}${Number(t.amount).toFixed(2)}
                       </span>
                     </div>
+                    </button>
                   </li>
                 );
               })}
             </ul>
           )}
         </div>
+
+        <TransactionDetailsDialog
+          txn={selected}
+          open={selected !== null}
+          onOpenChange={(v) => !v && setSelected(null)}
+        />
 
         <div className="grid gap-6 lg:grid-cols-2">
           <div className="rounded-2xl border border-border bg-card shadow-soft">
