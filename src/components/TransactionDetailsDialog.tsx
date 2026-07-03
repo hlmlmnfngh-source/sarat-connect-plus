@@ -106,7 +106,7 @@ export function TransactionDetailsDialog({
         .select(
           "id,price,status,package_type,requirements,created_at,paid_at,delivered_at,completed_at,refunded_at,stripe_session_id,stripe_payment_intent_id,stripe_refund_id,service:services(id,title),project:projects(id,title)",
         )
-        .eq("id", txn.reference_id)
+        .eq("id", txn.reference_id as string)
         .maybeSingle();
       if (error) setError(error.message);
       else setOrder((data as unknown as OrderLite) ?? null);
