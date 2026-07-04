@@ -26,7 +26,6 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicesIdRouteImport } from './routes/services.$id'
-import { Route as ServicesCategoryRouteImport } from './routes/services.$category'
 import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
 import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
 import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled'
@@ -121,11 +120,6 @@ const ServicesIdRoute = ServicesIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => ServicesRoute,
 } as any)
-const ServicesCategoryRoute = ServicesCategoryRouteImport.update({
-  id: '/$category',
-  path: '/$category',
-  getParentRoute: () => ServicesRoute,
-} as any)
 const ProjectsIdRoute = ProjectsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -194,7 +188,6 @@ export interface FileRoutesByFullPath {
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/projects/$id': typeof ProjectsIdRoute
-  '/services/$category': typeof ServicesCategoryRoute
   '/services/$id': typeof ServicesIdRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -222,7 +215,6 @@ export interface FileRoutesByTo {
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/projects/$id': typeof ProjectsIdRoute
-  '/services/$category': typeof ServicesCategoryRoute
   '/services/$id': typeof ServicesIdRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -251,7 +243,6 @@ export interface FileRoutesById {
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/projects/$id': typeof ProjectsIdRoute
-  '/services/$category': typeof ServicesCategoryRoute
   '/services/$id': typeof ServicesIdRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -281,7 +272,6 @@ export interface FileRouteTypes {
     | '/payment/cancelled'
     | '/payment/success'
     | '/projects/$id'
-    | '/services/$category'
     | '/services/$id'
     | '/.mcp/invoke-tool/$tool'
   fileRoutesByTo: FileRoutesByTo
@@ -309,7 +299,6 @@ export interface FileRouteTypes {
     | '/payment/cancelled'
     | '/payment/success'
     | '/projects/$id'
-    | '/services/$category'
     | '/services/$id'
     | '/.mcp/invoke-tool/$tool'
   id:
@@ -337,7 +326,6 @@ export interface FileRouteTypes {
     | '/payment/cancelled'
     | '/payment/success'
     | '/projects/$id'
-    | '/services/$category'
     | '/services/$id'
     | '/.mcp/invoke-tool/$tool'
   fileRoutesById: FileRoutesById
@@ -489,13 +477,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesIdRouteImport
       parentRoute: typeof ServicesRoute
     }
-    '/services/$category': {
-      id: '/services/$category'
-      path: '/$category'
-      fullPath: '/services/$category'
-      preLoaderRoute: typeof ServicesCategoryRouteImport
-      parentRoute: typeof ServicesRoute
-    }
     '/projects/$id': {
       id: '/projects/$id'
       path: '/$id'
@@ -568,12 +549,10 @@ const ProjectsRouteWithChildren = ProjectsRoute._addFileChildren(
 )
 
 interface ServicesRouteChildren {
-  ServicesCategoryRoute: typeof ServicesCategoryRoute
   ServicesIdRoute: typeof ServicesIdRoute
 }
 
 const ServicesRouteChildren: ServicesRouteChildren = {
-  ServicesCategoryRoute: ServicesCategoryRoute,
   ServicesIdRoute: ServicesIdRoute,
 }
 
