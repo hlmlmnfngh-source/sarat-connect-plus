@@ -28,13 +28,27 @@ export default defineTool({
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ query, limit, quick_only }) => {
     const supabase = getPublicSupabase();
+    // Sanitize: strip PostgREST filter delimiters (comma, parentheses, asterisk,
+    // colon, backslash) and percent-escape remaining wildcards so user input
+    // cannot inject extra .or() clauses or ilike patterns.
+    const safe = query
+      .replace(/[,()*:\\]/g, " ")
+      .replace(/%/g, "\\%")
+      .replace(/_/g, "\\_")
+      .trim();
+    if (!safe) {
+      return {
+        content: [{ type: "text", text: JSON.stringify([], null, 2) }],
+        structuredContent: { services: [] },
+      };
+    }
     let q = supabase
       .from("services")
       .select(
         "id, title, description, price, delivery_days, rating, reviews_count, is_quick",
       )
       .eq("status", "active")
-      .or(`title.ilike.%${query}%,description.ilike.%${query}%`)
+      .or(`title.ilike.%${safe}%,description.ilike.%${safe}%`)
       .order("rating", { ascending: false, nullsFirst: false })
       .limit(limit ?? 10);
     if (quick_only) q = q.eq("is_quick", true);
