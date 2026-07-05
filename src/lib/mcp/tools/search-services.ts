@@ -1,6 +1,7 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
 import { getPublicSupabase } from "../supabase";
+import { sanitizePostgrestFilterInput } from "./sanitize";
 
 export default defineTool({
   name: "search_services",
@@ -28,14 +29,7 @@ export default defineTool({
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ query, limit, quick_only }) => {
     const supabase = getPublicSupabase();
-    // Sanitize: strip PostgREST filter delimiters (comma, parentheses, asterisk,
-    // colon, backslash) and percent-escape remaining wildcards so user input
-    // cannot inject extra .or() clauses or ilike patterns.
-    const safe = query
-      .replace(/[,()*:\\]/g, " ")
-      .replace(/%/g, "\\%")
-      .replace(/_/g, "\\_")
-      .trim();
+    const safe = sanitizePostgrestFilterInput(query);
     if (!safe) {
       return {
         content: [{ type: "text", text: JSON.stringify([], null, 2) }],
