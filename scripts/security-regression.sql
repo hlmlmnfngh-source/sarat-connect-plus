@@ -24,8 +24,8 @@ BEGIN
     'public.profiles::profiles_guard_update',
     'public.messages::messages_guard_update_trg',
     'public.conversations::conversations_guard_update',
-    'public.orders::orders_guard_update',
-    'public.proposals::proposals_guard_update'
+    'public.orders::orders_guard_update_trg',
+    'public.proposals::proposals_guard_update_trg'
   ] LOOP
     IF NOT EXISTS (
       SELECT 1
