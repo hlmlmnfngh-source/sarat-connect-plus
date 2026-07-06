@@ -1,0 +1,113 @@
+name: Security Regression
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  sql-regression:
+    name: SQL guard / RLS regression (psql)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check required secret
+        run: |
+          if [ -z "${{ secrets.SUPABASE_DB_URL }}" ]; then
+            echo "::error::SUPABASE_DB_URL secret is not configured. Add it in Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+          echo "✅ SUPABASE_DB_URL is configured"
+
+      - name: Install psql
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends postgresql-client
+          psql --version
+
+      - name: Run security-regression.sql
+        env:
+          PGPASSWORD_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          set -o pipefail
+          echo "── Running scripts/security-regression.sql ──"
+          if psql "$PGPASSWORD_URL" \
+              --set ON_ERROR_STOP=1 \
+              --echo-errors \
+              -f scripts/security-regression.sql 2>&1 | tee /tmp/regression.log; then
+            echo ""
+            echo "✅ Security regression SQL passed — all guard triggers, ACLs, and policies intact."
+          else
+            echo ""
+            echo "::error::❌ Security regression SQL FAILED. See log above for the failing assertion."
+            exit 1
+          fi
+
+  rls-integration:
+    name: RLS integration tests (Vitest + Supabase JS)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Check required secrets
+        run: |
+          missing=0
+          for var in SUPABASE_URL SUPABASE_PUBLISHABLE_KEY TEST_USER_A_EMAIL TEST_USER_A_PASSWORD TEST_USER_B_EMAIL TEST_USER_B_PASSWORD; do
+            if [ -z "$(printenv "$var" || true)" ]; then
+              echo "::error::Missing repository secret: $var"
+              missing=1
+            fi
+          done
+          if [ "$missing" -ne 0 ]; then
+            echo "Configure the missing secrets under Settings → Secrets and variables → Actions."
+            echo "The two TEST_USER_* pairs must correspond to pre-provisioned, email-confirmed accounts."
+            exit 1
+          fi
+          echo "✅ All required secrets present"
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+          TEST_USER_A_EMAIL: ${{ secrets.TEST_USER_A_EMAIL }}
+          TEST_USER_A_PASSWORD: ${{ secrets.TEST_USER_A_PASSWORD }}
+          TEST_USER_B_EMAIL: ${{ secrets.TEST_USER_B_EMAIL }}
+          TEST_USER_B_PASSWORD: ${{ secrets.TEST_USER_B_PASSWORD }}
+
+      - name: Run RLS integration suite
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+          TEST_USER_A_EMAIL: ${{ secrets.TEST_USER_A_EMAIL }}
+          TEST_USER_A_PASSWORD: ${{ secrets.TEST_USER_A_PASSWORD }}
+          TEST_USER_B_EMAIL: ${{ secrets.TEST_USER_B_EMAIL }}
+          TEST_USER_B_PASSWORD: ${{ secrets.TEST_USER_B_PASSWORD }}
+        run: |
+          set -o pipefail
+          echo "── Running RLS + guard-trigger integration tests ──"
+          if bunx vitest run tests/security --reporter=verbose 2>&1 | tee /tmp/vitest.log; then
+            echo ""
+            echo "✅ RLS integration tests passed — Data API rejects all disallowed writes."
+          else
+            echo ""
+            echo "::error::❌ RLS integration tests FAILED. A disallowed write was accepted or an expected policy error was missing. See log above."
+            exit 1
+          fi
+
+      - name: Upload test logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rls-integration-log
+          path: /tmp/vitest.log
+          if-no-files-found: ignore
