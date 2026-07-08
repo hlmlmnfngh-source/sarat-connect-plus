@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Search, Menu, Briefcase, Sparkles, MessageCircle, LogOut } from "lucide-react";
+import { Search, Menu, Briefcase, Sparkles, MessageCircle, LogOut, Plus } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -24,6 +24,11 @@ export function Header({ mode, onModeChange }: HeaderProps) {
     toast.success("تم تسجيل الخروج");
     navigate({ to: "/" });
   };
+
+  // استخراج نوع الحساب من metadata
+  const accountType = user?.user_metadata?.account_type;
+  const isSeller = accountType === "seller";
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/85 backdrop-blur-md">
       <div className="container mx-auto flex h-16 items-center gap-4 px-4 lg:px-6">
@@ -75,20 +80,37 @@ export function Header({ mode, onModeChange }: HeaderProps) {
         </nav>
 
         <div className="mr-auto flex items-center gap-2">
-          <Link to="/projects" className="hidden md:inline-flex">
-            <Button variant="hero" size="default">
-              <Briefcase className="h-4 w-4" />
-              انشر مشروعك
-            </Button>
-          </Link>
+
+          {/* زر انشر مشروعك للمشتري أو غير مسجل */}
+          {!isSeller && (
+            <Link to="/projects" className="hidden md:inline-flex">
+              <Button variant="hero" size="default">
+                <Briefcase className="h-4 w-4" />
+                انشر مشروعك
+              </Button>
+            </Link>
+          )}
+
+          {/* زر أضف خدمة للبائع */}
+          {user && isSeller && (
+            <Link to="/create-service" className="hidden md:inline-flex">
+              <Button variant="hero" size="default">
+                <Plus className="h-4 w-4" />
+                أضف خدمة
+              </Button>
+            </Link>
+          )}
+
           {user ? (
             <>
               <Link to="/messages" className="hidden h-9 w-9 items-center justify-center rounded-full text-foreground/70 hover:bg-muted sm:inline-flex">
                 <MessageCircle className="h-5 w-5" />
               </Link>
-              <div className="hidden h-9 w-9 items-center justify-center rounded-full bg-gradient-accent text-sm font-bold text-accent-foreground sm:inline-flex">
-                {(user.user_metadata?.full_name ?? user.email ?? "?")[0].toUpperCase()}
-              </div>
+              <Link to="/dashboard/seller">
+                <div className="hidden h-9 w-9 items-center justify-center rounded-full bg-gradient-accent text-sm font-bold text-accent-foreground sm:inline-flex cursor-pointer hover:opacity-90">
+                  {(user.user_metadata?.full_name ?? user.email ?? "?")[0].toUpperCase()}
+                </div>
+              </Link>
               <Button variant="ghost" size="default" onClick={handleSignOut} className="hidden sm:inline-flex">
                 <LogOut className="h-4 w-4" />
                 خروج
@@ -105,6 +127,7 @@ export function Header({ mode, onModeChange }: HeaderProps) {
           </button>
         </div>
       </div>
+
       {open && (
         <div className="border-t border-border bg-card px-4 py-4 lg:hidden">
           <div className="flex items-center rounded-full bg-muted p-1 md:hidden">
@@ -122,6 +145,18 @@ export function Header({ mode, onModeChange }: HeaderProps) {
                 mode === "projects" ? "bg-primary text-primary-foreground" : "text-muted-foreground",
               )}
             >مشاريع</button>
+          </div>
+
+          {/* قائمة الموبايل */}
+          <div className="mt-4 flex flex-col gap-2">
+            <Link to="/services" search={{ q: undefined, category: undefined }} className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">الخدمات</Link>
+            <Link to="/projects" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">المشاريع</Link>
+            {user && isSeller && (
+              <Link to="/create-service" className="rounded-md px-3 py-2 font-bold text-accent">+ أضف خدمة</Link>
+            )}
+            {!user && (
+              <Link to="/auth" className="rounded-md px-3 py-2 font-bold text-accent">تسجيل الدخول</Link>
+            )}
           </div>
         </div>
       )}
