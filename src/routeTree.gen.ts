@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SkillsTestRouteImport } from './routes/skills-test'
-import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -23,9 +22,9 @@ import { Route as HelpRouteImport } from './routes/help'
 import { Route as FastServicesRouteImport } from './routes/fast-services'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BlogRouteImport } from './routes/blog'
-import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ServicesIdRouteImport } from './routes/services.$id'
+import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as AuthIndexRouteImport } from './routes/auth.index'
 import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
 import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
 import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled'
@@ -34,6 +33,7 @@ import { Route as DashboardBuyerRouteImport } from './routes/dashboard.buyer'
 import { Route as CategoriesCategoryRouteImport } from './routes/categories.$category'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
+import { Route as ServicesIdIndexRouteImport } from './routes/services.$id.index'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 
 const WalletRoute = WalletRouteImport.update({
@@ -49,11 +49,6 @@ const TermsRoute = TermsRouteImport.update({
 const SkillsTestRoute = SkillsTestRouteImport.update({
   id: '/skills-test',
   path: '/skills-test',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SecurityRoute = SecurityRouteImport.update({
@@ -106,20 +101,20 @@ const BlogRoute = BlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesIdRoute = ServicesIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => ServicesRoute,
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/services/',
+  path: '/services/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthIndexRoute = AuthIndexRouteImport.update({
+  id: '/auth/',
+  path: '/auth/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsIdRoute = ProjectsIdRouteImport.update({
   id: '/$id',
@@ -163,6 +158,11 @@ const Char91DotmcpChar93ListToolsRoute =
     path: '/.mcp/list-tools',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ServicesIdIndexRoute = ServicesIdIndexRouteImport.update({
+  id: '/services/$id/',
+  path: '/services/$id/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Char91DotmcpChar93InvokeToolToolRoute =
   Char91DotmcpChar93InvokeToolToolRouteImport.update({
     id: '/.mcp/invoke-tool/$tool',
@@ -172,7 +172,6 @@ const Char91DotmcpChar93InvokeToolToolRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/fast-services': typeof FastServicesRoute
@@ -183,7 +182,6 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/security': typeof SecurityRoute
-  '/services': typeof ServicesRouteWithChildren
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
@@ -195,12 +193,13 @@ export interface FileRoutesByFullPath {
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/projects/$id': typeof ProjectsIdRoute
-  '/services/$id': typeof ServicesIdRoute
+  '/auth/': typeof AuthIndexRoute
+  '/services/': typeof ServicesIndexRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/services/$id/': typeof ServicesIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/fast-services': typeof FastServicesRoute
@@ -211,7 +210,6 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/security': typeof SecurityRoute
-  '/services': typeof ServicesRouteWithChildren
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
@@ -223,13 +221,14 @@ export interface FileRoutesByTo {
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/projects/$id': typeof ProjectsIdRoute
-  '/services/$id': typeof ServicesIdRoute
+  '/auth': typeof AuthIndexRoute
+  '/services': typeof ServicesIndexRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/services/$id': typeof ServicesIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/fast-services': typeof FastServicesRoute
@@ -240,7 +239,6 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/security': typeof SecurityRoute
-  '/services': typeof ServicesRouteWithChildren
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
@@ -252,14 +250,15 @@ export interface FileRoutesById {
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
   '/projects/$id': typeof ProjectsIdRoute
-  '/services/$id': typeof ServicesIdRoute
+  '/auth/': typeof AuthIndexRoute
+  '/services/': typeof ServicesIndexRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/services/$id/': typeof ServicesIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/auth'
     | '/blog'
     | '/contact'
     | '/fast-services'
@@ -270,7 +269,6 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/projects'
     | '/security'
-    | '/services'
     | '/skills-test'
     | '/terms'
     | '/wallet'
@@ -282,12 +280,13 @@ export interface FileRouteTypes {
     | '/payment/cancelled'
     | '/payment/success'
     | '/projects/$id'
-    | '/services/$id'
+    | '/auth/'
+    | '/services/'
     | '/.mcp/invoke-tool/$tool'
+    | '/services/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/auth'
     | '/blog'
     | '/contact'
     | '/fast-services'
@@ -298,7 +297,6 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/projects'
     | '/security'
-    | '/services'
     | '/skills-test'
     | '/terms'
     | '/wallet'
@@ -310,12 +308,13 @@ export interface FileRouteTypes {
     | '/payment/cancelled'
     | '/payment/success'
     | '/projects/$id'
-    | '/services/$id'
+    | '/auth'
+    | '/services'
     | '/.mcp/invoke-tool/$tool'
+    | '/services/$id'
   id:
     | '__root__'
     | '/'
-    | '/auth'
     | '/blog'
     | '/contact'
     | '/fast-services'
@@ -326,7 +325,6 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/projects'
     | '/security'
-    | '/services'
     | '/skills-test'
     | '/terms'
     | '/wallet'
@@ -338,13 +336,14 @@ export interface FileRouteTypes {
     | '/payment/cancelled'
     | '/payment/success'
     | '/projects/$id'
-    | '/services/$id'
+    | '/auth/'
+    | '/services/'
     | '/.mcp/invoke-tool/$tool'
+    | '/services/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRoute
   ContactRoute: typeof ContactRoute
   FastServicesRoute: typeof FastServicesRoute
@@ -355,7 +354,6 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
   SecurityRoute: typeof SecurityRoute
-  ServicesRoute: typeof ServicesRouteWithChildren
   SkillsTestRoute: typeof SkillsTestRoute
   TermsRoute: typeof TermsRoute
   WalletRoute: typeof WalletRoute
@@ -366,7 +364,10 @@ export interface RootRouteChildren {
   DashboardSellerRoute: typeof DashboardSellerRoute
   PaymentCancelledRoute: typeof PaymentCancelledRoute
   PaymentSuccessRoute: typeof PaymentSuccessRoute
+  AuthIndexRoute: typeof AuthIndexRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
+  ServicesIdIndexRoute: typeof ServicesIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -390,13 +391,6 @@ declare module '@tanstack/react-router' {
       path: '/skills-test'
       fullPath: '/skills-test'
       preLoaderRoute: typeof SkillsTestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/security': {
@@ -469,13 +463,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -483,12 +470,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/services/$id': {
-      id: '/services/$id'
-      path: '/$id'
-      fullPath: '/services/$id'
-      preLoaderRoute: typeof ServicesIdRouteImport
-      parentRoute: typeof ServicesRoute
+    '/services/': {
+      id: '/services/'
+      path: '/services'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/': {
+      id: '/auth/'
+      path: '/auth'
+      fullPath: '/auth/'
+      preLoaderRoute: typeof AuthIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/projects/$id': {
       id: '/projects/$id'
@@ -546,6 +540,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services/$id/': {
+      id: '/services/$id/'
+      path: '/services/$id'
+      fullPath: '/services/$id/'
+      preLoaderRoute: typeof ServicesIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/.mcp/invoke-tool/$tool': {
       id: '/.mcp/invoke-tool/$tool'
       path: '/.mcp/invoke-tool/$tool'
@@ -568,21 +569,8 @@ const ProjectsRouteWithChildren = ProjectsRoute._addFileChildren(
   ProjectsRouteChildren,
 )
 
-interface ServicesRouteChildren {
-  ServicesIdRoute: typeof ServicesIdRoute
-}
-
-const ServicesRouteChildren: ServicesRouteChildren = {
-  ServicesIdRoute: ServicesIdRoute,
-}
-
-const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
-  ServicesRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthRoute: AuthRoute,
   BlogRoute: BlogRoute,
   ContactRoute: ContactRoute,
   FastServicesRoute: FastServicesRoute,
@@ -593,7 +581,6 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
   SecurityRoute: SecurityRoute,
-  ServicesRoute: ServicesRouteWithChildren,
   SkillsTestRoute: SkillsTestRoute,
   TermsRoute: TermsRoute,
   WalletRoute: WalletRoute,
@@ -605,7 +592,10 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardSellerRoute: DashboardSellerRoute,
   PaymentCancelledRoute: PaymentCancelledRoute,
   PaymentSuccessRoute: PaymentSuccessRoute,
+  AuthIndexRoute: AuthIndexRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
+  ServicesIdIndexRoute: ServicesIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
