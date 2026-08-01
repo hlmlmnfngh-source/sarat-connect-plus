@@ -18,6 +18,7 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as HelpRouteImport } from './routes/help'
@@ -85,6 +86,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MessagesRoute = MessagesRouteImport.update({
@@ -215,6 +221,7 @@ export interface FileRoutesByFullPath {
   '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
   '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
@@ -249,6 +256,7 @@ export interface FileRoutesByTo {
   '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
   '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
@@ -284,6 +292,7 @@ export interface FileRoutesById {
   '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
   '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
@@ -320,6 +329,7 @@ export interface FileRouteTypes {
     | '/help'
     | '/mcp'
     | '/messages'
+    | '/notifications'
     | '/pricing'
     | '/privacy'
     | '/projects'
@@ -354,6 +364,7 @@ export interface FileRouteTypes {
     | '/help'
     | '/mcp'
     | '/messages'
+    | '/notifications'
     | '/pricing'
     | '/privacy'
     | '/projects'
@@ -388,6 +399,7 @@ export interface FileRouteTypes {
     | '/help'
     | '/mcp'
     | '/messages'
+    | '/notifications'
     | '/pricing'
     | '/privacy'
     | '/projects'
@@ -423,6 +435,7 @@ export interface RootRouteChildren {
   HelpRoute: typeof HelpRoute
   McpRoute: typeof McpRoute
   MessagesRoute: typeof MessagesRoute
+  NotificationsRoute: typeof NotificationsRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
@@ -511,6 +524,13 @@ declare module '@tanstack/react-router' {
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/messages': {
@@ -698,6 +718,7 @@ const rootRouteChildren: RootRouteChildren = {
   HelpRoute: HelpRoute,
   McpRoute: McpRoute,
   MessagesRoute: MessagesRoute,
+  NotificationsRoute: NotificationsRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
