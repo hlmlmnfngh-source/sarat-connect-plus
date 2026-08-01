@@ -12,28 +12,37 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SkillsTestRouteImport } from './routes/skills-test'
-import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SecurityRouteImport } from './routes/security'
+import { Route as SearchRouteImport } from './routes/search'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as MessagesRouteImport } from './routes/messages'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as FastServicesRouteImport } from './routes/fast-services'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BlogRouteImport } from './routes/blog'
-import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ServicesIdRouteImport } from './routes/services.$id'
+import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as AuthIndexRouteImport } from './routes/auth.index'
+import { Route as ServicesCreateRouteImport } from './routes/services.create'
 import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
+import { Route as ProfileUserIdRouteImport } from './routes/profile.$userId'
 import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
 import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled'
 import { Route as DashboardSellerRouteImport } from './routes/dashboard.seller'
 import { Route as DashboardBuyerRouteImport } from './routes/dashboard.buyer'
 import { Route as CategoriesCategoryRouteImport } from './routes/categories.$category'
+import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
+import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
+import { Route as ServicesIdIndexRouteImport } from './routes/services.$id.index'
+import { Route as ServicesIdEditRouteImport } from './routes/services.$id.edit'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 
 const WalletRoute = WalletRouteImport.update({
@@ -51,14 +60,19 @@ const SkillsTestRoute = SkillsTestRouteImport.update({
   path: '/skills-test',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SecurityRoute = SecurityRouteImport.update({
   id: '/security',
   path: '/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsRoute = ProjectsRouteImport.update({
@@ -74,6 +88,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MessagesRoute = MessagesRouteImport.update({
@@ -106,9 +125,9 @@ const BlogRoute = BlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -116,15 +135,30 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesIdRoute = ServicesIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => ServicesRoute,
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/services/',
+  path: '/services/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthIndexRoute = AuthIndexRouteImport.update({
+  id: '/auth/',
+  path: '/auth/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesCreateRoute = ServicesCreateRouteImport.update({
+  id: '/services/create',
+  path: '/services/create',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsIdRoute = ProjectsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => ProjectsRoute,
+} as any)
+const ProfileUserIdRoute = ProfileUserIdRouteImport.update({
+  id: '/profile/$userId',
+  path: '/profile/$userId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const PaymentSuccessRoute = PaymentSuccessRouteImport.update({
   id: '/payment/success',
@@ -151,6 +185,16 @@ const CategoriesCategoryRoute = CategoriesCategoryRouteImport.update({
   path: '/categories/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
+  id: '/auth/reset-password',
+  path: '/auth/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
+  id: '/auth/forgot-password',
+  path: '/auth/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Char91DotwellKnownChar93OauthProtectedResourceRoute =
   Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
     id: '/.well-known/oauth-protected-resource',
@@ -163,6 +207,16 @@ const Char91DotmcpChar93ListToolsRoute =
     path: '/.mcp/list-tools',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ServicesIdIndexRoute = ServicesIdIndexRouteImport.update({
+  id: '/services/$id/',
+  path: '/services/$id/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesIdEditRoute = ServicesIdEditRouteImport.update({
+  id: '/services/$id/edit',
+  path: '/services/$id/edit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Char91DotmcpChar93InvokeToolToolRoute =
   Char91DotmcpChar93InvokeToolToolRouteImport.update({
     id: '/.mcp/invoke-tool/$tool',
@@ -172,201 +226,265 @@ const Char91DotmcpChar93InvokeToolToolRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
+  '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/fast-services': typeof FastServicesRoute
   '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
   '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/search': typeof SearchRoute
   '/security': typeof SecurityRoute
-  '/services': typeof ServicesRouteWithChildren
+  '/settings': typeof SettingsRoute
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/categories/$category': typeof CategoriesCategoryRoute
   '/dashboard/buyer': typeof DashboardBuyerRoute
   '/dashboard/seller': typeof DashboardSellerRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
+  '/profile/$userId': typeof ProfileUserIdRoute
   '/projects/$id': typeof ProjectsIdRoute
-  '/services/$id': typeof ServicesIdRoute
+  '/services/create': typeof ServicesCreateRoute
+  '/auth/': typeof AuthIndexRoute
+  '/services/': typeof ServicesIndexRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/services/$id/edit': typeof ServicesIdEditRoute
+  '/services/$id/': typeof ServicesIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
+  '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/fast-services': typeof FastServicesRoute
   '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
   '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/search': typeof SearchRoute
   '/security': typeof SecurityRoute
-  '/services': typeof ServicesRouteWithChildren
+  '/settings': typeof SettingsRoute
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/categories/$category': typeof CategoriesCategoryRoute
   '/dashboard/buyer': typeof DashboardBuyerRoute
   '/dashboard/seller': typeof DashboardSellerRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
+  '/profile/$userId': typeof ProfileUserIdRoute
   '/projects/$id': typeof ProjectsIdRoute
-  '/services/$id': typeof ServicesIdRoute
+  '/services/create': typeof ServicesCreateRoute
+  '/auth': typeof AuthIndexRoute
+  '/services': typeof ServicesIndexRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/services/$id/edit': typeof ServicesIdEditRoute
+  '/services/$id': typeof ServicesIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
+  '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/fast-services': typeof FastServicesRoute
   '/help': typeof HelpRoute
   '/mcp': typeof McpRoute
   '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
+  '/search': typeof SearchRoute
   '/security': typeof SecurityRoute
-  '/services': typeof ServicesRouteWithChildren
+  '/settings': typeof SettingsRoute
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/categories/$category': typeof CategoriesCategoryRoute
   '/dashboard/buyer': typeof DashboardBuyerRoute
   '/dashboard/seller': typeof DashboardSellerRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
+  '/profile/$userId': typeof ProfileUserIdRoute
   '/projects/$id': typeof ProjectsIdRoute
-  '/services/$id': typeof ServicesIdRoute
+  '/services/create': typeof ServicesCreateRoute
+  '/auth/': typeof AuthIndexRoute
+  '/services/': typeof ServicesIndexRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/services/$id/edit': typeof ServicesIdEditRoute
+  '/services/$id/': typeof ServicesIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/auth'
+    | '/about'
     | '/blog'
     | '/contact'
     | '/fast-services'
     | '/help'
     | '/mcp'
     | '/messages'
+    | '/notifications'
     | '/pricing'
     | '/privacy'
     | '/projects'
+    | '/search'
     | '/security'
-    | '/services'
+    | '/settings'
     | '/skills-test'
     | '/terms'
     | '/wallet'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/auth/forgot-password'
+    | '/auth/reset-password'
     | '/categories/$category'
     | '/dashboard/buyer'
     | '/dashboard/seller'
     | '/payment/cancelled'
     | '/payment/success'
+    | '/profile/$userId'
     | '/projects/$id'
-    | '/services/$id'
+    | '/services/create'
+    | '/auth/'
+    | '/services/'
     | '/.mcp/invoke-tool/$tool'
+    | '/services/$id/edit'
+    | '/services/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/auth'
+    | '/about'
     | '/blog'
     | '/contact'
     | '/fast-services'
     | '/help'
     | '/mcp'
     | '/messages'
+    | '/notifications'
     | '/pricing'
     | '/privacy'
     | '/projects'
+    | '/search'
     | '/security'
-    | '/services'
+    | '/settings'
     | '/skills-test'
     | '/terms'
     | '/wallet'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/auth/forgot-password'
+    | '/auth/reset-password'
     | '/categories/$category'
     | '/dashboard/buyer'
     | '/dashboard/seller'
     | '/payment/cancelled'
     | '/payment/success'
+    | '/profile/$userId'
     | '/projects/$id'
-    | '/services/$id'
+    | '/services/create'
+    | '/auth'
+    | '/services'
     | '/.mcp/invoke-tool/$tool'
+    | '/services/$id/edit'
+    | '/services/$id'
   id:
     | '__root__'
     | '/'
-    | '/auth'
+    | '/about'
     | '/blog'
     | '/contact'
     | '/fast-services'
     | '/help'
     | '/mcp'
     | '/messages'
+    | '/notifications'
     | '/pricing'
     | '/privacy'
     | '/projects'
+    | '/search'
     | '/security'
-    | '/services'
+    | '/settings'
     | '/skills-test'
     | '/terms'
     | '/wallet'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/auth/forgot-password'
+    | '/auth/reset-password'
     | '/categories/$category'
     | '/dashboard/buyer'
     | '/dashboard/seller'
     | '/payment/cancelled'
     | '/payment/success'
+    | '/profile/$userId'
     | '/projects/$id'
-    | '/services/$id'
+    | '/services/create'
+    | '/auth/'
+    | '/services/'
     | '/.mcp/invoke-tool/$tool'
+    | '/services/$id/edit'
+    | '/services/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRoute
+  AboutRoute: typeof AboutRoute
   BlogRoute: typeof BlogRoute
   ContactRoute: typeof ContactRoute
   FastServicesRoute: typeof FastServicesRoute
   HelpRoute: typeof HelpRoute
   McpRoute: typeof McpRoute
   MessagesRoute: typeof MessagesRoute
+  NotificationsRoute: typeof NotificationsRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
+  SearchRoute: typeof SearchRoute
   SecurityRoute: typeof SecurityRoute
-  ServicesRoute: typeof ServicesRouteWithChildren
+  SettingsRoute: typeof SettingsRoute
   SkillsTestRoute: typeof SkillsTestRoute
   TermsRoute: typeof TermsRoute
   WalletRoute: typeof WalletRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
+  AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   CategoriesCategoryRoute: typeof CategoriesCategoryRoute
   DashboardBuyerRoute: typeof DashboardBuyerRoute
   DashboardSellerRoute: typeof DashboardSellerRoute
   PaymentCancelledRoute: typeof PaymentCancelledRoute
   PaymentSuccessRoute: typeof PaymentSuccessRoute
+  ProfileUserIdRoute: typeof ProfileUserIdRoute
+  ServicesCreateRoute: typeof ServicesCreateRoute
+  AuthIndexRoute: typeof AuthIndexRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
+  ServicesIdEditRoute: typeof ServicesIdEditRoute
+  ServicesIdIndexRoute: typeof ServicesIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -392,11 +510,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SkillsTestRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/security': {
@@ -404,6 +522,13 @@ declare module '@tanstack/react-router' {
       path: '/security'
       fullPath: '/security'
       preLoaderRoute: typeof SecurityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects': {
@@ -425,6 +550,13 @@ declare module '@tanstack/react-router' {
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/messages': {
@@ -469,11 +601,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -483,12 +615,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/services/$id': {
-      id: '/services/$id'
-      path: '/$id'
-      fullPath: '/services/$id'
-      preLoaderRoute: typeof ServicesIdRouteImport
-      parentRoute: typeof ServicesRoute
+    '/services/': {
+      id: '/services/'
+      path: '/services'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/': {
+      id: '/auth/'
+      path: '/auth'
+      fullPath: '/auth/'
+      preLoaderRoute: typeof AuthIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/create': {
+      id: '/services/create'
+      path: '/services/create'
+      fullPath: '/services/create'
+      preLoaderRoute: typeof ServicesCreateRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/projects/$id': {
       id: '/projects/$id'
@@ -496,6 +642,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/projects/$id'
       preLoaderRoute: typeof ProjectsIdRouteImport
       parentRoute: typeof ProjectsRoute
+    }
+    '/profile/$userId': {
+      id: '/profile/$userId'
+      path: '/profile/$userId'
+      fullPath: '/profile/$userId'
+      preLoaderRoute: typeof ProfileUserIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/payment/success': {
       id: '/payment/success'
@@ -532,6 +685,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategoriesCategoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/reset-password': {
+      id: '/auth/reset-password'
+      path: '/auth/reset-password'
+      fullPath: '/auth/reset-password'
+      preLoaderRoute: typeof AuthResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/forgot-password': {
+      id: '/auth/forgot-password'
+      path: '/auth/forgot-password'
+      fullPath: '/auth/forgot-password'
+      preLoaderRoute: typeof AuthForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/.well-known/oauth-protected-resource': {
       id: '/.well-known/oauth-protected-resource'
       path: '/.well-known/oauth-protected-resource'
@@ -544,6 +711,20 @@ declare module '@tanstack/react-router' {
       path: '/.mcp/list-tools'
       fullPath: '/.mcp/list-tools'
       preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/$id/': {
+      id: '/services/$id/'
+      path: '/services/$id'
+      fullPath: '/services/$id/'
+      preLoaderRoute: typeof ServicesIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/$id/edit': {
+      id: '/services/$id/edit'
+      path: '/services/$id/edit'
+      fullPath: '/services/$id/edit'
+      preLoaderRoute: typeof ServicesIdEditRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.mcp/invoke-tool/$tool': {
@@ -568,44 +749,42 @@ const ProjectsRouteWithChildren = ProjectsRoute._addFileChildren(
   ProjectsRouteChildren,
 )
 
-interface ServicesRouteChildren {
-  ServicesIdRoute: typeof ServicesIdRoute
-}
-
-const ServicesRouteChildren: ServicesRouteChildren = {
-  ServicesIdRoute: ServicesIdRoute,
-}
-
-const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
-  ServicesRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthRoute: AuthRoute,
+  AboutRoute: AboutRoute,
   BlogRoute: BlogRoute,
   ContactRoute: ContactRoute,
   FastServicesRoute: FastServicesRoute,
   HelpRoute: HelpRoute,
   McpRoute: McpRoute,
   MessagesRoute: MessagesRoute,
+  NotificationsRoute: NotificationsRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
+  SearchRoute: SearchRoute,
   SecurityRoute: SecurityRoute,
-  ServicesRoute: ServicesRouteWithChildren,
+  SettingsRoute: SettingsRoute,
   SkillsTestRoute: SkillsTestRoute,
   TermsRoute: TermsRoute,
   WalletRoute: WalletRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  AuthForgotPasswordRoute: AuthForgotPasswordRoute,
+  AuthResetPasswordRoute: AuthResetPasswordRoute,
   CategoriesCategoryRoute: CategoriesCategoryRoute,
   DashboardBuyerRoute: DashboardBuyerRoute,
   DashboardSellerRoute: DashboardSellerRoute,
   PaymentCancelledRoute: PaymentCancelledRoute,
   PaymentSuccessRoute: PaymentSuccessRoute,
+  ProfileUserIdRoute: ProfileUserIdRoute,
+  ServicesCreateRoute: ServicesCreateRoute,
+  AuthIndexRoute: AuthIndexRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
+  ServicesIdEditRoute: ServicesIdEditRoute,
+  ServicesIdIndexRoute: ServicesIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

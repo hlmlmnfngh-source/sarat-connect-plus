@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Star, Clock, RefreshCw, CheckCircle2, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/services/$id")({
+export const Route = createFileRoute("/services/$id/")({
   head: () => ({
     meta: [
       { title: "تفاصيل الخدمة — سرعات" },

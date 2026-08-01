@@ -100,12 +100,17 @@ function SellerDashboard() {
           <div className="rounded-2xl border border-border bg-card shadow-soft">
             <div className="flex items-center justify-between border-b border-border p-5">
               <h2 className="font-extrabold text-primary">خدماتي</h2>
-              <Link to="/services" search={{ q: undefined, category: undefined }} className="text-xs text-accent">عرض الكل</Link>
+              <div className="flex items-center gap-3">
+                <Link to="/services/create" className="text-xs font-bold text-accent">+ أضف خدمة</Link>
+                <Link to="/services" search={{ q: undefined, category: undefined }} className="text-xs text-accent">عرض الكل</Link>
+              </div>
             </div>
             {services.length === 0 ? (
               <div className="p-8 text-center text-sm text-muted-foreground">
                 لم تنشر خدمات بعد
-                <div className="mt-3"><Button variant="hero" size="sm"><Plus className="h-4 w-4" /> أضف خدمتك الأولى</Button></div>
+                <div className="mt-3">
+                  <Link to="/services/create"><Button variant="hero" size="sm"><Plus className="h-4 w-4" /> أضف خدمتك الأولى</Button></Link>
+                </div>
               </div>
             ) : (
               <ul className="divide-y divide-border">
@@ -117,6 +122,7 @@ function SellerDashboard() {
                     </div>
                     <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-bold">{s.status}</span>
                     <span className="font-extrabold text-primary">${Number(s.price).toFixed(2)}</span>
+                    <Link to="/services/$id/edit" params={{ id: s.id }} className="text-xs text-accent">تعديل</Link>
                   </li>
                 ))}
               </ul>

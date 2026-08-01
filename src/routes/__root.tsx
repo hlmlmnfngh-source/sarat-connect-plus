@@ -16,21 +16,34 @@ import { Toaster } from "sonner";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
-        </div>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4 text-center" dir="rtl">
+      <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-accent text-accent-foreground shadow-glow">
+        <span className="text-2xl font-extrabold">؟</span>
+      </div>
+      <h1 className="text-7xl font-extrabold text-primary">٤٠٤</h1>
+      <h2 className="mt-4 text-2xl font-bold text-foreground">الصفحة غير موجودة</h2>
+      <p className="mt-2 max-w-md text-sm text-muted-foreground">
+        عذرًا، الصفحة التي تبحث عنها غير متوفرة أو تم نقلها. جرّب البحث أو العودة للصفحة الرئيسية.
+      </p>
+      <div className="mt-7 flex flex-wrap justify-center gap-3">
+        <Link
+          to="/"
+          className="inline-flex items-center justify-center rounded-xl bg-gradient-accent px-6 py-3 text-sm font-bold text-accent-foreground shadow-glow transition hover:opacity-90"
+        >
+          العودة للرئيسية
+        </Link>
+        <Link
+          to="/search"
+          className="inline-flex items-center justify-center rounded-xl border border-border px-6 py-3 text-sm font-bold text-foreground transition hover:bg-muted"
+        >
+          ابحث في سرعات
+        </Link>
+        <Link
+          to="/help"
+          className="inline-flex items-center justify-center rounded-xl border border-border px-6 py-3 text-sm font-bold text-foreground transition hover:bg-muted"
+        >
+          مركز المساعدة
+        </Link>
       </div>
     </div>
   );
