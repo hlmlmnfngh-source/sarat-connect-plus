@@ -26,6 +26,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as AuthIndexRouteImport } from './routes/auth.index'
 import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
+import { Route as ProfileUserIdRouteImport } from './routes/profile.$userId'
 import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
 import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled'
 import { Route as DashboardSellerRouteImport } from './routes/dashboard.seller'
@@ -121,6 +122,11 @@ const ProjectsIdRoute = ProjectsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => ProjectsRoute,
 } as any)
+const ProfileUserIdRoute = ProfileUserIdRouteImport.update({
+  id: '/profile/$userId',
+  path: '/profile/$userId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PaymentSuccessRoute = PaymentSuccessRouteImport.update({
   id: '/payment/success',
   path: '/payment/success',
@@ -192,6 +198,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/seller': typeof DashboardSellerRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
+  '/profile/$userId': typeof ProfileUserIdRoute
   '/projects/$id': typeof ProjectsIdRoute
   '/auth/': typeof AuthIndexRoute
   '/services/': typeof ServicesIndexRoute
@@ -220,6 +227,7 @@ export interface FileRoutesByTo {
   '/dashboard/seller': typeof DashboardSellerRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
+  '/profile/$userId': typeof ProfileUserIdRoute
   '/projects/$id': typeof ProjectsIdRoute
   '/auth': typeof AuthIndexRoute
   '/services': typeof ServicesIndexRoute
@@ -249,6 +257,7 @@ export interface FileRoutesById {
   '/dashboard/seller': typeof DashboardSellerRoute
   '/payment/cancelled': typeof PaymentCancelledRoute
   '/payment/success': typeof PaymentSuccessRoute
+  '/profile/$userId': typeof ProfileUserIdRoute
   '/projects/$id': typeof ProjectsIdRoute
   '/auth/': typeof AuthIndexRoute
   '/services/': typeof ServicesIndexRoute
@@ -279,6 +288,7 @@ export interface FileRouteTypes {
     | '/dashboard/seller'
     | '/payment/cancelled'
     | '/payment/success'
+    | '/profile/$userId'
     | '/projects/$id'
     | '/auth/'
     | '/services/'
@@ -307,6 +317,7 @@ export interface FileRouteTypes {
     | '/dashboard/seller'
     | '/payment/cancelled'
     | '/payment/success'
+    | '/profile/$userId'
     | '/projects/$id'
     | '/auth'
     | '/services'
@@ -335,6 +346,7 @@ export interface FileRouteTypes {
     | '/dashboard/seller'
     | '/payment/cancelled'
     | '/payment/success'
+    | '/profile/$userId'
     | '/projects/$id'
     | '/auth/'
     | '/services/'
@@ -364,6 +376,7 @@ export interface RootRouteChildren {
   DashboardSellerRoute: typeof DashboardSellerRoute
   PaymentCancelledRoute: typeof PaymentCancelledRoute
   PaymentSuccessRoute: typeof PaymentSuccessRoute
+  ProfileUserIdRoute: typeof ProfileUserIdRoute
   AuthIndexRoute: typeof AuthIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -491,6 +504,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsIdRouteImport
       parentRoute: typeof ProjectsRoute
     }
+    '/profile/$userId': {
+      id: '/profile/$userId'
+      path: '/profile/$userId'
+      fullPath: '/profile/$userId'
+      preLoaderRoute: typeof ProfileUserIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/payment/success': {
       id: '/payment/success'
       path: '/payment/success'
@@ -592,6 +612,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardSellerRoute: DashboardSellerRoute,
   PaymentCancelledRoute: PaymentCancelledRoute,
   PaymentSuccessRoute: PaymentSuccessRoute,
+  ProfileUserIdRoute: ProfileUserIdRoute,
   AuthIndexRoute: AuthIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
