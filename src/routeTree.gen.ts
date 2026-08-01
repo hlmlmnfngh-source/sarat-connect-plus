@@ -29,6 +29,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as AuthIndexRouteImport } from './routes/auth.index'
+import { Route as ServicesCreateRouteImport } from './routes/services.create'
 import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
 import { Route as ProfileUserIdRouteImport } from './routes/profile.$userId'
 import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
@@ -143,6 +144,11 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
   path: '/auth/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesCreateRoute = ServicesCreateRouteImport.update({
+  id: '/services/create',
+  path: '/services/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectsIdRoute = ProjectsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -242,6 +248,7 @@ export interface FileRoutesByFullPath {
   '/payment/success': typeof PaymentSuccessRoute
   '/profile/$userId': typeof ProfileUserIdRoute
   '/projects/$id': typeof ProjectsIdRoute
+  '/services/create': typeof ServicesCreateRoute
   '/auth/': typeof AuthIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -277,6 +284,7 @@ export interface FileRoutesByTo {
   '/payment/success': typeof PaymentSuccessRoute
   '/profile/$userId': typeof ProfileUserIdRoute
   '/projects/$id': typeof ProjectsIdRoute
+  '/services/create': typeof ServicesCreateRoute
   '/auth': typeof AuthIndexRoute
   '/services': typeof ServicesIndexRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -313,6 +321,7 @@ export interface FileRoutesById {
   '/payment/success': typeof PaymentSuccessRoute
   '/profile/$userId': typeof ProfileUserIdRoute
   '/projects/$id': typeof ProjectsIdRoute
+  '/services/create': typeof ServicesCreateRoute
   '/auth/': typeof AuthIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -350,6 +359,7 @@ export interface FileRouteTypes {
     | '/payment/success'
     | '/profile/$userId'
     | '/projects/$id'
+    | '/services/create'
     | '/auth/'
     | '/services/'
     | '/.mcp/invoke-tool/$tool'
@@ -385,6 +395,7 @@ export interface FileRouteTypes {
     | '/payment/success'
     | '/profile/$userId'
     | '/projects/$id'
+    | '/services/create'
     | '/auth'
     | '/services'
     | '/.mcp/invoke-tool/$tool'
@@ -420,6 +431,7 @@ export interface FileRouteTypes {
     | '/payment/success'
     | '/profile/$userId'
     | '/projects/$id'
+    | '/services/create'
     | '/auth/'
     | '/services/'
     | '/.mcp/invoke-tool/$tool'
@@ -455,6 +467,7 @@ export interface RootRouteChildren {
   PaymentCancelledRoute: typeof PaymentCancelledRoute
   PaymentSuccessRoute: typeof PaymentSuccessRoute
   ProfileUserIdRoute: typeof ProfileUserIdRoute
+  ServicesCreateRoute: typeof ServicesCreateRoute
   AuthIndexRoute: typeof AuthIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -603,6 +616,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services/create': {
+      id: '/services/create'
+      path: '/services/create'
+      fullPath: '/services/create'
+      preLoaderRoute: typeof ServicesCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects/$id': {
       id: '/projects/$id'
       path: '/$id'
@@ -739,6 +759,7 @@ const rootRouteChildren: RootRouteChildren = {
   PaymentCancelledRoute: PaymentCancelledRoute,
   PaymentSuccessRoute: PaymentSuccessRoute,
   ProfileUserIdRoute: ProfileUserIdRoute,
+  ServicesCreateRoute: ServicesCreateRoute,
   AuthIndexRoute: AuthIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
