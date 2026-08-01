@@ -97,7 +97,7 @@ function SearchPage() {
   });
 
   const setParam = (patch: Record<string, unknown>) =>
-    navigate({ search: (prev) => ({ ...prev, ...patch }) });
+    navigate({ search: (prev: Record<string, unknown>) => ({ ...prev, ...patch }) });
 
   return (
     <PageShell>
