@@ -34,6 +34,7 @@ import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled
 import { Route as DashboardSellerRouteImport } from './routes/dashboard.seller'
 import { Route as DashboardBuyerRouteImport } from './routes/dashboard.buyer'
 import { Route as CategoriesCategoryRouteImport } from './routes/categories.$category'
+import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
@@ -165,6 +166,11 @@ const CategoriesCategoryRoute = CategoriesCategoryRouteImport.update({
   path: '/categories/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
+  id: '/auth/reset-password',
+  path: '/auth/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   id: '/auth/forgot-password',
   path: '/auth/forgot-password',
@@ -214,6 +220,7 @@ export interface FileRoutesByFullPath {
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/categories/$category': typeof CategoriesCategoryRoute
   '/dashboard/buyer': typeof DashboardBuyerRoute
   '/dashboard/seller': typeof DashboardSellerRoute
@@ -246,6 +253,7 @@ export interface FileRoutesByTo {
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/categories/$category': typeof CategoriesCategoryRoute
   '/dashboard/buyer': typeof DashboardBuyerRoute
   '/dashboard/seller': typeof DashboardSellerRoute
@@ -279,6 +287,7 @@ export interface FileRoutesById {
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/categories/$category': typeof CategoriesCategoryRoute
   '/dashboard/buyer': typeof DashboardBuyerRoute
   '/dashboard/seller': typeof DashboardSellerRoute
@@ -313,6 +322,7 @@ export interface FileRouteTypes {
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/auth/forgot-password'
+    | '/auth/reset-password'
     | '/categories/$category'
     | '/dashboard/buyer'
     | '/dashboard/seller'
@@ -345,6 +355,7 @@ export interface FileRouteTypes {
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/auth/forgot-password'
+    | '/auth/reset-password'
     | '/categories/$category'
     | '/dashboard/buyer'
     | '/dashboard/seller'
@@ -377,6 +388,7 @@ export interface FileRouteTypes {
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/auth/forgot-password'
+    | '/auth/reset-password'
     | '/categories/$category'
     | '/dashboard/buyer'
     | '/dashboard/seller'
@@ -410,6 +422,7 @@ export interface RootRouteChildren {
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
+  AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   CategoriesCategoryRoute: typeof CategoriesCategoryRoute
   DashboardBuyerRoute: typeof DashboardBuyerRoute
   DashboardSellerRoute: typeof DashboardSellerRoute
@@ -599,6 +612,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategoriesCategoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/reset-password': {
+      id: '/auth/reset-password'
+      path: '/auth/reset-password'
+      fullPath: '/auth/reset-password'
+      preLoaderRoute: typeof AuthResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/forgot-password': {
       id: '/auth/forgot-password'
       path: '/auth/forgot-password'
@@ -670,6 +690,7 @@ const rootRouteChildren: RootRouteChildren = {
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
+  AuthResetPasswordRoute: AuthResetPasswordRoute,
   CategoriesCategoryRoute: CategoriesCategoryRoute,
   DashboardBuyerRoute: DashboardBuyerRoute,
   DashboardSellerRoute: DashboardSellerRoute,
