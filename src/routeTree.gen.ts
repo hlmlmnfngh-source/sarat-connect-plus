@@ -42,6 +42,7 @@ import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-pas
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as ServicesIdIndexRouteImport } from './routes/services.$id.index'
+import { Route as ServicesIdEditRouteImport } from './routes/services.$id.edit'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 
 const WalletRoute = WalletRouteImport.update({
@@ -211,6 +212,11 @@ const ServicesIdIndexRoute = ServicesIdIndexRouteImport.update({
   path: '/services/$id/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesIdEditRoute = ServicesIdEditRouteImport.update({
+  id: '/services/$id/edit',
+  path: '/services/$id/edit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Char91DotmcpChar93InvokeToolToolRoute =
   Char91DotmcpChar93InvokeToolToolRouteImport.update({
     id: '/.mcp/invoke-tool/$tool',
@@ -252,6 +258,7 @@ export interface FileRoutesByFullPath {
   '/auth/': typeof AuthIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/services/$id/edit': typeof ServicesIdEditRoute
   '/services/$id/': typeof ServicesIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -288,6 +295,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthIndexRoute
   '/services': typeof ServicesIndexRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/services/$id/edit': typeof ServicesIdEditRoute
   '/services/$id': typeof ServicesIdIndexRoute
 }
 export interface FileRoutesById {
@@ -325,6 +333,7 @@ export interface FileRoutesById {
   '/auth/': typeof AuthIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/services/$id/edit': typeof ServicesIdEditRoute
   '/services/$id/': typeof ServicesIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -363,6 +372,7 @@ export interface FileRouteTypes {
     | '/auth/'
     | '/services/'
     | '/.mcp/invoke-tool/$tool'
+    | '/services/$id/edit'
     | '/services/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -399,6 +409,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/services'
     | '/.mcp/invoke-tool/$tool'
+    | '/services/$id/edit'
     | '/services/$id'
   id:
     | '__root__'
@@ -435,6 +446,7 @@ export interface FileRouteTypes {
     | '/auth/'
     | '/services/'
     | '/.mcp/invoke-tool/$tool'
+    | '/services/$id/edit'
     | '/services/$id/'
   fileRoutesById: FileRoutesById
 }
@@ -471,6 +483,7 @@ export interface RootRouteChildren {
   AuthIndexRoute: typeof AuthIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
+  ServicesIdEditRoute: typeof ServicesIdEditRoute
   ServicesIdIndexRoute: typeof ServicesIdIndexRoute
 }
 
@@ -707,6 +720,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services/$id/edit': {
+      id: '/services/$id/edit'
+      path: '/services/$id/edit'
+      fullPath: '/services/$id/edit'
+      preLoaderRoute: typeof ServicesIdEditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/.mcp/invoke-tool/$tool': {
       id: '/.mcp/invoke-tool/$tool'
       path: '/.mcp/invoke-tool/$tool'
@@ -763,6 +783,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthIndexRoute: AuthIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
+  ServicesIdEditRoute: ServicesIdEditRoute,
   ServicesIdIndexRoute: ServicesIdIndexRoute,
 }
 export const routeTree = rootRouteImport
