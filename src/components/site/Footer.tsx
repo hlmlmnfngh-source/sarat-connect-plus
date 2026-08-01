@@ -6,6 +6,7 @@ export function Footer() {
     {
       title: "المنصة",
       links: [
+        { label: "من نحن", to: "/about" },
         { label: "كيف تعمل", to: "/" },
         { label: "الأسعار", to: "/pricing" },
         { label: "خدمات سريعة", to: "/fast-services" },
@@ -28,6 +29,7 @@ export function Footer() {
       links: [
         { label: "مركز المساعدة", to: "/help" },
         { label: "تواصل معنا", to: "/contact" },
+        { label: "البحث", to: "/search" },
         { label: "الشروط والأحكام", to: "/terms" },
         { label: "سياسة الخصوصية", to: "/privacy" },
         { label: "الأمان", to: "/security" },
