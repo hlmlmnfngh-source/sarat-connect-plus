@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SkillsTestRouteImport } from './routes/skills-test'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -51,6 +52,11 @@ const TermsRoute = TermsRouteImport.update({
 const SkillsTestRoute = SkillsTestRouteImport.update({
   id: '/skills-test',
   path: '/skills-test',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SecurityRoute = SecurityRouteImport.update({
@@ -195,6 +201,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/security': typeof SecurityRoute
+  '/settings': typeof SettingsRoute
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
@@ -225,6 +232,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/security': typeof SecurityRoute
+  '/settings': typeof SettingsRoute
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
@@ -256,6 +264,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/security': typeof SecurityRoute
+  '/settings': typeof SettingsRoute
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
@@ -288,6 +297,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/projects'
     | '/security'
+    | '/settings'
     | '/skills-test'
     | '/terms'
     | '/wallet'
@@ -318,6 +328,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/projects'
     | '/security'
+    | '/settings'
     | '/skills-test'
     | '/terms'
     | '/wallet'
@@ -348,6 +359,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/projects'
     | '/security'
+    | '/settings'
     | '/skills-test'
     | '/terms'
     | '/wallet'
@@ -379,6 +391,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
   SecurityRoute: typeof SecurityRoute
+  SettingsRoute: typeof SettingsRoute
   SkillsTestRoute: typeof SkillsTestRoute
   TermsRoute: typeof TermsRoute
   WalletRoute: typeof WalletRoute
@@ -417,6 +430,13 @@ declare module '@tanstack/react-router' {
       path: '/skills-test'
       fullPath: '/skills-test'
       preLoaderRoute: typeof SkillsTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/security': {
@@ -622,6 +642,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
   SecurityRoute: SecurityRoute,
+  SettingsRoute: SettingsRoute,
   SkillsTestRoute: SkillsTestRoute,
   TermsRoute: TermsRoute,
   WalletRoute: WalletRoute,
