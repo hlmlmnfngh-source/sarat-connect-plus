@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Search, Menu, Briefcase, Sparkles, MessageCircle, LogOut, Plus } from "lucide-react";
+import { Search, Menu, Briefcase, Sparkles, MessageCircle, LogOut, Plus, Bell, Settings, User as UserIcon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -16,6 +16,7 @@ interface HeaderProps {
 
 export function Header({ mode, onModeChange }: HeaderProps) {
   const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -64,18 +65,27 @@ export function Header({ mode, onModeChange }: HeaderProps) {
           </button>
         </div>
 
-        <div className="relative hidden flex-1 max-w-md lg:block">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            navigate({ to: "/search", search: { q: q || undefined, tab: mode } });
+          }}
+          className="relative hidden flex-1 max-w-md lg:block"
+        >
           <Search className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             type="search"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
             placeholder={mode === "services" ? "ابحث عن خدمة..." : "ابحث عن مشروع..."}
             className="h-10 w-full rounded-full border border-input bg-card pr-10 pl-4 text-sm outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20"
           />
-        </div>
+        </form>
 
         <nav className="hidden items-center gap-1 text-sm font-medium lg:flex">
           <Link to="/services" search={{ q: undefined, category: undefined }} className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">الخدمات</Link>
           <Link to="/projects" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">المشاريع</Link>
+          <Link to="/about" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">من نحن</Link>
           <Link to="/" hash="how" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">كيف يعمل</Link>
         </nav>
 
@@ -93,7 +103,7 @@ export function Header({ mode, onModeChange }: HeaderProps) {
 
           {/* زر أضف خدمة للبائع */}
           {user && isSeller && (
-            <Link to="/create-service" className="hidden md:inline-flex">
+            <Link to="/services/create" className="hidden md:inline-flex">
               <Button variant="hero" size="default">
                 <Plus className="h-4 w-4" />
                 أضف خدمة
@@ -103,10 +113,16 @@ export function Header({ mode, onModeChange }: HeaderProps) {
 
           {user ? (
             <>
+              <Link to="/notifications" className="hidden h-9 w-9 items-center justify-center rounded-full text-foreground/70 hover:bg-muted sm:inline-flex" aria-label="الإشعارات">
+                <Bell className="h-5 w-5" />
+              </Link>
               <Link to="/messages" className="hidden h-9 w-9 items-center justify-center rounded-full text-foreground/70 hover:bg-muted sm:inline-flex">
                 <MessageCircle className="h-5 w-5" />
               </Link>
-              <Link to="/dashboard/seller">
+              <Link to="/settings" className="hidden h-9 w-9 items-center justify-center rounded-full text-foreground/70 hover:bg-muted sm:inline-flex" aria-label="الإعدادات">
+                <Settings className="h-5 w-5" />
+              </Link>
+              <Link to="/profile/$userId" params={{ userId: user.id }}>
                 <div className="hidden h-9 w-9 items-center justify-center rounded-full bg-gradient-accent text-sm font-bold text-accent-foreground sm:inline-flex cursor-pointer hover:opacity-90">
                   {(user.user_metadata?.full_name ?? user.email ?? "?")[0].toUpperCase()}
                 </div>
@@ -151,8 +167,19 @@ export function Header({ mode, onModeChange }: HeaderProps) {
           <div className="mt-4 flex flex-col gap-2">
             <Link to="/services" search={{ q: undefined, category: undefined }} className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">الخدمات</Link>
             <Link to="/projects" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">المشاريع</Link>
+            <Link to="/search" search={{}} className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">البحث</Link>
+            <Link to="/about" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">من نحن</Link>
             {user && isSeller && (
-              <Link to="/create-service" className="rounded-md px-3 py-2 font-bold text-accent">+ أضف خدمة</Link>
+              <Link to="/services/create" className="rounded-md px-3 py-2 font-bold text-accent">+ أضف خدمة</Link>
+            )}
+            {user && (
+              <>
+                <Link to="/notifications" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">الإشعارات</Link>
+                <Link to="/profile/$userId" params={{ userId: user.id }} className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">
+                  <UserIcon className="ml-1 inline h-4 w-4" /> ملفي الشخصي
+                </Link>
+                <Link to="/settings" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">الإعدادات</Link>
+              </>
             )}
             {!user && (
               <Link to="/auth" className="rounded-md px-3 py-2 font-bold text-accent">تسجيل الدخول</Link>
