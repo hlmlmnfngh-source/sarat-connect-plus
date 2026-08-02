@@ -1,7 +1,9 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
+import { startCheckout } from "@/lib/checkout";
 import { Header, type Mode } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Button } from "@/components/ui/button";
@@ -26,9 +28,25 @@ export const Route = createFileRoute("/projects/$id")({
   ),
 });
 
+const PROPOSAL_STATUS_LABELS: Record<string, string> = {
+  pending: "قيد المراجعة",
+  accepted: "مقبول",
+  rejected: "مرفوض",
+  withdrawn: "مسحوب",
+};
+
 function ProjectDetail() {
   const { id } = Route.useParams();
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
   const [mode, setMode] = useState<Mode>("projects");
+  const [showForm, setShowForm] = useState(false);
+  const [coverLetter, setCoverLetter] = useState("");
+  const [price, setPrice] = useState("");
+  const [deliveryDays, setDeliveryDays] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [busyProposalId, setBusyProposalId] = useState<string | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ["project", id],
@@ -43,6 +61,82 @@ function ProjectDetail() {
       return data;
     },
   });
+
+  const isOwner = !!user && data?.buyer_id === user.id;
+
+  const { data: proposals } = useQuery({
+    queryKey: ["proposals", id, user?.id, isOwner],
+    enabled: !!user && !!data,
+    queryFn: async () => {
+      let q = supabase
+        .from("proposals")
+        .select("id,cover_letter,price,delivery_days,status,created_at,freelancer_id,profiles!proposals_freelancer_id_fkey(full_name,username,avatar_url)")
+        .eq("project_id", id)
+        .order("created_at", { ascending: false });
+      if (!isOwner) q = q.eq("freelancer_id", user!.id);
+      const { data, error } = await q;
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const myProposal = !isOwner ? proposals?.[0] : undefined;
+
+  async function submitProposal() {
+    setFormError(null);
+    const priceNum = Number(price);
+    const daysNum = Number(deliveryDays);
+    if (!coverLetter.trim()) { setFormError("اكتب رسالة تعريفية بعرضك."); return; }
+    if (!priceNum || priceNum <= 0) { setFormError("أدخل سعراً صحيحاً."); return; }
+    if (!daysNum || daysNum <= 0) { setFormError("أدخل مدة تسليم صحيحة."); return; }
+    setSubmitting(true);
+    try {
+      const { error } = await supabase.from("proposals").insert({
+        project_id: id,
+        freelancer_id: user!.id,
+        cover_letter: coverLetter.trim(),
+        price: priceNum,
+        delivery_days: daysNum,
+      });
+      if (error) throw error;
+      setShowForm(false);
+      setCoverLetter(""); setPrice(""); setDeliveryDays("");
+      queryClient.invalidateQueries({ queryKey: ["proposals", id] });
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : "تعذّر إرسال العرض.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  async function acceptProposal(proposalId: string, freelancerId: string, proposalPrice: number) {
+    setBusyProposalId(proposalId);
+    try {
+      await supabase.from("proposals").update({ status: "accepted" }).eq("id", proposalId);
+      const others = (proposals ?? []).filter((p) => p.id !== proposalId && p.status === "pending");
+      await Promise.all(others.map((p) => supabase.from("proposals").update({ status: "rejected" }).eq("id", p.id)));
+      await startCheckout({
+        kind: "project",
+        project_id: id,
+        seller_id: freelancerId,
+        amount: proposalPrice,
+        title: data?.title ?? "مشروع",
+      });
+    } catch (err) {
+      setBusyProposalId(null);
+      alert(err instanceof Error ? err.message : "تعذّر قبول العرض.");
+    }
+  }
+
+  async function rejectProposal(proposalId: string) {
+    setBusyProposalId(proposalId);
+    try {
+      await supabase.from("proposals").update({ status: "rejected" }).eq("id", proposalId);
+      queryClient.invalidateQueries({ queryKey: ["proposals", id] });
+    } finally {
+      setBusyProposalId(null);
+    }
+  }
 
   if (isLoading) return <div className="min-h-screen bg-background"><Header mode={mode} onModeChange={setMode} /><div className="p-16 text-center text-muted-foreground">جارٍ التحميل...</div></div>;
   const p: any = data;
@@ -59,7 +153,9 @@ function ProjectDetail() {
           </div>
           <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
             <h1 className="text-2xl font-extrabold text-primary md:text-3xl">{p.title}</h1>
-            <span className="rounded-full bg-success/10 px-3 py-1 text-xs font-bold text-success">مفتوح</span>
+            <span className="rounded-full bg-success/10 px-3 py-1 text-xs font-bold text-success">
+              {p.status === "open" ? "مفتوح" : p.status === "in_progress" ? "قيد التنفيذ" : p.status === "completed" ? "مكتمل" : "ملغي"}
+            </span>
           </div>
           <section className="mb-6 rounded-2xl border border-border bg-card p-6">
             <h2 className="mb-3 text-lg font-bold text-primary">وصف المشروع</h2>
@@ -76,6 +172,63 @@ function ProjectDetail() {
               </div>
             </section>
           ) : null}
+
+          {/* Proposals: owner sees all bids, freelancer sees their own status */}
+          {user && (
+            <section className="rounded-2xl border border-border bg-card p-6">
+              <h2 className="mb-3 text-lg font-bold text-primary">
+                {isOwner ? `العروض المقدّمة (${proposals?.length ?? 0})` : "عرضي"}
+              </h2>
+              {!proposals || proposals.length === 0 ? (
+                <p className="text-sm text-muted-foreground">لا توجد عروض بعد.</p>
+              ) : (
+                <ul className="space-y-3">
+                  {proposals.map((prop: any) => (
+                    <li key={prop.id} className="rounded-xl border border-border p-4">
+                      <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          {isOwner && (
+                            <span className="text-sm font-bold text-primary">
+                              {prop.profiles?.full_name ?? "مستقل"} <span className="text-xs text-muted-foreground">@{prop.profiles?.username}</span>
+                            </span>
+                          )}
+                          <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${
+                            prop.status === "accepted" ? "bg-success/10 text-success" :
+                            prop.status === "rejected" ? "bg-destructive/10 text-destructive" :
+                            "bg-accent/10 text-accent"
+                          }`}>
+                            {PROPOSAL_STATUS_LABELS[prop.status] ?? prop.status}
+                          </span>
+                        </div>
+                        <span className="font-extrabold text-primary">${Number(prop.price).toLocaleString()} · {prop.delivery_days} يوم</span>
+                      </div>
+                      <p className="whitespace-pre-line text-sm text-foreground/85">{prop.cover_letter}</p>
+                      {isOwner && prop.status === "pending" && p.status === "open" && (
+                        <div className="mt-3 flex gap-2">
+                          <Button
+                            variant="hero"
+                            size="sm"
+                            disabled={busyProposalId === prop.id}
+                            onClick={() => acceptProposal(prop.id, prop.freelancer_id, Number(prop.price))}
+                          >
+                            {busyProposalId === prop.id ? "جارٍ..." : "قبول والدفع"}
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            disabled={busyProposalId === prop.id}
+                            onClick={() => rejectProposal(prop.id)}
+                          >
+                            رفض
+                          </Button>
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          )}
         </div>
 
         <aside className="lg:sticky lg:top-20 lg:self-start">
@@ -99,12 +252,63 @@ function ProjectDetail() {
                 <div className="text-xs text-muted-foreground">@{p.profiles?.username ?? "user"}</div>
               </div>
             </div>
-            <Link to="/auth">
-              <Button variant="hero" size="lg" className="w-full">
+
+            {!user ? (
+              <Link to="/auth">
+                <Button variant="hero" size="lg" className="w-full">
+                  قدّم عرضك
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+              </Link>
+            ) : isOwner ? (
+              <p className="text-center text-xs text-muted-foreground">هذا مشروعك — راجع العروض المقدّمة أعلاه.</p>
+            ) : myProposal ? (
+              <p className="text-center text-xs text-muted-foreground">
+                لقد قدّمت عرضاً بالفعل ({PROPOSAL_STATUS_LABELS[myProposal.status] ?? myProposal.status}).
+              </p>
+            ) : p.status !== "open" ? (
+              <p className="text-center text-xs text-muted-foreground">هذا المشروع لم يعد يقبل عروضاً جديدة.</p>
+            ) : !showForm ? (
+              <Button variant="hero" size="lg" className="w-full" onClick={() => setShowForm(true)}>
                 قدّم عرضك
                 <ArrowLeft className="h-4 w-4" />
               </Button>
-            </Link>
+            ) : (
+              <div className="space-y-3">
+                <textarea
+                  value={coverLetter}
+                  onChange={(e) => setCoverLetter(e.target.value)}
+                  placeholder="اكتب رسالة تعريفية بعرضك..."
+                  rows={4}
+                  className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+                />
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    min={0}
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    placeholder="السعر ($)"
+                    className="w-1/2 rounded-md border border-border bg-background px-3 py-2 text-sm"
+                  />
+                  <input
+                    type="number"
+                    min={1}
+                    value={deliveryDays}
+                    onChange={(e) => setDeliveryDays(e.target.value)}
+                    placeholder="مدة التسليم (يوم)"
+                    className="w-1/2 rounded-md border border-border bg-background px-3 py-2 text-sm"
+                  />
+                </div>
+                {formError && <p className="text-xs text-destructive">{formError}</p>}
+                <div className="flex gap-2">
+                  <Button variant="hero" size="sm" className="flex-1" disabled={submitting} onClick={submitProposal}>
+                    {submitting ? "جارٍ الإرسال…" : "إرسال العرض"}
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => setShowForm(false)}>إلغاء</Button>
+                </div>
+              </div>
+            )}
           </div>
         </aside>
       </div>
