@@ -15,35 +15,73 @@ type Stats = { earnings: number; activeOrders: number; completedOrders: number; 
 type Order = { id: string; price: number; status: string; created_at: string; requirements: string | null };
 type Service = { id: string; title: string; status: string; price: number; orders_count: number | null };
 
+const STATUS_LABELS: Record<string, string> = {
+  pending: "قيد الانتظار",
+  active: "نشط",
+  delivered: "تم التسليم",
+  completed: "مكتمل",
+  cancelled: "ملغي",
+  disputed: "نزاع",
+};
+
 function SellerDashboard() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [stats, setStats] = useState<Stats>({ earnings: 0, activeOrders: 0, completedOrders: 0, rating: 0 });
   const [orders, setOrders] = useState<Order[]>([]);
   const [services, setServices] = useState<Service[]>([]);
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   useEffect(() => { if (!loading && !user) navigate({ to: "/auth" }); }, [loading, user, navigate]);
+
+  async function loadOrders() {
+    if (!user) return;
+    const { data: ords } = await supabase
+      .from("orders")
+      .select("id,price,status,created_at,requirements")
+      .eq("seller_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(10);
+    const list = (ords ?? []) as Order[];
+    setOrders(list);
+    setStats((s) => ({
+      ...s,
+      activeOrders: list.filter((o) => ["active", "delivered"].includes(o.status)).length,
+      completedOrders: list.filter((o) => o.status === "completed").length,
+    }));
+  }
 
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const [{ data: ords }, { data: svs }, { data: fin }] = await Promise.all([
-        supabase.from("orders").select("id,price,status,created_at,requirements").eq("seller_id", user.id).order("created_at", { ascending: false }).limit(10),
+      const [{ data: svs }, { data: fin }] = await Promise.all([
         supabase.from("services").select("id,title,status,price,orders_count").eq("seller_id", user.id).order("created_at", { ascending: false }).limit(10),
         supabase.rpc("get_my_financials"),
       ]);
-      const list = (ords ?? []) as Order[];
-      setOrders(list);
       setServices((svs ?? []) as Service[]);
       const earnings = Array.isArray(fin) && fin[0]?.total_earnings ? Number(fin[0].total_earnings) : 0;
-      setStats({
-        earnings,
-        activeOrders: list.filter((o) => ["in_progress", "delivered"].includes(o.status)).length,
-        completedOrders: list.filter((o) => o.status === "completed").length,
-        rating: 4.8,
-      });
+      setStats((s) => ({ ...s, earnings, rating: 4.8 }));
+      await loadOrders();
     })();
   }, [user]);
+
+  async function markDelivered(orderId: string) {
+    setActionError(null);
+    setUpdatingId(orderId);
+    try {
+      const { error } = await supabase
+        .from("orders")
+        .update({ status: "delivered", delivered_at: new Date().toISOString() })
+        .eq("id", orderId);
+      if (error) throw error;
+      await loadOrders();
+    } catch (err) {
+      setActionError(err instanceof Error ? err.message : "تعذّر تحديث الطلب");
+    } finally {
+      setUpdatingId(null);
+    }
+  }
 
   return (
     <PageShell>
@@ -58,7 +96,7 @@ function SellerDashboard() {
 
         <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[
-            { I: DollarSign, l: "إجمالي الأرباح", v: `$${stats.earnings.toFixed(2)}`, c: "text-success" },
+            { I: DollarSign, l: "إجمالي الأرباح (بعد العمولة)", v: `$${stats.earnings.toFixed(2)}`, c: "text-success" },
             { I: Clock, l: "طلبات نشطة", v: stats.activeOrders, c: "text-accent" },
             { I: Package, l: "طلبات مكتملة", v: stats.completedOrders, c: "text-primary" },
             { I: Star, l: "التقييم", v: stats.rating.toFixed(1), c: "text-warning" },
@@ -79,18 +117,33 @@ function SellerDashboard() {
               <h2 className="font-extrabold text-primary">آخر الطلبات</h2>
               <TrendingUp className="h-4 w-4 text-accent" />
             </div>
+            {actionError && (
+              <div className="border-b border-destructive/20 bg-destructive/5 p-3 text-xs text-destructive">{actionError}</div>
+            )}
             {orders.length === 0 ? (
               <div className="p-8 text-center text-sm text-muted-foreground">لا توجد طلبات بعد</div>
             ) : (
               <ul className="divide-y divide-border">
                 {orders.map((o) => (
-                  <li key={o.id} className="flex items-center justify-between gap-3 p-4">
+                  <li key={o.id} className="flex flex-wrap items-center justify-between gap-3 p-4">
                     <div className="min-w-0">
                       <div className="truncate text-sm font-bold text-primary">طلب #{o.id.slice(0, 8)}</div>
                       <div className="text-xs text-muted-foreground">{new Date(o.created_at).toLocaleDateString("ar")}</div>
                     </div>
-                    <span className="rounded-full bg-accent/10 px-2.5 py-1 text-xs font-bold text-accent">{o.status}</span>
+                    <span className="rounded-full bg-accent/10 px-2.5 py-1 text-xs font-bold text-accent">
+                      {STATUS_LABELS[o.status] ?? o.status}
+                    </span>
                     <span className="font-extrabold text-primary">${Number(o.price).toFixed(2)}</span>
+                    {o.status === "active" && (
+                      <Button
+                        variant="hero"
+                        size="sm"
+                        disabled={updatingId === o.id}
+                        onClick={() => markDelivered(o.id)}
+                      >
+                        {updatingId === o.id ? "جارٍ التحديث…" : "تسليم الطلب"}
+                      </Button>
+                    )}
                   </li>
                 ))}
               </ul>
