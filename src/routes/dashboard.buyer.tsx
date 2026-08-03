@@ -258,6 +258,11 @@ function BuyerDashboard() {
                           {updatingId === o.id ? "جارٍ..." : "طلب استرجاع"}
                         </Button>
                       )}
+                      {o.status === "completed" && !reviewedOrders.includes(o.id) && (
+                        <Button variant="outline" size="sm" onClick={() => setReviewOrder(o)}>
+                          قيّم البائع
+                        </Button>
+                      )}
                     </div>
                   </li>
                 ))}
@@ -290,6 +295,17 @@ function BuyerDashboard() {
           </div>
         </div>
       </section>
+      {reviewOrder && user && (
+        <ReviewDialog
+          open={reviewOrder !== null}
+          onOpenChange={(v) => !v && setReviewOrder(null)}
+          orderId={reviewOrder.id}
+          reviewerId={user.id}
+          revieweeId={reviewOrder.seller_id}
+          reviewType="buyer_to_seller"
+          onSubmitted={loadAll}
+        />
+      )}
     </PageShell>
   );
 }
