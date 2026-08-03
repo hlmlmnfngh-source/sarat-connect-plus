@@ -5,6 +5,8 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { PageShell, PageHero } from "@/components/site/PageShell";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({ meta: [{ title: "تواصل معنا — سرعات" }, { name: "description", content: "تواصل مع فريق دعم منصة سرعات." }] }),
@@ -18,10 +20,11 @@ const schema = z.object({
 });
 
 function ContactPage() {
+  const { user } = useAuth();
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const parsed = schema.safeParse(form);
     if (!parsed.success) {
@@ -29,11 +32,19 @@ function ContactPage() {
       return;
     }
     setSubmitting(true);
-    setTimeout(() => {
-      toast.success("تم إرسال رسالتك، سنتواصل معك قريباً");
-      setForm({ name: "", email: "", message: "" });
-      setSubmitting(false);
-    }, 600);
+    const { error } = await supabase.from("contact_messages").insert({
+      user_id: user?.id ?? null,
+      name: parsed.data.name,
+      email: parsed.data.email,
+      message: parsed.data.message,
+    });
+    setSubmitting(false);
+    if (error) {
+      toast.error("تعذّر إرسال رسالتك، حاول مرة أخرى");
+      return;
+    }
+    toast.success("تم إرسال رسالتك، سنتواصل معك قريباً");
+    setForm({ name: "", email: "", message: "" });
   };
 
   return (
