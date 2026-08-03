@@ -7,6 +7,9 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "stripe-signature, content-type",
 };
 
+// Platform keeps 20% of every order; the seller nets 80%.
+const SELLER_SHARE = 0.8;
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -30,6 +33,19 @@ serve(async (req) => {
     return new Response("Invalid signature", { status: 400 });
   }
 
+  // Idempotency: Stripe retries deliveries, and a replay must not duplicate
+  // orders/transactions.
+  const { data: seen } = await admin
+    .from("stripe_events")
+    .select("id")
+    .eq("id", event.id)
+    .maybeSingle();
+  if (seen) {
+    return new Response(JSON.stringify({ received: true, duplicate: true }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   try {
     switch (event.type) {
       case "checkout.session.completed": {
@@ -39,7 +55,9 @@ serve(async (req) => {
         const sellerId = session.metadata?.seller_id;
         if (!orderId || !buyerId || !sellerId) break;
 
-        const amount = (session.amount_total ?? 0) / 100;
+        const gross = (session.amount_total ?? 0) / 100;
+        const sellerNet = Math.round(gross * SELLER_SHARE * 100) / 100;
+        const currency = (session.currency ?? "usd").toLowerCase();
         const pi = typeof session.payment_intent === "string"
           ? session.payment_intent
           : session.payment_intent?.id ?? null;
@@ -54,12 +72,12 @@ serve(async (req) => {
             })
             .eq("id", orderId);
 
-          // Buyer purchase row
+          // Buyer pays the full amount.
           await admin.from("transactions").insert({
             user_id: buyerId,
             type: "purchase",
-            amount,
-            currency: (session.currency ?? "usd").toLowerCase(),
+            amount: gross,
+            currency,
             status: "completed",
             reference_id: orderId,
             description: `Payment for order ${orderId}`,
@@ -67,15 +85,15 @@ serve(async (req) => {
             stripe_payment_intent_id: pi,
           });
 
-          // Seller earning row
+          // Seller earns the amount net of the 20% platform commission.
           await admin.from("transactions").insert({
             user_id: sellerId,
             type: "earning",
-            amount,
-            currency: (session.currency ?? "usd").toLowerCase(),
+            amount: sellerNet,
+            currency,
             status: "completed",
             reference_id: orderId,
-            description: `Earning from order ${orderId}`,
+            description: `Earning from order ${orderId} (net of 20% platform fee)`,
             stripe_payment_intent_id: pi,
           });
         }
@@ -120,6 +138,9 @@ serve(async (req) => {
       default:
         break;
     }
+
+    await admin.from("stripe_events").insert({ id: event.id, type: event.type });
+
     return new Response(JSON.stringify({ received: true }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
