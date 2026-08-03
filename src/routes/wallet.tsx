@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, useCallback } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import { requestWithdrawal } from "@/lib/withdrawals.functions";
 import { TransactionDetailsDialog, type TxnLike } from "@/components/TransactionDetailsDialog";
 
 type Txn = {
@@ -55,6 +57,7 @@ function fmt(amount: number, currency: string) {
 
 function WalletPage() {
   const { user, loading: authLoading } = useAuth();
+  const submitWithdrawalFn = useServerFn(requestWithdrawal);
   const [txns, setTxns] = useState<Txn[] | null>(null);
   const [withdrawals, setWithdrawals] = useState<WithdrawalRequest[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -138,14 +141,7 @@ function WalletPage() {
     }
     setWithdrawing(true);
     try {
-      const { data: sessionRes } = await supabase.auth.getSession();
-      const token = sessionRes.session?.access_token;
-      const { data, error: fnError } = await supabase.functions.invoke("request-withdrawal", {
-        body: { amount },
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-      });
-      if (fnError) throw fnError;
-      if (data?.error) throw new Error(data.error);
+      await submitWithdrawalFn({ data: { amount } });
       setShowWithdrawForm(false);
       setWithdrawAmount("");
       await loadData();

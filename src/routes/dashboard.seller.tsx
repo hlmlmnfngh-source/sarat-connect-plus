@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { PageShell } from "@/components/site/PageShell";
 import { Button } from "@/components/ui/button";
+import { ReviewDialog } from "@/components/ReviewDialog";
 
 export const Route = createFileRoute("/dashboard/seller")({
   head: () => ({ meta: [{ title: "لوحة تحكم البائع — سرعات" }, { name: "robots", content: "noindex" }] }),
@@ -12,7 +13,7 @@ export const Route = createFileRoute("/dashboard/seller")({
 });
 
 type Stats = { earnings: number; activeOrders: number; completedOrders: number; rating: number };
-type Order = { id: string; price: number; status: string; created_at: string; requirements: string | null };
+type Order = { id: string; price: number; status: string; created_at: string; requirements: string | null; buyer_id: string };
 type Service = { id: string; title: string; status: string; price: number; orders_count: number | null };
 
 const STATUS_LABELS: Record<string, string> = {
@@ -32,6 +33,8 @@ function SellerDashboard() {
   const [services, setServices] = useState<Service[]>([]);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [reviewedOrders, setReviewedOrders] = useState<string[]>([]);
+  const [reviewOrder, setReviewOrder] = useState<Order | null>(null);
 
   useEffect(() => { if (!loading && !user) navigate({ to: "/auth" }); }, [loading, user, navigate]);
 
@@ -39,12 +42,18 @@ function SellerDashboard() {
     if (!user) return;
     const { data: ords } = await supabase
       .from("orders")
-      .select("id,price,status,created_at,requirements")
+      .select("id,price,status,created_at,requirements,buyer_id")
       .eq("seller_id", user.id)
       .order("created_at", { ascending: false })
       .limit(10);
     const list = (ords ?? []) as Order[];
     setOrders(list);
+    const { data: myReviews } = await supabase
+      .from("reviews")
+      .select("order_id")
+      .eq("reviewer_id", user.id)
+      .eq("review_type", "seller_to_buyer");
+    setReviewedOrders((myReviews ?? []).map((r) => r.order_id));
     setStats((s) => ({
       ...s,
       activeOrders: list.filter((o) => ["active", "delivered"].includes(o.status)).length,
@@ -55,13 +64,14 @@ function SellerDashboard() {
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const [{ data: svs }, { data: fin }] = await Promise.all([
+      const [{ data: svs }, { data: fin }, { data: profile }] = await Promise.all([
         supabase.from("services").select("id,title,status,price,orders_count").eq("seller_id", user.id).order("created_at", { ascending: false }).limit(10),
         supabase.rpc("get_my_financials"),
+        supabase.from("profiles").select("rating").eq("id", user.id).maybeSingle(),
       ]);
       setServices((svs ?? []) as Service[]);
       const earnings = Array.isArray(fin) && fin[0]?.total_earnings ? Number(fin[0].total_earnings) : 0;
-      setStats((s) => ({ ...s, earnings, rating: 4.8 }));
+      setStats((s) => ({ ...s, earnings, rating: Number(profile?.rating ?? 0) }));
       await loadOrders();
     })();
   }, [user]);
@@ -144,6 +154,11 @@ function SellerDashboard() {
                         {updatingId === o.id ? "جارٍ التحديث…" : "تسليم الطلب"}
                       </Button>
                     )}
+                    {o.status === "completed" && !reviewedOrders.includes(o.id) && (
+                      <Button variant="outline" size="sm" onClick={() => setReviewOrder(o)}>
+                        قيّم المشتري
+                      </Button>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -183,6 +198,17 @@ function SellerDashboard() {
           </div>
         </div>
       </section>
+      {reviewOrder && user && (
+        <ReviewDialog
+          open={reviewOrder !== null}
+          onOpenChange={(v) => !v && setReviewOrder(null)}
+          orderId={reviewOrder.id}
+          reviewerId={user.id}
+          revieweeId={reviewOrder.buyer_id}
+          reviewType="seller_to_buyer"
+          onSubmitted={loadOrders}
+        />
+      )}
     </PageShell>
   );
 }

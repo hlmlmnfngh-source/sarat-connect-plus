@@ -6,13 +6,14 @@ import { useAuth } from "@/hooks/use-auth";
 import { PageShell } from "@/components/site/PageShell";
 import { Button } from "@/components/ui/button";
 import { TransactionDetailsDialog, type TxnLike } from "@/components/TransactionDetailsDialog";
+import { ReviewDialog } from "@/components/ReviewDialog";
 
 export const Route = createFileRoute("/dashboard/buyer")({
   head: () => ({ meta: [{ title: "لوحة تحكم المشتري — سرعات" }, { name: "robots", content: "noindex" }] }),
   component: BuyerDashboard,
 });
 
-type Order = { id: string; price: number; status: string; created_at: string };
+type Order = { id: string; price: number; status: string; created_at: string; seller_id: string };
 type Project = { id: string; title: string; status: string; budget_min: number | null; budget_max: number | null };
 type Txn = {
   id: string;
@@ -50,13 +51,15 @@ function BuyerDashboard() {
   const [selected, setSelected] = useState<TxnLike | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [reviewedOrders, setReviewedOrders] = useState<string[]>([]);
+  const [reviewOrder, setReviewOrder] = useState<Order | null>(null);
 
   useEffect(() => { if (!loading && !user) navigate({ to: "/auth" }); }, [loading, user, navigate]);
 
   async function loadAll() {
     if (!user) return;
     const [{ data: ords }, { data: projs }, { count: favs }, { data: allTxns }] = await Promise.all([
-      supabase.from("orders").select("id,price,status,created_at").eq("buyer_id", user.id).order("created_at", { ascending: false }).limit(10),
+      supabase.from("orders").select("id,price,status,created_at,seller_id").eq("buyer_id", user.id).order("created_at", { ascending: false }).limit(10),
       supabase.from("projects").select("id,title,status,budget_min,budget_max").eq("buyer_id", user.id).order("created_at", { ascending: false }).limit(10),
       supabase.from("favorites").select("id", { count: "exact", head: true }).eq("user_id", user.id),
       supabase
@@ -67,6 +70,12 @@ function BuyerDashboard() {
         .limit(50),
     ]);
     setOrders((ords ?? []) as Order[]);
+    const { data: myReviews } = await supabase
+      .from("reviews")
+      .select("order_id")
+      .eq("reviewer_id", user.id)
+      .eq("review_type", "buyer_to_seller");
+    setReviewedOrders((myReviews ?? []).map((r) => r.order_id));
     setProjects((projs ?? []) as Project[]);
     setFavCount(favs ?? 0);
     const all = ((allTxns ?? []) as Txn[]);
@@ -249,6 +258,11 @@ function BuyerDashboard() {
                           {updatingId === o.id ? "جارٍ..." : "طلب استرجاع"}
                         </Button>
                       )}
+                      {o.status === "completed" && !reviewedOrders.includes(o.id) && (
+                        <Button variant="outline" size="sm" onClick={() => setReviewOrder(o)}>
+                          قيّم البائع
+                        </Button>
+                      )}
                     </div>
                   </li>
                 ))}
@@ -281,6 +295,17 @@ function BuyerDashboard() {
           </div>
         </div>
       </section>
+      {reviewOrder && user && (
+        <ReviewDialog
+          open={reviewOrder !== null}
+          onOpenChange={(v) => !v && setReviewOrder(null)}
+          orderId={reviewOrder.id}
+          reviewerId={user.id}
+          revieweeId={reviewOrder.seller_id}
+          reviewType="buyer_to_seller"
+          onSubmitted={loadAll}
+        />
+      )}
     </PageShell>
   );
 }
