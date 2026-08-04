@@ -44,6 +44,7 @@ import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]
 import { Route as ServicesIdIndexRouteImport } from './routes/services.$id.index'
 import { Route as ServicesIdEditRouteImport } from './routes/services.$id.edit'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
 const WalletRoute = WalletRouteImport.update({
   id: '/wallet',
@@ -223,6 +224,11 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -257,6 +263,7 @@ export interface FileRoutesByFullPath {
   '/services/create': typeof ServicesCreateRoute
   '/auth/': typeof AuthIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
   '/services/$id/': typeof ServicesIdIndexRoute
@@ -294,6 +301,7 @@ export interface FileRoutesByTo {
   '/services/create': typeof ServicesCreateRoute
   '/auth': typeof AuthIndexRoute
   '/services': typeof ServicesIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
   '/services/$id': typeof ServicesIdIndexRoute
@@ -332,6 +340,7 @@ export interface FileRoutesById {
   '/services/create': typeof ServicesCreateRoute
   '/auth/': typeof AuthIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
   '/services/$id/': typeof ServicesIdIndexRoute
@@ -371,6 +380,7 @@ export interface FileRouteTypes {
     | '/services/create'
     | '/auth/'
     | '/services/'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/services/$id/edit'
     | '/services/$id/'
@@ -408,6 +418,7 @@ export interface FileRouteTypes {
     | '/services/create'
     | '/auth'
     | '/services'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/services/$id/edit'
     | '/services/$id'
@@ -445,6 +456,7 @@ export interface FileRouteTypes {
     | '/services/create'
     | '/auth/'
     | '/services/'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/services/$id/edit'
     | '/services/$id/'
@@ -482,6 +494,7 @@ export interface RootRouteChildren {
   ServicesCreateRoute: typeof ServicesCreateRoute
   AuthIndexRoute: typeof AuthIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
   ServicesIdEditRoute: typeof ServicesIdEditRoute
   ServicesIdIndexRoute: typeof ServicesIdIndexRoute
@@ -734,6 +747,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -782,6 +802,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesCreateRoute: ServicesCreateRoute,
   AuthIndexRoute: AuthIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
   ServicesIdEditRoute: ServicesIdEditRoute,
   ServicesIdIndexRoute: ServicesIdIndexRoute,
