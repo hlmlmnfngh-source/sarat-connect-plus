@@ -9,6 +9,9 @@ import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/auth/")({
   head: () => ({ meta: [{ title: "تسجيل الدخول — سرعات" }] }),
+  validateSearch: (s: Record<string, unknown>) => ({
+    next: typeof s.next === "string" && s.next.startsWith("/") && !s.next.startsWith("//") ? s.next : undefined,
+  }),
   component: AuthPage,
 });
 
@@ -22,10 +25,16 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { next } = Route.useSearch();
+  const goNext = () => {
+    if (next) window.location.href = next;
+    else navigate({ to: "/" });
+  };
 
   useEffect(() => {
-    if (user && step === "auth" && mode === "login") navigate({ to: "/" });
-  }, [user, navigate, step, mode]);
+    if (user && step === "auth" && mode === "login") goNext();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, navigate, step, mode, next]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,7 +45,7 @@ function AuthPage() {
           email,
           password,
           options: {
-            emailRedirectTo: window.location.origin,
+            emailRedirectTo: next ? window.location.origin + next : window.location.origin,
             data: { full_name: fullName },
           },
         });
@@ -48,7 +57,7 @@ function AuthPage() {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast.success("مرحباً بك في سرعات!");
-        navigate({ to: "/" });
+        goNext();
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "حدث خطأ ما");
@@ -59,7 +68,9 @@ function AuthPage() {
 
   const handleGoogle = async () => {
     setBusy(true);
-    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: next ? window.location.origin + next : window.location.origin,
+    });
     if (result.error) {
       toast.error("فشل تسجيل الدخول بجوجل");
       setBusy(false);
