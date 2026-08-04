@@ -1,6 +1,6 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { getPublicSupabase } from "../supabase";
+import { supabaseForUser } from "../supabase";
 
 export default defineTool({
   name: "list_open_projects",
@@ -22,8 +22,11 @@ export default defineTool({
       .describe("If set, only return projects whose required skills contain this value."),
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  handler: async ({ limit, skill }) => {
-    const supabase = getPublicSupabase();
+  handler: async ({ limit, skill }, ctx) => {
+    if (!ctx.isAuthenticated()) {
+      return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
+    }
+    const supabase = supabaseForUser(ctx);
     let q = supabase
       .from("projects")
       .select(

@@ -1,6 +1,6 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { getPublicSupabase } from "../supabase";
+import { supabaseForUser } from "../supabase";
 import { sanitizePostgrestFilterInput } from "./sanitize";
 
 export default defineTool({
@@ -27,8 +27,11 @@ export default defineTool({
       .describe("If true, only return quick (24h delivery) services."),
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  handler: async ({ query, limit, quick_only }) => {
-    const supabase = getPublicSupabase();
+  handler: async ({ query, limit, quick_only }, ctx) => {
+    if (!ctx.isAuthenticated()) {
+      return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
+    }
+    const supabase = supabaseForUser(ctx);
     const safe = sanitizePostgrestFilterInput(query);
     if (!safe) {
       return {
