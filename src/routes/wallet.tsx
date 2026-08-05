@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { requestWithdrawal } from "@/lib/withdrawals.functions";
+import { getPayoutStatus, startConnectOnboarding, syncPayoutStatus } from "@/lib/connect.functions";
 import { TransactionDetailsDialog, type TxnLike } from "@/components/TransactionDetailsDialog";
 
 type Txn = {
@@ -30,6 +31,8 @@ type WithdrawalRequest = {
 };
 
 export const Route = createFileRoute("/wallet")({
+  validateSearch: (s: Record<string, unknown>): { connect?: "return" | "refresh" } =>
+    s.connect === "return" || s.connect === "refresh" ? { connect: s.connect } : {},
   head: () => ({
     meta: [
       { title: "Wallet & payment history — Sarat" },
@@ -57,7 +60,19 @@ function fmt(amount: number, currency: string) {
 
 function WalletPage() {
   const { user, loading: authLoading } = useAuth();
+  const { connect } = Route.useSearch();
   const submitWithdrawalFn = useServerFn(requestWithdrawal);
+  const fetchPayoutStatus = useServerFn(getPayoutStatus);
+  const syncPayoutStatusFn = useServerFn(syncPayoutStatus);
+  const startOnboarding = useServerFn(startConnectOnboarding);
+  const [payout, setPayout] = useState<{
+    hasAccount: boolean;
+    chargesEnabled: boolean;
+    payoutsEnabled: boolean;
+    onboarded: boolean;
+  } | null>(null);
+  const [connecting, setConnecting] = useState(false);
+  const [connectError, setConnectError] = useState<string | null>(null);
   const [txns, setTxns] = useState<Txn[] | null>(null);
   const [withdrawals, setWithdrawals] = useState<WithdrawalRequest[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -93,6 +108,26 @@ function WalletPage() {
     if (!user) return;
     loadData();
   }, [user, authLoading, loadData]);
+
+  useEffect(() => {
+    if (authLoading || !user) return;
+    // Coming back from Stripe-hosted onboarding: re-read the live account
+    // state instead of waiting for the account.updated webhook.
+    const load = connect ? syncPayoutStatusFn({}) : fetchPayoutStatus({});
+    load.then(setPayout).catch(() => setPayout(null));
+  }, [user, authLoading, connect, fetchPayoutStatus, syncPayoutStatusFn]);
+
+  async function handleConnect() {
+    setConnectError(null);
+    setConnecting(true);
+    try {
+      const { url } = await startOnboarding({});
+      window.location.href = url;
+    } catch (err) {
+      setConnectError(err instanceof Error ? err.message : "Could not start payout setup.");
+      setConnecting(false);
+    }
+  }
 
   if (!authLoading && !user) {
     return (
@@ -165,11 +200,49 @@ function WalletPage() {
       </div>
 
       <section className="mt-6 rounded-xl border border-border bg-card p-4">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div className="text-sm font-medium">Payout account (Stripe)</div>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              {payout?.onboarded
+                ? "Your payout account is active. Order payments are transferred to you automatically (net of the 20% platform fee) and Stripe pays out to your bank on its own schedule."
+                : payout?.hasAccount
+                  ? "Your payout account setup is incomplete. Finish it to start receiving orders and payments."
+                  : "Connect a payout account to receive payments for your orders directly from Stripe."}
+            </p>
+            {payout && !payout.onboarded && payout.hasAccount && (
+              <p className="mt-1 text-xs text-muted-foreground">
+                Charges enabled: {payout.chargesEnabled ? "yes" : "no"} · Payouts enabled:{" "}
+                {payout.payoutsEnabled ? "yes" : "no"}
+              </p>
+            )}
+            {connectError && <p className="mt-1 text-xs text-destructive">{connectError}</p>}
+          </div>
+          {payout?.onboarded ? (
+            <span className="shrink-0 rounded-full bg-emerald-500/10 px-3 py-1 text-xs text-emerald-600">
+              Connected
+            </span>
+          ) : (
+            <button
+              type="button"
+              onClick={handleConnect}
+              disabled={connecting}
+              className="shrink-0 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+            >
+              {connecting ? "Redirecting…" : payout?.hasAccount ? "Continue setup" : "Connect payout account"}
+            </button>
+          )}
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-xl border border-border bg-card p-4">
         <div className="flex items-center justify-between gap-4">
           <div>
             <div className="text-sm font-medium">Withdrawals</div>
             <p className="mt-0.5 text-xs text-muted-foreground">
-              Request a payout of your available balance. Requests are reviewed and paid out manually for now.
+              Legacy manual payout requests. Now that earnings are transferred straight to your
+              Stripe account, this is only for balances earned before Connect was enabled — it does
+              not move money out of your Stripe balance.
             </p>
           </div>
           <button
