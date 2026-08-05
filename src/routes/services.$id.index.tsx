@@ -48,7 +48,9 @@ function ServiceDetail() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("services")
-        .select("*, categories(name_ar, slug), profiles!services_seller_id_fkey(id, full_name, avatar_url, username)")
+        .select(
+          "*, categories(name_ar, slug), profiles!services_seller_id_fkey(id, full_name, avatar_url, username, stripe_charges_enabled)",
+        )
         .eq("id", id)
         .eq("status", "active")
         .maybeSingle();
@@ -207,12 +209,23 @@ function ServiceDetail() {
                 <div className="mt-2 flex justify-between border-t border-border pt-2 font-bold text-primary"><span>الإجمالي</span><span>${total.toFixed(2)}</span></div>
               </div>
 
-              <Link to="/auth">
-                <Button variant="hero" size="lg" className="w-full">
-                  اطلب الآن
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
-              </Link>
+              {sellerCanBePaid ? (
+                <Link to="/auth" search={{}}>
+                  <Button variant="hero" size="lg" className="w-full">
+                    اطلب الآن
+                    <ArrowLeft className="h-4 w-4" />
+                  </Button>
+                </Link>
+              ) : (
+                <>
+                  <Button variant="hero" size="lg" className="w-full" disabled>
+                    اطلب الآن
+                  </Button>
+                  <p className="mt-2 text-center text-xs text-muted-foreground">
+                    هذا البائع لم يُفعّل حساب استلام المدفوعات بعد، لذلك لا يمكن الطلب حالياً.
+                  </p>
+                </>
+              )}
               <Link to="/messages" className="mt-2 block text-center text-sm font-semibold text-muted-foreground hover:text-accent">
                 تواصل مع البائع
               </Link>
