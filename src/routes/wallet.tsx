@@ -135,7 +135,7 @@ function WalletPage() {
         <div className="rounded-lg border border-border bg-card p-6 text-center">
           <p className="text-sm text-muted-foreground">Sign in to view your wallet.</p>
           <Link
-            to="/auth"
+            to="/auth" search={{}}
             className="mt-4 inline-flex rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
           >
             Sign in
