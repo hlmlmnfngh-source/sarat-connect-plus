@@ -9,9 +9,13 @@ import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/auth/")({
   head: () => ({ meta: [{ title: "تسجيل الدخول — سرعات" }] }),
-  validateSearch: (s: Record<string, unknown>) => ({
-    next: typeof s.next === "string" && s.next.startsWith("/") && !s.next.startsWith("//") ? s.next : undefined,
-  }),
+  validateSearch: (s: Record<string, unknown>): { next?: string } => {
+    const next =
+      typeof s.next === "string" && s.next.startsWith("/") && !s.next.startsWith("//")
+        ? s.next
+        : undefined;
+    return next ? { next } : {};
+  },
   component: AuthPage,
 });
 
@@ -96,7 +100,7 @@ function AuthPage() {
       }
       toast.success(selectedRole === "seller" ? "مرحباً بك كبائع!" : "مرحباً بك كمشتري!");
       if (selectedRole === "seller") {
-        navigate({ to: "/create-service" });
+        navigate({ to: "/services/create" });
       } else {
         navigate({ to: "/" });
       }
