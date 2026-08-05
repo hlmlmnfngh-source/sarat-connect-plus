@@ -58,9 +58,13 @@ serve(async (req) => {
     }
 
     const stripe = new Stripe(stripeKey, { apiVersion: "2025-08-27.basil" });
+    // Destination charge: pull the transferred funds back from the seller's
+    // connected account and give the platform's 20% fee back to the buyer too.
     const refund = await stripe.refunds.create({
       payment_intent: order.stripe_payment_intent_id,
       reason: "requested_by_customer",
+      reverse_transfer: true,
+      refund_application_fee: true,
     });
 
     await admin
@@ -95,7 +99,9 @@ serve(async (req) => {
         currency: "usd",
         status: "completed",
         reference_id: order.id,
-        description: `Earning reversed for refunded order ${order.id}`,
+        description:
+          `Earning reversed for refunded order ${order.id} — ` +
+          `transfer reversed on your Stripe Connect account`,
         stripe_refund_id: refund.id,
         stripe_payment_intent_id: order.stripe_payment_intent_id,
       },
