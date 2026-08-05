@@ -93,7 +93,9 @@ serve(async (req) => {
             currency,
             status: "completed",
             reference_id: orderId,
-            description: `Earning from order ${orderId} (net of 20% platform fee)`,
+            description:
+              `Earning from order ${orderId} (net of 20% platform fee) — ` +
+              `transferred directly to your Stripe Connect account`,
             stripe_payment_intent_id: pi,
           });
         }
@@ -133,6 +135,22 @@ serve(async (req) => {
             })
             .eq("id", order.id);
         }
+        break;
+      }
+      case "account.updated": {
+        // Connect onboarding progress for a seller's Express account.
+        const account = event.data.object as Stripe.Account;
+        const chargesEnabled = Boolean(account.charges_enabled);
+        const payoutsEnabled = Boolean(account.payouts_enabled);
+        await admin
+          .from("profiles")
+          .update({
+            stripe_charges_enabled: chargesEnabled,
+            stripe_payouts_enabled: payoutsEnabled,
+            stripe_onboarded:
+              Boolean(account.details_submitted) && chargesEnabled && payoutsEnabled,
+          })
+          .eq("stripe_account_id", account.id);
         break;
       }
       default:
