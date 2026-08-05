@@ -79,6 +79,7 @@ function ServiceDetail() {
   const active = pkgs.find((p) => p.package_type === pick) ?? pkgs[0];
   const cover = (s.gallery_images as string[] | null)?.[0];
   const seller = (s as any).profiles;
+  const sellerCanBePaid = Boolean(seller?.stripe_charges_enabled);
 
   const price = active ? Number(active.price) : Number(s.price);
   const commission = +(price * 0.2).toFixed(2);
