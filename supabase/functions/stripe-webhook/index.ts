@@ -93,7 +93,9 @@ serve(async (req) => {
             currency,
             status: "completed",
             reference_id: orderId,
-            description: `Earning from order ${orderId} (net of 20% platform fee)`,
+            description:
+              `Earning from order ${orderId} (net of 20% platform fee) — ` +
+              `transferred directly to your Stripe Connect account`,
             stripe_payment_intent_id: pi,
           });
         }
