@@ -318,6 +318,10 @@ export type Database = {
           reviews_count: number | null
           seller_level: Database["public"]["Enums"]["seller_level"] | null
           skills: string[] | null
+          stripe_account_id: string | null
+          stripe_charges_enabled: boolean
+          stripe_onboarded: boolean
+          stripe_payouts_enabled: boolean
           total_earnings: number | null
           total_orders: number | null
           updated_at: string
@@ -338,6 +342,10 @@ export type Database = {
           reviews_count?: number | null
           seller_level?: Database["public"]["Enums"]["seller_level"] | null
           skills?: string[] | null
+          stripe_account_id?: string | null
+          stripe_charges_enabled?: boolean
+          stripe_onboarded?: boolean
+          stripe_payouts_enabled?: boolean
           total_earnings?: number | null
           total_orders?: number | null
           updated_at?: string
@@ -358,6 +366,10 @@ export type Database = {
           reviews_count?: number | null
           seller_level?: Database["public"]["Enums"]["seller_level"] | null
           skills?: string[] | null
+          stripe_account_id?: string | null
+          stripe_charges_enabled?: boolean
+          stripe_onboarded?: boolean
+          stripe_payouts_enabled?: boolean
           total_earnings?: number | null
           total_orders?: number | null
           updated_at?: string
