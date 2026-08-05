@@ -25,6 +25,9 @@ type Body = {
   requirements?: string;
 };
 
+// Platform commission on every order (destination charge application fee).
+const PLATFORM_FEE_RATE = 0.2;
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -62,11 +65,11 @@ serve(async (req) => {
       if (!serviceId) throw new Error("service_id is required");
       const { data: svc, error } = await admin
         .from("services")
-        .select("id,user_id,title,price")
+        .select("id,seller_id,title,price")
         .eq("id", serviceId)
         .maybeSingle();
       if (error || !svc) throw new Error("Service not found");
-      sellerId = svc.user_id;
+      sellerId = svc.seller_id;
       title = svc.title;
 
       if (body.kind === "package") {
@@ -103,6 +106,20 @@ serve(async (req) => {
     if (!amountUsd || amountUsd <= 0) throw new Error("Invalid amount");
     if (sellerId === user.id) throw new Error("You cannot pay yourself");
 
+    // Stripe Connect: the seller must have an onboarded Express account that
+    // can accept charges, otherwise the destination charge would fail.
+    const { data: sellerProfile } = await admin
+      .from("profiles")
+      .select("stripe_account_id,stripe_charges_enabled")
+      .eq("id", sellerId)
+      .maybeSingle();
+
+    if (!sellerProfile?.stripe_account_id || !sellerProfile.stripe_charges_enabled) {
+      throw new Error(
+        "This seller hasn't finished setting up their payout account yet, so they can't accept payments. Please try again later or contact the seller.",
+      );
+    }
+
     // Create pending order
     const { data: order, error: orderErr } = await admin
       .from("orders")
@@ -127,6 +144,9 @@ serve(async (req) => {
 
     const origin = req.headers.get("origin") ?? "https://sarat-connect-plus.lovable.app";
 
+    const totalCents = Math.round(amountUsd * 100);
+    const applicationFeeCents = Math.round(totalCents * PLATFORM_FEE_RATE);
+
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       customer: customerId,
@@ -135,12 +155,20 @@ serve(async (req) => {
         {
           price_data: {
             currency: "usd",
-            unit_amount: Math.round(amountUsd * 100),
+            unit_amount: totalCents,
             product_data: { name: title, description: description || undefined },
           },
           quantity: 1,
         },
       ],
+      // Destination charge: the platform is the merchant of record, Stripe
+      // moves the net 80% to the seller's connected account automatically and
+      // the 20% application fee stays on the platform balance.
+      payment_intent_data: {
+        application_fee_amount: applicationFeeCents,
+        transfer_data: { destination: sellerProfile.stripe_account_id },
+        metadata: { order_id: order.id, seller_id: sellerId, buyer_id: user.id },
+      },
       metadata: {
         order_id: order.id,
         buyer_id: user.id,
