@@ -137,6 +137,22 @@ serve(async (req) => {
         }
         break;
       }
+      case "account.updated": {
+        // Connect onboarding progress for a seller's Express account.
+        const account = event.data.object as Stripe.Account;
+        const chargesEnabled = Boolean(account.charges_enabled);
+        const payoutsEnabled = Boolean(account.payouts_enabled);
+        await admin
+          .from("profiles")
+          .update({
+            stripe_charges_enabled: chargesEnabled,
+            stripe_payouts_enabled: payoutsEnabled,
+            stripe_onboarded:
+              Boolean(account.details_submitted) && chargesEnabled && payoutsEnabled,
+          })
+          .eq("stripe_account_id", account.id);
+        break;
+      }
       default:
         break;
     }
