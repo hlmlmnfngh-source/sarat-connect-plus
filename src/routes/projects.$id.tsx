@@ -109,7 +109,7 @@ function ProjectDetail() {
     }
   }
 
-  async function acceptProposal(proposalId: string, freelancerId: string, proposalPrice: number) {
+  async function acceptProposal(proposalId: string, freelancerId: string, _proposalPrice: number) {
     setBusyProposalId(proposalId);
     try {
       await supabase.from("proposals").update({ status: "accepted" }).eq("id", proposalId);
@@ -118,10 +118,11 @@ function ProjectDetail() {
       await startCheckout({
         kind: "project",
         project_id: id,
+        proposal_id: proposalId,
         seller_id: freelancerId,
-        amount: proposalPrice,
         title: data?.title ?? "مشروع",
       });
+
     } catch (err) {
       setBusyProposalId(null);
       alert(err instanceof Error ? err.message : "تعذّر قبول العرض.");
