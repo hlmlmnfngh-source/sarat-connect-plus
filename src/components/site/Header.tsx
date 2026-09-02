@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Search, Menu, Briefcase, Sparkles, MessageCircle, LogOut, Plus, Bell, Settings, User as UserIcon } from "lucide-react";
+import { Search, Menu, Briefcase, Sparkles, MessageCircle, LogOut, Plus, Bell, Settings, User as UserIcon, Wallet } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -25,10 +25,6 @@ export function Header({ mode, onModeChange }: HeaderProps) {
     toast.success("تم تسجيل الخروج");
     navigate({ to: "/" });
   };
-
-  // استخراج نوع الحساب من metadata
-  const accountType = user?.user_metadata?.account_type;
-  const isSeller = accountType === "seller";
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/85 backdrop-blur-md">
@@ -91,28 +87,29 @@ export function Header({ mode, onModeChange }: HeaderProps) {
 
         <div className="mr-auto flex items-center gap-2">
 
-          {/* زر انشر مشروعك للمشتري أو غير مسجل */}
-          {!isSeller && (
-            <Link to="/projects" className="hidden md:inline-flex">
-              <Button variant="hero" size="default">
-                <Briefcase className="h-4 w-4" />
-                انشر مشروعك
-              </Button>
-            </Link>
-          )}
-
-          {/* زر أضف خدمة للبائع */}
-          {user && isSeller && (
-            <Link to="/services/create" className="hidden md:inline-flex">
-              <Button variant="hero" size="default">
-                <Plus className="h-4 w-4" />
-                أضف خدمة
-              </Button>
-            </Link>
+          {/* أي مستخدم مسجل يمكنه نشر مشروع أو إضافة خدمة */}
+          {user && (
+            <div className="hidden items-center gap-2 md:flex">
+              <Link to="/projects" className="inline-flex">
+                <Button variant="hero" size="default">
+                  <Briefcase className="h-4 w-4" />
+                  انشر مشروعك
+                </Button>
+              </Link>
+              <Link to="/services/create" className="inline-flex">
+                <Button variant="hero" size="default">
+                  <Plus className="h-4 w-4" />
+                  أضف خدمة
+                </Button>
+              </Link>
+            </div>
           )}
 
           {user ? (
             <>
+              <Link to="/wallet" className="hidden h-9 w-9 items-center justify-center rounded-full text-foreground/70 hover:bg-muted sm:inline-flex" aria-label="المحفظة">
+                <Wallet className="h-5 w-5" />
+              </Link>
               <Link to="/notifications" className="hidden h-9 w-9 items-center justify-center rounded-full text-foreground/70 hover:bg-muted sm:inline-flex" aria-label="الإشعارات">
                 <Bell className="h-5 w-5" />
               </Link>
@@ -169,11 +166,13 @@ export function Header({ mode, onModeChange }: HeaderProps) {
             <Link to="/projects" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">المشاريع</Link>
             <Link to="/search" search={{}} className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">البحث</Link>
             <Link to="/about" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">من نحن</Link>
-            {user && isSeller && (
-              <Link to="/services/create" className="rounded-md px-3 py-2 font-bold text-accent">+ أضف خدمة</Link>
-            )}
             {user && (
               <>
+                <Link to="/projects" className="rounded-md px-3 py-2 font-bold text-accent">+ انشر مشروعك</Link>
+                <Link to="/services/create" className="rounded-md px-3 py-2 font-bold text-accent">+ أضف خدمة</Link>
+                <Link to="/wallet" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">
+                  <Wallet className="ml-1 inline h-4 w-4" /> المحفظة
+                </Link>
                 <Link to="/notifications" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">الإشعارات</Link>
                 <Link to="/profile/$userId" params={{ userId: user.id }} className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">
                   <UserIcon className="ml-1 inline h-4 w-4" /> ملفي الشخصي
