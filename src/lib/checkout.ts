@@ -5,8 +5,10 @@ export type CheckoutPayload = {
   service_id?: string;
   package_type?: "basic" | "standard" | "premium";
   project_id?: string;
+  /** Required for project/milestone payments; price is derived from it server-side. */
+  proposal_id?: string;
   seller_id?: string;
-  amount?: number;
+
   title?: string;
   description?: string;
   requirements?: string;

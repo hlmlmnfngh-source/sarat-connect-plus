@@ -16,10 +16,12 @@ type Body = {
   package_type?: "basic" | "standard" | "premium";
   // For project / milestone payments
   project_id?: string;
-  // Optional override (used for milestone amounts), USD
-  amount?: number;
+  // Required for project / milestone payments: the accepted proposal the
+  // price is derived from (server-side).
+  proposal_id?: string;
   // For project payments, the seller is the freelancer chosen
   seller_id?: string;
+
   title?: string;
   description?: string;
   requirements?: string;
@@ -54,7 +56,10 @@ serve(async (req) => {
 
     // Resolve seller, price, title
     let sellerId = body.seller_id ?? null;
-    let amountUsd = body.amount ?? 0;
+    // Never trust a client-supplied amount: every branch below derives the
+    // price server-side from services / service_packages / proposals.
+    let amountUsd = 0;
+
     let title = body.title ?? "Sarat order";
     let description = body.description ?? "";
     let serviceId: string | null = body.service_id ?? null;
@@ -88,19 +93,36 @@ serve(async (req) => {
       }
     } else if (body.kind === "project" || body.kind === "milestone") {
       if (!projectId) throw new Error("project_id is required");
+      if (!body.proposal_id) throw new Error("proposal_id is required for project payments");
       const { data: proj, error } = await admin
         .from("projects")
-        .select("id,buyer_id,title,budget_max")
+        .select("id,buyer_id,title")
         .eq("id", projectId)
         .maybeSingle();
       if (error || !proj) throw new Error("Project not found");
       if (proj.buyer_id !== user.id) throw new Error("Only the project owner can pay");
-      if (!sellerId) throw new Error("seller_id is required for project payments");
+
+      // The amount MUST come from an accepted proposal on this project — never
+      // from the request body — otherwise a buyer could pay any amount.
+      const { data: proposal, error: propErr } = await admin
+        .from("proposals")
+        .select("id,project_id,freelancer_id,price,status")
+        .eq("id", body.proposal_id)
+        .eq("project_id", projectId)
+        .eq("status", "accepted")
+        .maybeSingle();
+      if (propErr || !proposal) throw new Error("Accepted proposal not found for this project");
+
+      if (sellerId && sellerId !== proposal.freelancer_id) {
+        throw new Error("seller_id does not match the accepted proposal's freelancer");
+      }
+      sellerId = proposal.freelancer_id;
+      amountUsd = Number(proposal.price);
       title = body.kind === "milestone"
         ? `${proj.title} — Milestone`
         : proj.title;
-      if (!amountUsd) amountUsd = Number(proj.budget_max ?? 0);
     }
+
 
     if (!sellerId) throw new Error("Seller could not be resolved");
     if (!amountUsd || amountUsd <= 0) throw new Error("Invalid amount");
