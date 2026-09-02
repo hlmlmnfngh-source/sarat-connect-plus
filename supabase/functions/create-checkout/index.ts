@@ -56,7 +56,10 @@ serve(async (req) => {
 
     // Resolve seller, price, title
     let sellerId = body.seller_id ?? null;
-    let amountUsd = body.amount ?? 0;
+    // Never trust a client-supplied amount: every branch below derives the
+    // price server-side from services / service_packages / proposals.
+    let amountUsd = 0;
+
     let title = body.title ?? "Sarat order";
     let description = body.description ?? "";
     let serviceId: string | null = body.service_id ?? null;
