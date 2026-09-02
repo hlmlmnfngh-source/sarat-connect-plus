@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Star, BadgeCheck, CalendarDays, Clock } from "lucide-react";
+import { Star, BadgeCheck, CalendarDays, Clock, Wallet } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 import { PageShell } from "@/components/site/PageShell";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -24,6 +25,8 @@ export const Route = createFileRoute("/profile/$userId")({
 
 function PublicProfile() {
   const { userId } = Route.useParams();
+  const { user: currentUser } = useAuth();
+  const isOwnProfile = currentUser?.id === userId;
 
   const profileQ = useQuery({
     queryKey: ["public-profile", userId],
@@ -112,6 +115,25 @@ function PublicProfile() {
 
           <div className="container mx-auto grid gap-8 px-4 py-12 lg:grid-cols-3 lg:px-6">
             <div className="space-y-6">
+              {isOwnProfile && (
+                <Card className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-lg font-bold">المحفظة</h2>
+                      <p className="mt-1 text-sm text-muted-foreground">رصيدك وعمليات الدفع</p>
+                    </div>
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <Wallet className="h-5 w-5" />
+                    </div>
+                  </div>
+                  <Link
+                    to="/wallet"
+                    className="mt-4 inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:opacity-90"
+                  >
+                    إدارة المحفظة
+                  </Link>
+                </Card>
+              )}
               <Card className="p-6">
                 <h2 className="mb-3 text-lg font-bold">المهارات</h2>
                 <div className="flex flex-wrap gap-2">
