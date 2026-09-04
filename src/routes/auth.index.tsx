@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/use-auth";
+import { VerificationStep } from "@/components/site/VerificationStep";
 
 export const Route = createFileRoute("/auth/")({
   head: () => ({ meta: [{ title: "تسجيل الدخول — سرعات" }] }),
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/auth/")({
   component: AuthPage,
 });
 
-type Step = "auth" | "choose-role" | "seller-details";
+type Step = "auth" | "choose-role" | "seller-details" | "verify";
 
 function AuthPage() {
   const [mode, setMode] = useState<"login" | "signup">("login");
@@ -28,6 +29,7 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [busy, setBusy] = useState(false);
+  const [afterVerify, setAfterVerify] = useState<"/" | "/services/create">("/");
   const navigate = useNavigate();
   const { user } = useAuth();
   const { next } = Route.useSearch();
@@ -98,13 +100,23 @@ function AuthPage() {
           .eq("id", currentUser.id);
       }
       toast.success("مرحباً بك كمشتري!");
-      navigate({ to: "/" });
+      setAfterVerify("/");
+      setStep("verify");
     } catch {
       toast.error("حدث خطأ في حفظ البيانات");
     } finally {
       setBusy(false);
     }
   };
+
+  if (step === "verify") {
+    return (
+      <VerificationStep
+        userId={user?.id}
+        onDone={() => navigate({ to: afterVerify })}
+      />
+    );
+  }
 
   // خطوة اختيار الدور
   if (step === "choose-role") {
@@ -163,7 +175,15 @@ function AuthPage() {
 
   // خطوة تفاصيل البائع
   if (step === "seller-details") {
-    return <SellerDetailsStep onBack={() => setStep("choose-role")} />;
+    return (
+      <SellerDetailsStep
+        onBack={() => setStep("choose-role")}
+        onDone={() => {
+          setAfterVerify("/services/create");
+          setStep("verify");
+        }}
+      />
+    );
   }
 
   // خطوة تسجيل الدخول/إنشاء الحساب
@@ -273,8 +293,7 @@ interface Category {
   name_ar: string;
 }
 
-function SellerDetailsStep({ onBack }: { onBack: () => void }) {
-  const navigate = useNavigate();
+function SellerDetailsStep({ onBack, onDone }: { onBack: () => void; onDone: () => void }) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryId, setCategoryId] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
@@ -324,7 +343,7 @@ function SellerDetailsStep({ onBack }: { onBack: () => void }) {
         .eq("id", currentUser.id);
       if (error) throw error;
       toast.success("تم حفظ ملفك كبائع!");
-      navigate({ to: "/services/create" });
+      onDone();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "حدث خطأ في حفظ البيانات");
       setBusy(false);
