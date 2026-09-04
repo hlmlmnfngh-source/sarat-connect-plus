@@ -326,6 +326,7 @@ export type Database = {
           total_orders: number | null
           updated_at: string
           username: string | null
+          years_experience: number | null
         }
         Insert: {
           account_type?: Database["public"]["Enums"]["account_type"] | null
@@ -350,6 +351,7 @@ export type Database = {
           total_orders?: number | null
           updated_at?: string
           username?: string | null
+          years_experience?: number | null
         }
         Update: {
           account_type?: Database["public"]["Enums"]["account_type"] | null
@@ -374,6 +376,7 @@ export type Database = {
           total_orders?: number | null
           updated_at?: string
           username?: string | null
+          years_experience?: number | null
         }
         Relationships: []
       }
