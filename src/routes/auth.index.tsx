@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Sparkles, Mail, Lock, User as UserIcon, ShoppingBag, Briefcase } from "lucide-react";
+import { Sparkles, Mail, Lock, User as UserIcon, ShoppingBag, Briefcase, X, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
@@ -19,10 +19,11 @@ export const Route = createFileRoute("/auth/")({
   component: AuthPage,
 });
 
+type Step = "auth" | "choose-role" | "seller-details";
+
 function AuthPage() {
   const [mode, setMode] = useState<"login" | "signup">("login");
-  const [step, setStep] = useState<"auth" | "choose-role">("auth");
-  const [role, setRole] = useState<"buyer" | "seller" | null>(null);
+  const [step, setStep] = useState<Step>("auth");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -86,25 +87,19 @@ function AuthPage() {
     }
   };
 
-  const handleRoleSelect = async (selectedRole: "buyer" | "seller") => {
-    setRole(selectedRole);
+  const handleBuyerSelect = async () => {
     setBusy(true);
     try {
-      // حفظ الدور في قاعدة البيانات
       const { data: { user: currentUser } } = await supabase.auth.getUser();
       if (currentUser) {
         await supabase
           .from("profiles")
-          .update({ account_type: selectedRole })
+          .update({ account_type: "buyer" })
           .eq("id", currentUser.id);
       }
-      toast.success(selectedRole === "seller" ? "مرحباً بك كبائع!" : "مرحباً بك كمشتري!");
-      if (selectedRole === "seller") {
-        navigate({ to: "/services/create" });
-      } else {
-        navigate({ to: "/" });
-      }
-    } catch (err) {
+      toast.success("مرحباً بك كمشتري!");
+      navigate({ to: "/" });
+    } catch {
       toast.error("حدث خطأ في حفظ البيانات");
     } finally {
       setBusy(false);
@@ -128,7 +123,7 @@ function AuthPage() {
             <div className="grid grid-cols-2 gap-4">
               {/* مشتري */}
               <button
-                onClick={() => handleRoleSelect("buyer")}
+                onClick={handleBuyerSelect}
                 disabled={busy}
                 className="group flex flex-col items-center gap-4 rounded-2xl border-2 border-border bg-background p-6 transition-all hover:border-accent hover:shadow-elevated"
               >
@@ -143,7 +138,7 @@ function AuthPage() {
 
               {/* بائع */}
               <button
-                onClick={() => handleRoleSelect("seller")}
+                onClick={() => setStep("seller-details")}
                 disabled={busy}
                 className="group flex flex-col items-center gap-4 rounded-2xl border-2 border-border bg-background p-6 transition-all hover:border-accent hover:shadow-elevated"
               >
@@ -164,6 +159,11 @@ function AuthPage() {
         </div>
       </div>
     );
+  }
+
+  // خطوة تفاصيل البائع
+  if (step === "seller-details") {
+    return <SellerDetailsStep onBack={() => setStep("choose-role")} />;
   }
 
   // خطوة تسجيل الدخول/إنشاء الحساب
@@ -268,4 +268,182 @@ function AuthPage() {
   );
 }
 
+interface Category {
+  id: string;
+  name_ar: string;
+}
 
+function SellerDetailsStep({ onBack }: { onBack: () => void }) {
+  const navigate = useNavigate();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [categoryId, setCategoryId] = useState("");
+  const [skills, setSkills] = useState<string[]>([]);
+  const [skillInput, setSkillInput] = useState("");
+  const [bio, setBio] = useState("");
+  const [yearsExperience, setYearsExperience] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    supabase
+      .from("categories")
+      .select("id, name_ar")
+      .is("parent_id", null)
+      .order("sort_order", { ascending: true })
+      .then(({ data }) => {
+        if (data) setCategories(data as Category[]);
+      });
+  }, []);
+
+  const addSkill = () => {
+    const s = skillInput.trim();
+    if (s && !skills.includes(s) && skills.length < 15) {
+      setSkills([...skills, s]);
+    }
+    setSkillInput("");
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!bio.trim()) {
+      toast.error("اكتب نبذة قصيرة عن خدماتك");
+      return;
+    }
+    setBusy(true);
+    try {
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      if (!currentUser) throw new Error("لا يوجد مستخدم مسجل");
+      const years = yearsExperience.trim() === "" ? null : Math.max(0, parseInt(yearsExperience, 10) || 0);
+      const { error } = await supabase
+        .from("profiles")
+        .update({
+          account_type: "seller",
+          bio: bio.trim(),
+          skills,
+          years_experience: years,
+        })
+        .eq("id", currentUser.id);
+      if (error) throw error;
+      toast.success("تم حفظ ملفك كبائع!");
+      navigate({ to: "/services/create" });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "حدث خطأ في حفظ البيانات");
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-hero flex items-center justify-center px-4 py-10">
+      <div className="w-full max-w-lg">
+        <div className="rounded-3xl bg-card p-8 shadow-elevated">
+          <div className="mb-2 flex justify-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-accent shadow-glow">
+              <Briefcase className="h-7 w-7 text-accent-foreground" />
+            </div>
+          </div>
+          <h2 className="mb-2 text-center text-2xl font-extrabold text-primary">أكمل ملفك كبائع</h2>
+          <p className="mb-8 text-center text-muted-foreground">أخبرنا عن تخصصك ومهاراتك لتظهر خدماتك للعملاء المناسبين</p>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* التخصص الرئيسي */}
+            <div>
+              <label className="mb-1.5 block text-sm font-bold text-primary">التخصص الرئيسي</label>
+              <select
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+                className="h-12 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+              >
+                <option value="">اختر تخصصك (اختياري)</option>
+                {categories.map((c) => (
+                  <option key={c.id} value={c.id}>{c.name_ar}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* المهارات */}
+            <div>
+              <label className="mb-1.5 block text-sm font-bold text-primary">المهارات</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="اكتب مهارة واضغط إضافة"
+                  value={skillInput}
+                  onChange={(e) => setSkillInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      addSkill();
+                    }
+                  }}
+                  className="h-12 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+                />
+                <Button type="button" variant="outline" onClick={addSkill} className="h-12 shrink-0">
+                  إضافة
+                </Button>
+              </div>
+              {skills.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {skills.map((s) => (
+                    <span
+                      key={s}
+                      className="flex items-center gap-1 rounded-full bg-accent/10 px-3 py-1 text-xs font-bold text-accent"
+                    >
+                      {s}
+                      <button
+                        type="button"
+                        onClick={() => setSkills(skills.filter((x) => x !== s))}
+                        className="hover:text-destructive"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* نبذة */}
+            <div>
+              <label className="mb-1.5 block text-sm font-bold text-primary">نبذة عنك وعن خدماتك</label>
+              <textarea
+                required
+                rows={4}
+                placeholder="مثال: مصمم جرافيك بخبرة 5 سنوات في الهوية البصرية والتصميم الإعلاني..."
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+              />
+            </div>
+
+            {/* سنوات الخبرة */}
+            <div>
+              <label className="mb-1.5 block text-sm font-bold text-primary">سنوات الخبرة <span className="font-normal text-muted-foreground">(اختياري)</span></label>
+              <input
+                type="number"
+                min={0}
+                max={60}
+                placeholder="مثال: 5"
+                value={yearsExperience}
+                onChange={(e) => setYearsExperience(e.target.value)}
+                className="h-12 w-full rounded-lg border border-input bg-background px-3 text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+              />
+            </div>
+
+            <Button type="submit" disabled={busy} variant="hero" size="lg" className="w-full">
+              {busy ? "..." : "حفظ والبدء بإضافة خدمة"}
+            </Button>
+          </form>
+
+          <button
+            type="button"
+            onClick={onBack}
+            disabled={busy}
+            className="mt-4 flex w-full items-center justify-center gap-1 text-sm font-bold text-muted-foreground transition hover:text-primary"
+          >
+            <ArrowRight className="h-4 w-4" />
+            رجوع لاختيار نوع الحساب
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
