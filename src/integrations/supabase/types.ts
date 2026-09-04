@@ -311,8 +311,11 @@ export type Database = {
           created_at: string
           full_name: string | null
           id: string
+          identity_document_path: string | null
           is_verified: boolean | null
           languages: string[] | null
+          phone: string | null
+          phone_verified: boolean
           rating: number | null
           response_time_hours: number | null
           reviews_count: number | null
@@ -326,6 +329,7 @@ export type Database = {
           total_orders: number | null
           updated_at: string
           username: string | null
+          verification_status: string
           years_experience: number | null
         }
         Insert: {
@@ -336,8 +340,11 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id: string
+          identity_document_path?: string | null
           is_verified?: boolean | null
           languages?: string[] | null
+          phone?: string | null
+          phone_verified?: boolean
           rating?: number | null
           response_time_hours?: number | null
           reviews_count?: number | null
@@ -351,6 +358,7 @@ export type Database = {
           total_orders?: number | null
           updated_at?: string
           username?: string | null
+          verification_status?: string
           years_experience?: number | null
         }
         Update: {
@@ -361,8 +369,11 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id?: string
+          identity_document_path?: string | null
           is_verified?: boolean | null
           languages?: string[] | null
+          phone?: string | null
+          phone_verified?: boolean
           rating?: number | null
           response_time_hours?: number | null
           reviews_count?: number | null
@@ -376,6 +387,7 @@ export type Database = {
           total_orders?: number | null
           updated_at?: string
           username?: string | null
+          verification_status?: string
           years_experience?: number | null
         }
         Relationships: []
