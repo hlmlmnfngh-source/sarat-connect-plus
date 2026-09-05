@@ -168,6 +168,28 @@ function SettingsPage() {
         </Card>
 
         <Card className="p-6">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+            <h2 className="flex items-center gap-2 text-lg font-bold"><ShieldCheck className="h-5 w-5 text-accent" /> التحقق من الهوية</h2>
+            {idUpload.docPath ? (
+              <VerificationStatusBadge status={verStatus} />
+            ) : (
+              <span className="text-xs text-muted-foreground">لم ترفع وثيقة بعد</span>
+            )}
+          </div>
+          {verStatus === "approved" && idUpload.docPath ? (
+            <p className="text-sm text-muted-foreground">تم توثيق هويتك بنجاح، لا حاجة لأي إجراء إضافي.</p>
+          ) : (
+            <>
+              {verStatus === "rejected" && (
+                <p className="mb-3 text-sm text-destructive">تم رفض الوثيقة السابقة، يرجى رفع وثيقة واضحة وسارية المفعول.</p>
+              )}
+              <IdDocumentField u={idUpload} />
+            </>
+          )}
+        </Card>
+
+
+        <Card className="p-6">
           <h2 className="mb-4 flex items-center gap-2 text-lg font-bold"><Bell className="h-5 w-5 text-accent" /> تفضيلات الإشعارات</h2>
           <div className="space-y-4">
             {[
