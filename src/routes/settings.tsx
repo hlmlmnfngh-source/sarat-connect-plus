@@ -1,10 +1,16 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { User as UserIcon, Mail, Lock, Bell } from "lucide-react";
+import { User as UserIcon, Mail, Lock, Bell, ShieldCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import {
+  useIdDocumentUpload,
+  IdDocumentField,
+  VerificationStatusBadge,
+} from "@/components/site/VerificationStep";
 import { PageShell, PageHero } from "@/components/site/PageShell";
+
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -38,7 +44,11 @@ function SettingsPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  const [verStatus, setVerStatus] = useState<string>("pending");
+  const [docLoaded, setDocLoaded] = useState<string | null>(null);
+  const idUpload = useIdDocumentUpload(user?.id, docLoaded);
   const [prefs, setPrefs] = useState({ messages: true, orders: true, marketing: false });
+
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/auth" });
@@ -60,7 +70,7 @@ function SettingsPage() {
     setEmail(user.email ?? "");
     supabase
       .from("profiles")
-      .select("full_name, username, bio, avatar_url")
+      .select("full_name, username, bio, avatar_url, verification_status, identity_document_path")
       .eq("id", user.id)
       .maybeSingle()
       .then(({ data }) => {
@@ -69,8 +79,11 @@ function SettingsPage() {
         setUsername(data.username ?? "");
         setBio(data.bio ?? "");
         setAvatarUrl(data.avatar_url ?? "");
+        setVerStatus(data.verification_status ?? "pending");
+        setDocLoaded(data.identity_document_path ?? null);
       });
   }, [user]);
+
 
   const saveProfile = async () => {
     if (!user) return;
@@ -153,6 +166,28 @@ function SettingsPage() {
             <Button variant="outline" onClick={savePassword} disabled={busy}>تغيير كلمة المرور</Button>
           </div>
         </Card>
+
+        <Card className="p-6">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+            <h2 className="flex items-center gap-2 text-lg font-bold"><ShieldCheck className="h-5 w-5 text-accent" /> التحقق من الهوية</h2>
+            {idUpload.docPath ? (
+              <VerificationStatusBadge status={verStatus} />
+            ) : (
+              <span className="text-xs text-muted-foreground">لم ترفع وثيقة بعد</span>
+            )}
+          </div>
+          {verStatus === "approved" && idUpload.docPath ? (
+            <p className="text-sm text-muted-foreground">تم توثيق هويتك بنجاح، لا حاجة لأي إجراء إضافي.</p>
+          ) : (
+            <>
+              {verStatus === "rejected" && (
+                <p className="mb-3 text-sm text-destructive">تم رفض الوثيقة السابقة، يرجى رفع وثيقة واضحة وسارية المفعول.</p>
+              )}
+              <IdDocumentField u={idUpload} />
+            </>
+          )}
+        </Card>
+
 
         <Card className="p-6">
           <h2 className="mb-4 flex items-center gap-2 text-lg font-bold"><Bell className="h-5 w-5 text-accent" /> تفضيلات الإشعارات</h2>

@@ -309,6 +309,7 @@ export type Database = {
           bio: string | null
           cover_url: string | null
           created_at: string
+          email_verified: boolean
           full_name: string | null
           id: string
           identity_document_path: string | null
@@ -338,6 +339,7 @@ export type Database = {
           bio?: string | null
           cover_url?: string | null
           created_at?: string
+          email_verified?: boolean
           full_name?: string | null
           id: string
           identity_document_path?: string | null
@@ -367,6 +369,7 @@ export type Database = {
           bio?: string | null
           cover_url?: string | null
           created_at?: string
+          email_verified?: boolean
           full_name?: string | null
           id?: string
           identity_document_path?: string | null

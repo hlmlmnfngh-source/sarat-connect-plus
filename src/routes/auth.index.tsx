@@ -113,10 +113,12 @@ function AuthPage() {
     return (
       <VerificationStep
         userId={user?.id}
+        email={user?.email}
         onDone={() => navigate({ to: afterVerify })}
       />
     );
   }
+
 
   // خطوة اختيار الدور
   if (step === "choose-role") {
