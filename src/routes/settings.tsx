@@ -60,7 +60,7 @@ function SettingsPage() {
     setEmail(user.email ?? "");
     supabase
       .from("profiles")
-      .select("full_name, username, bio, avatar_url")
+      .select("full_name, username, bio, avatar_url, verification_status, identity_document_path")
       .eq("id", user.id)
       .maybeSingle()
       .then(({ data }) => {
@@ -69,8 +69,11 @@ function SettingsPage() {
         setUsername(data.username ?? "");
         setBio(data.bio ?? "");
         setAvatarUrl(data.avatar_url ?? "");
+        setVerStatus(data.verification_status ?? "pending");
+        setDocLoaded(data.identity_document_path ?? null);
       });
   }, [user]);
+
 
   const saveProfile = async () => {
     if (!user) return;
