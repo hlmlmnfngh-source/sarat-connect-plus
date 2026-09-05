@@ -69,7 +69,22 @@ function PublicProfile() {
     },
   });
 
+  const verificationQ = useQuery({
+    queryKey: ["profile-verification", userId],
+    enabled: isOwnProfile,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("verification_status, identity_document_path")
+        .eq("id", userId)
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+  });
+
   const p = profileQ.data;
+
 
   return (
     <PageShell>
