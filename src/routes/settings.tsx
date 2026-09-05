@@ -1,10 +1,16 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { User as UserIcon, Mail, Lock, Bell } from "lucide-react";
+import { User as UserIcon, Mail, Lock, Bell, ShieldCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import {
+  useIdDocumentUpload,
+  IdDocumentField,
+  VerificationStatusBadge,
+} from "@/components/site/VerificationStep";
 import { PageShell, PageHero } from "@/components/site/PageShell";
+
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -38,7 +44,11 @@ function SettingsPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  const [verStatus, setVerStatus] = useState<string>("pending");
+  const [docLoaded, setDocLoaded] = useState<string | null>(null);
+  const idUpload = useIdDocumentUpload(user?.id, docLoaded);
   const [prefs, setPrefs] = useState({ messages: true, orders: true, marketing: false });
+
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/auth" });
