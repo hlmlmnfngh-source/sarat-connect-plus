@@ -396,6 +396,7 @@ export interface FileRouteTypes {
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/services/$id/edit'
+    | '/orders'
     | '/services/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -474,6 +475,7 @@ export interface FileRouteTypes {
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/services/$id/edit'
+    | '/orders'
     | '/services/$id/'
   fileRoutesById: FileRoutesById
 }
@@ -748,6 +750,13 @@ declare module '@tanstack/react-router' {
       path: '/.mcp/list-tools'
       fullPath: '/.mcp/list-tools'
       preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/orders': {
+      id: '/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof OrdersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services/$id/': {
