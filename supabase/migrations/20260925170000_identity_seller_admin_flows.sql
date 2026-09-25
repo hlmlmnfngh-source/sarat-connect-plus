@@ -130,3 +130,40 @@ drop trigger if exists protect_sensitive_profile_fields on public.profiles;
 create trigger protect_sensitive_profile_fields
 before update on public.profiles
 for each row execute function public.protect_sensitive_profile_fields();
+
+
+-- Active services require the seller to have a confirmed email, approved identity, and payout account.
+drop policy if exists services_insert_own on public.services;
+create policy services_insert_own on public.services
+for insert to authenticated
+with check (
+  auth.uid() = seller_id
+  and (
+    status <> 'active'
+    or exists (
+      select 1 from public.profiles p
+      where p.id = auth.uid()
+        and p.email_verified = true
+        and p.verification_status = 'approved'
+        and p.stripe_onboarded = true
+    )
+  )
+);
+
+drop policy if exists services_update_own on public.services;
+create policy services_update_own on public.services
+for update to authenticated
+using (auth.uid() = seller_id)
+with check (
+  auth.uid() = seller_id
+  and (
+    status <> 'active'
+    or exists (
+      select 1 from public.profiles p
+      where p.id = auth.uid()
+        and p.email_verified = true
+        and p.verification_status = 'approved'
+        and p.stripe_onboarded = true
+    )
+  )
+);
