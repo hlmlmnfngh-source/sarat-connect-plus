@@ -90,7 +90,7 @@ export function Header({ mode, onModeChange }: HeaderProps) {
           {/* أي مستخدم مسجل يمكنه نشر مشروع أو إضافة خدمة */}
           {user && (
             <div className="hidden items-center gap-2 md:flex">
-              <Link to="/projects" className="inline-flex">
+              <Link to="/projects/new" className="inline-flex">
                 <Button variant="hero" size="default">
                   <Briefcase className="h-4 w-4" />
                   انشر مشروعك
@@ -168,7 +168,7 @@ export function Header({ mode, onModeChange }: HeaderProps) {
             <Link to="/about" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">من نحن</Link>
             {user && (
               <>
-                <Link to="/projects" className="rounded-md px-3 py-2 font-bold text-accent">+ انشر مشروعك</Link>
+                <Link to="/projects/new" className="rounded-md px-3 py-2 font-bold text-accent">+ انشر مشروعك</Link>
                 <Link to="/services/create" className="rounded-md px-3 py-2 font-bold text-accent">+ أضف خدمة</Link>
                 <Link to="/wallet" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">
                   <Wallet className="ml-1 inline h-4 w-4" /> المحفظة
