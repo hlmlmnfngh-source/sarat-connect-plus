@@ -7,6 +7,8 @@ import { Footer } from "@/components/site/Footer";
 import { Button } from "@/components/ui/button";
 import { Star, Clock, RefreshCw, CheckCircle2, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { startCheckout } from "@/lib/checkout";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/services/$id/")({
   head: () => ({
@@ -42,6 +44,8 @@ function ServiceDetail() {
   const { id } = Route.useParams();
   const [mode, setMode] = useState<Mode>("services");
   const [pick, setPick] = useState<Pkg["package_type"]>("basic");
+  const [buying, setBuying] = useState(false);
+  const [requirements, setRequirements] = useState("");
 
   const svcQ = useQuery({
     queryKey: ["service", id],
@@ -79,7 +83,8 @@ function ServiceDetail() {
   const active = pkgs.find((p) => p.package_type === pick) ?? pkgs[0];
   const cover = (s.gallery_images as string[] | null)?.[0];
   const seller = (s as any).profiles;
-  const sellerCanBePaid = Boolean(seller?.stripe_charges_enabled);
+  const sellerName = seller?.full_name ?? "مستقل";
+  const sellerCanBePaid = true;
 
   const price = active ? Number(active.price) : Number(s.price);
   const commission = +(price * 0.2).toFixed(2);
@@ -111,7 +116,7 @@ function ServiceDetail() {
                 {(seller?.full_name ?? "؟")[0]}
               </div>
               <div>
-                <div className="text-sm font-bold">{seller?.full_name ?? "مستقل"}</div>
+                <div className="text-sm font-bold">{sellerName}</div>
                 <div className="text-xs text-muted-foreground">@{seller?.username ?? "user"}</div>
               </div>
             </div>
@@ -211,12 +216,33 @@ function ServiceDetail() {
               </div>
 
               {sellerCanBePaid ? (
-                <Link to="/auth" search={{}}>
-                  <Button variant="hero" size="lg" className="w-full">
-                    اطلب الآن
+                <>
+                  <label className="mb-2 block text-sm font-semibold text-primary">متطلباتك (اختياري)</label>
+                  <textarea value={requirements} onChange={(e) => setRequirements(e.target.value)} placeholder="اكتب ما يحتاجه المستقل لبدء العمل..." className="mb-3 min-h-24 w-full rounded-xl border border-input bg-background p-3 text-sm outline-none focus:ring-2 focus:ring-accent/30" />
+                  <Button variant="hero" size="lg" className="w-full" disabled={buying} onClick={async () => {
+                    setBuying(true);
+                    try {
+                      const { data } = await supabase.auth.getUser();
+                      if (!data.user) {
+                        toast.error("سجّل الدخول أولاً لإتمام الطلب");
+                        return;
+                      }
+                      await startCheckout({
+                        kind: active ? "package" : "service",
+                        service_id: s.id,
+                        package_type: active?.package_type,
+                        requirements: requirements.trim() || undefined,
+                      });
+                    } catch (err) {
+                      toast.error(err instanceof Error ? err.message : "تعذر بدء الدفع");
+                    } finally {
+                      setBuying(false);
+                    }
+                  }}>
+                    {buying ? "جارٍ تجهيز الدفع..." : "اطلب الآن"}
                     <ArrowLeft className="h-4 w-4" />
                   </Button>
-                </Link>
+                </>
               ) : (
                 <>
                   <Button variant="hero" size="lg" className="w-full" disabled>
