@@ -39,6 +39,10 @@ import { Route as DashboardSellerRouteImport } from './routes/dashboard.seller'
 import { Route as DashboardBuyerRouteImport } from './routes/dashboard.buyer'
 import { Route as CategoriesCategoryRouteImport } from './routes/categories.$category'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
+import { Route as AuthVerifyEmailRouteImport } from './routes/auth.verify-email'
+import { Route as VerificationRouteImport } from './routes/verification'
+import { Route as SellerOnboardingRouteImport } from './routes/seller.onboarding'
+import { Route as AdminVerificationRouteImport } from './routes/admin.verification'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
@@ -193,6 +197,10 @@ const CategoriesCategoryRoute = CategoriesCategoryRouteImport.update({
   path: '/categories/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({ id: '/auth/verify-email', path: '/auth/verify-email', getParentRoute: () => rootRouteImport } as any)
+const VerificationRoute = VerificationRouteImport.update({ id: '/verification', path: '/verification', getParentRoute: () => rootRouteImport } as any)
+const SellerOnboardingRoute = SellerOnboardingRouteImport.update({ id: '/seller/onboarding', path: '/seller/onboarding', getParentRoute: () => rootRouteImport } as any)
+const AdminVerificationRoute = AdminVerificationRouteImport.update({ id: '/admin/verification', path: '/admin/verification', getParentRoute: () => rootRouteImport } as any)
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
   id: '/auth/reset-password',
   path: '/auth/reset-password',
@@ -260,6 +268,18 @@ export interface FileRoutesByFullPath {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
+  '/verification': typeof VerificationRoute
+  '/seller/onboarding': typeof SellerOnboardingRoute
+  '/admin/verification': typeof AdminVerificationRoute
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
+  '/verification': typeof VerificationRoute
+  '/seller/onboarding': typeof SellerOnboardingRoute
+  '/admin/verification': typeof AdminVerificationRoute
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
+  '/verification': typeof VerificationRoute
+  '/seller/onboarding': typeof SellerOnboardingRoute
+  '/admin/verification': typeof AdminVerificationRoute
   '/categories/$category': typeof CategoriesCategoryRoute
   '/dashboard/buyer': typeof DashboardBuyerRoute
   '/dashboard/seller': typeof DashboardSellerRoute
