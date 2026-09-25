@@ -53,9 +53,10 @@ serve(async (req) => {
       if (!userId || !["approved", "rejected"].includes(status)) throw new Error("بيانات المراجعة غير صالحة");
 
       const { data: target, error: targetError } = await admin.from("profiles")
-        .select("id,full_name,username,identity_document_path").eq("id", userId).maybeSingle();
+        .select("id,full_name,username,identity_document_path,email_verified").eq("id", userId).maybeSingle();
       if (targetError || !target) throw new Error("المستخدم غير موجود");
       if (!target.identity_document_path) throw new Error("لا توجد وثيقة هوية للمراجعة");
+      if (!target.email_verified) throw new Error("يجب تأكيد البريد الإلكتروني قبل اعتماد الهوية");
 
       const { error } = await admin.from("profiles").update({
         verification_status: status,
