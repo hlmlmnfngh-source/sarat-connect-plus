@@ -452,7 +452,7 @@ export function Landing() {
               <h2 className="mb-2 text-3xl font-extrabold text-primary md:text-4xl">أحدث المشاريع</h2>
               <p className="text-muted-foreground">مشاريع مفتوحة لاستقبال العروض</p>
             </div>
-            <Link to="/projects">
+            <Link to="/projects/new">
               <Button variant="hero">انشر مشروعك</Button>
             </Link>
           </div>
@@ -583,7 +583,7 @@ export function Landing() {
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Link to="/auth"><Button variant="hero" size="xl">سجّل كمستقل</Button></Link>
-              <Link to="/projects"><Button variant="heroOutline" size="xl">انشر مشروعاً</Button></Link>
+              <Link to="/projects/new"><Button variant="heroOutline" size="xl">انشر مشروعاً</Button></Link>
             </div>
           </div>
         </div>

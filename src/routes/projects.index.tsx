@@ -7,7 +7,7 @@ import { Footer } from "@/components/site/Footer";
 import { Button } from "@/components/ui/button";
 import { Users, Search } from "lucide-react";
 
-export const Route = createFileRoute("/projects")({
+export const Route = createFileRoute("/projects/")({
   head: () => ({
     meta: [
       { title: "المشاريع — سرعات" },
@@ -47,7 +47,7 @@ function ProjectsPage() {
               <h1 className="text-3xl font-extrabold md:text-4xl">المشاريع المفتوحة</h1>
               <p className="mt-2 text-white/70">قدّم عروضك على مشاريع من عملاء موثوقين.</p>
             </div>
-            <Link to="/auth"><Button variant="hero" size="lg">انشر مشروعك</Button></Link>
+            <Link to="/projects/new"><Button variant="hero" size="lg">انشر مشروعك</Button></Link>
           </div>
           <form
             onSubmit={(e) => { e.preventDefault(); setApplied(q); }}

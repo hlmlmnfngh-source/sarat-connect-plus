@@ -143,7 +143,7 @@ function BuyerDashboard() {
           </div>
           <div className="flex gap-2">
             <Link to="/services" search={{ q: undefined, category: undefined }}><Button variant="ghost" size="lg">تصفح الخدمات</Button></Link>
-            <Link to="/projects"><Button variant="hero" size="lg"><Plus className="h-4 w-4" /> انشر مشروعاً</Button></Link>
+            <Link to="/projects/new"><Button variant="hero" size="lg"><Plus className="h-4 w-4" /> انشر مشروعاً</Button></Link>
           </div>
         </div>
 
@@ -275,7 +275,7 @@ function BuyerDashboard() {
             {projects.length === 0 ? (
               <div className="p-8 text-center text-sm text-muted-foreground">
                 لم تنشر مشاريع بعد
-                <div className="mt-3"><Link to="/projects"><Button variant="hero" size="sm"><Plus className="h-4 w-4" /> انشر مشروعاً</Button></Link></div>
+                <div className="mt-3"><Link to="/projects/new"><Button variant="hero" size="sm"><Plus className="h-4 w-4" /> انشر مشروعاً</Button></Link></div>
               </div>
             ) : (
               <ul className="divide-y divide-border">
