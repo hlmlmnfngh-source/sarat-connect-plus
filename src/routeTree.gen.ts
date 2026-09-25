@@ -40,6 +40,7 @@ import { Route as DashboardBuyerRouteImport } from './routes/dashboard.buyer'
 import { Route as CategoriesCategoryRouteImport } from './routes/categories.$category'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
 import { Route as AuthVerifyEmailRouteImport } from './routes/auth.verify-email'
+import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as VerificationRouteImport } from './routes/verification'
 import { Route as SellerOnboardingRouteImport } from './routes/seller.onboarding'
 import { Route as AdminVerificationRouteImport } from './routes/admin.verification'
@@ -201,6 +202,7 @@ const CategoriesCategoryRoute = CategoriesCategoryRouteImport.update({
   path: '/categories/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FavoritesRoute = FavoritesRouteImport.update({ id: '/favorites', path: '/favorites', getParentRoute: () => rootRouteImport } as any)
 const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({ id: '/auth/verify-email', path: '/auth/verify-email', getParentRoute: () => rootRouteImport } as any)
 const VerificationRoute = VerificationRouteImport.update({ id: '/verification', path: '/verification', getParentRoute: () => rootRouteImport } as any)
 const SellerOnboardingRoute = SellerOnboardingRouteImport.update({ id: '/seller/onboarding', path: '/seller/onboarding', getParentRoute: () => rootRouteImport } as any)
@@ -251,6 +253,7 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/favorites': typeof FavoritesRoute
   '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/verification': typeof VerificationRoute
   '/seller/onboarding': typeof SellerOnboardingRoute
@@ -295,6 +298,7 @@ export interface FileRoutesByFullPath {
   '/services/$id/': typeof ServicesIdIndexRoute
 }
 export interface FileRoutesByTo {
+  '/favorites': typeof FavoritesRoute
   '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/verification': typeof VerificationRoute
   '/seller/onboarding': typeof SellerOnboardingRoute
@@ -339,6 +343,7 @@ export interface FileRoutesByTo {
   '/orders': typeof OrdersRoute
 }
 export interface FileRoutesById {
+  '/favorites': typeof FavoritesRoute
   '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/verification': typeof VerificationRoute
   '/seller/onboarding': typeof SellerOnboardingRoute
@@ -386,6 +391,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/favorites'
     | '/auth/verify-email'
     | '/verification'
     | '/seller/onboarding'
@@ -430,6 +436,7 @@ export interface FileRouteTypes {
     | '/services/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/favorites'
     | '/auth/verify-email'
     | '/verification'
     | '/seller/onboarding'
@@ -472,6 +479,7 @@ export interface FileRouteTypes {
     | '/services/$id/edit'
     | '/services/$id'
   id:
+    | '/favorites'
     | '/auth/verify-email'
     | '/verification'
     | '/seller/onboarding'
@@ -518,6 +526,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  FavoritesRoute: typeof FavoritesRoute
   AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
   VerificationRoute: typeof VerificationRoute
   SellerOnboardingRoute: typeof SellerOnboardingRoute
@@ -563,6 +572,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/favorites': {
+      id: '/favorites'
+      path: '/favorites'
+      fullPath: '/favorites'
+      preLoaderRoute: typeof FavoritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth/verify-email': {
       id: '/auth/verify-email'
       path: '/auth/verify-email'
