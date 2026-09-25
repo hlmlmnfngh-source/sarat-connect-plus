@@ -6,7 +6,7 @@ import {
   Sparkles, ChevronLeft, LayoutGrid, ShieldCheck, MessagesSquare,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Header, type Mode } from "./Header";
+import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
@@ -65,12 +65,9 @@ async function countOf(
 }
 
 export function Landing() {
-  const [mode, setMode] = useState<Mode>("services");
   const [animatedText, setAnimatedText] = useState(0);
   const [q, setQ] = useState("");
-  const headlines = mode === "services"
-    ? ["اعثر على الخدمة المثالية", "بباقات وأسعار واضحة", "ودفع محمي حتى التسليم"]
-    : ["انشر مشروعك الآن", "واستقبل عروض المستقلين", "خلال دقائق معدودة"];
+  const headlines = ["اعثر على الخدمة المثالية", "بباقات وأسعار واضحة", "ودفع محمي حتى التسليم"];
 
   useEffect(() => {
     const id = setInterval(() => setAnimatedText((i) => (i + 1) % headlines.length), 2800);
@@ -155,7 +152,7 @@ export function Landing() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header mode={mode} onModeChange={setMode} />
+      <Header mode="services" onModeChange={() => undefined} />
 
       {/* HERO */}
       <section className="relative overflow-hidden bg-gradient-hero text-primary-foreground">
@@ -180,30 +177,8 @@ export function Landing() {
                 <span className="mt-2 block text-white/90">على منصة سرعات</span>
               </h1>
               <p className="mb-8 max-w-xl text-lg text-white/70">
-                منصة واحدة تجمع الخدمات الجاهزة والمشاريع المخصصة. اشترِ خدمة بسعر ثابت، أو انشر مشروعك واستقبل عروض المستقلين العرب.
+                تصفّح الخدمات الرقمية الجاهزة، قارن الأسعار والتقييمات والباقات، ثم اطلب الخدمة المناسبة من مستقل عربي بثقة.
               </p>
-
-              {/* Mode toggle */}
-              <div className="mb-5 inline-flex rounded-2xl border border-white/10 bg-white/5 p-1.5 backdrop-blur">
-                <button
-                  onClick={() => setMode("services")}
-                  className={cn(
-                    "rounded-xl px-6 py-2.5 text-sm font-bold transition-all",
-                    mode === "services" ? "bg-accent text-accent-foreground shadow-glow" : "text-white/70 hover:text-white",
-                  )}
-                >
-                  أبحث عن خدمة
-                </button>
-                <button
-                  onClick={() => setMode("projects")}
-                  className={cn(
-                    "rounded-xl px-6 py-2.5 text-sm font-bold transition-all",
-                    mode === "projects" ? "bg-accent text-accent-foreground shadow-glow" : "text-white/70 hover:text-white",
-                  )}
-                >
-                  لدي مشروع
-                </button>
-              </div>
 
               {/* Search bar */}
               <div className="flex flex-col gap-3 rounded-2xl bg-white/95 p-2 shadow-elevated sm:flex-row">
@@ -213,7 +188,7 @@ export function Landing() {
                     value={q}
                     onChange={(e) => setQ(e.target.value)}
                     type="search"
-                    placeholder={mode === "services" ? "جرّب: تصميم شعار، تطوير موقع، حملة إعلانية..." : "جرّب: متجر إلكتروني، تطبيق جوال..."}
+                    placeholder="جرّب: تصميم شعار، تطوير موقع، حملة إعلانية..."
                     className="h-12 w-full rounded-xl border-0 bg-transparent pr-12 pl-4 text-base text-foreground outline-none placeholder:text-muted-foreground"
                   />
                 </div>
@@ -338,22 +313,15 @@ export function Landing() {
           <div className="mb-12 text-center">
             <h2 className="mb-3 text-3xl font-extrabold text-primary md:text-4xl">كيف تعمل سرعات؟</h2>
             <p className="mx-auto max-w-xl text-muted-foreground">
-              {mode === "services" ? "ثلاث خطوات بسيطة للحصول على خدمتك" : "ثلاث خطوات لنشر مشروعك واستقبال العروض"}
+              ثلاث خطوات بسيطة للحصول على خدمتك
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
-            {(mode === "services"
-              ? [
-                  { icon: Search, title: "1. ابحث واكتشف", text: "تصفّح الخدمات المنشورة على المنصة أو ابحث بالكلمة المفتاحية." },
-                  { icon: Zap, title: "2. اطلب الخدمة", text: "اختر الباقة المناسبة، أرسل المتطلبات، وتابع التقدم لحظة بلحظة." },
-                  { icon: CheckCircle2, title: "3. استلم وقيّم", text: "استلم العمل، اطلب تعديلات إن لزم، ثم قيّم المستقل لمساعدة الآخرين." },
-                ]
-              : [
-                  { icon: PenTool, title: "1. انشر مشروعك", text: "اكتب وصفاً واضحاً، حدّد الميزانية والمدة، واختر المهارات المطلوبة." },
-                  { icon: Users, title: "2. استقبل العروض", text: "يتقدم المستقلون بعروض مفصلة، قارن بينها وراجع ملفاتهم الشخصية." },
-                  { icon: TrendingUp, title: "3. ابدأ وأنجز", text: "اختر المستقل المناسب، تابع المشروع عبر لوحة الإدارة، وادفع بأمان." },
-                ]
-            ).map((s) => (
+            {[
+              { icon: Search, title: "1. ابحث واكتشف", text: "تصفّح الخدمات المنشورة على المنصة أو ابحث بالكلمة المفتاحية." },
+              { icon: Zap, title: "2. اطلب الخدمة", text: "اختر الباقة المناسبة، أرسل المتطلبات، وتابع التقدم لحظة بلحظة." },
+              { icon: CheckCircle2, title: "3. استلم وقيّم", text: "استلم العمل، اطلب تعديلات إن لزم، ثم قيّم المستقل لمساعدة الآخرين." },
+            ].map((s) => (
               <div key={s.title} className="rounded-2xl border border-border bg-gradient-card p-7 shadow-soft transition hover:shadow-elevated">
                 <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-accent shadow-glow">
                   <s.icon className="h-7 w-7 text-accent-foreground" />
@@ -449,8 +417,8 @@ export function Landing() {
         <div className="container mx-auto px-4 lg:px-6">
           <div className="mb-10 flex items-end justify-between">
             <div>
-              <h2 className="mb-2 text-3xl font-extrabold text-primary md:text-4xl">أحدث المشاريع</h2>
-              <p className="text-muted-foreground">مشاريع مفتوحة لاستقبال العروض</p>
+              <h2 className="mb-2 text-3xl font-extrabold text-primary md:text-4xl">تحتاج خدمة مخصصة؟</h2>
+              <p className="text-muted-foreground">إذا لم تجد ما تحتاجه، انشر مشروعاً مخصصاً واستقبل عروض المستقلين</p>
             </div>
             <Link to="/projects/new">
               <Button variant="hero">انشر مشروعك</Button>
@@ -579,11 +547,11 @@ export function Landing() {
           <div className="relative">
             <h2 className="mb-4 text-3xl font-extrabold md:text-5xl">ابدأ رحلتك مع سرعات اليوم</h2>
             <p className="mx-auto mb-8 max-w-2xl text-lg text-white/80">
-              انضم إلى المنصة كمستقل أو كصاحب عمل، وابدأ أول تعاون لك.
+              اشترِ خدمة جاهزة أو انضم كمستقل لعرض خدماتك أمام العملاء العرب.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Link to="/auth"><Button variant="hero" size="xl">سجّل كمستقل</Button></Link>
-              <Link to="/projects/new"><Button variant="heroOutline" size="xl">انشر مشروعاً</Button></Link>
+              <Link to="/services"><Button variant="heroOutline" size="xl">تصفح الخدمات</Button></Link>
             </div>
           </div>
         </div>
