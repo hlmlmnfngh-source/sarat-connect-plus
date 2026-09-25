@@ -86,6 +86,15 @@ serve(async (req) => {
           });
 
           // Seller earns the amount net of the 20% platform commission.
+          await admin.from("notifications").insert({
+            user_id: sellerId,
+            type: "payment",
+            title: "تم استلام طلب جديد",
+            message: "تم تأكيد الدفع ويمكنك البدء بتنفيذ الطلب.",
+            link: "/orders",
+            is_read: false,
+          });
+
           await admin.from("transactions").insert({
             user_id: sellerId,
             type: "earning",

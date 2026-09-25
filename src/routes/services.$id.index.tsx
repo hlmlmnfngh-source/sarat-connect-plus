@@ -84,11 +84,11 @@ function ServiceDetail() {
   const cover = (s.gallery_images as string[] | null)?.[0];
   const seller = (s as any).profiles;
   const sellerName = seller?.full_name ?? "مستقل";
-  const sellerCanBePaid = true;
+  const sellerCanBePaid = Boolean(seller?.stripe_charges_enabled);
 
   const price = active ? Number(active.price) : Number(s.price);
   const commission = +(price * 0.2).toFixed(2);
-  const total = +(price + commission).toFixed(2);
+  const total = price;
 
   return (
     <div className="min-h-screen bg-background">
@@ -211,7 +211,7 @@ function ServiceDetail() {
 
               <div className="mb-5 rounded-xl bg-muted/60 p-3 text-xs text-foreground/80">
                 <div className="mb-1 flex justify-between"><span>سعر الخدمة</span><span>${price.toFixed(2)}</span></div>
-                <div className="mb-1 flex justify-between text-muted-foreground"><span>عمولة المنصة (20%)</span><span>${commission.toFixed(2)}</span></div>
+                <div className="mb-1 flex justify-between text-muted-foreground"><span>عمولة المنصة (20%)</span><span>مضمنة</span></div>
                 <div className="mt-2 flex justify-between border-t border-border pt-2 font-bold text-primary"><span>الإجمالي</span><span>${total.toFixed(2)}</span></div>
               </div>
 

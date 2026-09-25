@@ -43,6 +43,7 @@ import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-pas
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as ServicesIdIndexRouteImport } from './routes/services.$id.index'
+import { Route as OrdersRouteImport } from './routes/orders'
 import { Route as ServicesIdEditRouteImport } from './routes/services.$id.edit'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
@@ -214,6 +215,7 @@ const Char91DotmcpChar93ListToolsRoute =
     path: '/.mcp/list-tools',
     getParentRoute: () => rootRouteImport,
   } as any)
+const OrdersRoute = OrdersRouteImport.update({ id: '/orders', path: '/orders', getParentRoute: () => rootRouteImport } as any)
 const ServicesIdIndexRoute = ServicesIdIndexRouteImport.update({
   id: '/services/$id/',
   path: '/services/$id/',
@@ -273,6 +275,7 @@ export interface FileRoutesByFullPath {
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
+  '/orders': typeof OrdersRoute
   '/services/$id/': typeof ServicesIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -816,6 +819,7 @@ const rootRouteChildren: RootRouteChildren = {
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
   ServicesIdEditRoute: ServicesIdEditRoute,
+  OrdersRoute: OrdersRoute,
   ServicesIdIndexRoute: ServicesIdIndexRoute,
 }
 export const routeTree = rootRouteImport
