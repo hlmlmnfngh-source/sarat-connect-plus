@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Search, Menu, Briefcase, Sparkles, MessageCircle, LogOut, Plus, Bell, Settings, User as UserIcon, Wallet } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
@@ -18,6 +18,7 @@ export function Header({ mode, onModeChange }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
   const { user, signOut } = useAuth();
+  const [isStaff, setIsStaff] = useState(false);
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -27,6 +28,12 @@ export function Header({ mode, onModeChange }: HeaderProps) {
   };
 
   const searchTab = mode === "projects" ? "projects" : "services";
+
+  useEffect(() => {
+    if (!user) { setIsStaff(false); return; }
+    supabase.from("user_roles").select("role").eq("user_id", user.id).in("role", ["admin", "moderator"]).maybeSingle()
+      .then(({ data }) => setIsStaff(Boolean(data)));
+  }, [user]);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/85 backdrop-blur-md">
