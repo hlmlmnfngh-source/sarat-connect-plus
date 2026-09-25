@@ -101,7 +101,7 @@ function SellerDashboard() {
             <h1 className="text-3xl font-extrabold text-primary">لوحة تحكم البائع</h1>
             <p className="mt-1 text-sm text-muted-foreground">مرحباً {user?.user_metadata?.full_name ?? "بك"} 👋</p>
           </div>
-          <Button variant="hero" size="lg"><Plus className="h-4 w-4" /> إضافة خدمة جديدة</Button>
+          <div className="flex gap-2"><Link to="/orders"><Button variant="hero" size="lg">إدارة الطلبات</Button></Link><Link to="/services/create"><Button variant="outline" size="lg"><Plus className="h-4 w-4" /> إضافة خدمة</Button></Link></div>
         </div>
 
         <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
