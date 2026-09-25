@@ -276,7 +276,6 @@ export interface FileRoutesByFullPath {
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
   '/orders': typeof OrdersRoute
-  '/orders': typeof OrdersRoute
   '/services/$id/': typeof ServicesIdIndexRoute
 }
 export interface FileRoutesByTo {
