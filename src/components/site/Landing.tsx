@@ -6,7 +6,7 @@ import {
   Sparkles, ChevronLeft, LayoutGrid, ShieldCheck, MessagesSquare,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Header, type Mode } from "./Header";
+import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
