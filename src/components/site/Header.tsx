@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { Search, Menu, Briefcase, Sparkles, MessageCircle, LogOut, Plus, Bell, Settings, User as UserIcon, Wallet } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export type Mode = "services" | "projects";
 
@@ -18,6 +19,7 @@ export function Header({ mode, onModeChange }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
   const { user, signOut } = useAuth();
+  const [isStaff, setIsStaff] = useState(false);
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -27,6 +29,12 @@ export function Header({ mode, onModeChange }: HeaderProps) {
   };
 
   const searchTab = mode === "projects" ? "projects" : "services";
+
+  useEffect(() => {
+    if (!user) { setIsStaff(false); return; }
+    supabase.from("user_roles").select("role").eq("user_id", user.id).in("role", ["admin", "moderator"]).maybeSingle()
+      .then(({ data }) => setIsStaff(Boolean(data)));
+  }, [user]);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/85 backdrop-blur-md">
@@ -107,6 +115,11 @@ export function Header({ mode, onModeChange }: HeaderProps) {
               <Link to="/messages" className="hidden h-9 w-9 items-center justify-center rounded-full text-foreground/70 hover:bg-muted sm:inline-flex">
                 <MessageCircle className="h-5 w-5" />
               </Link>
+              {isStaff && (
+                <Link to="/admin/verification" className="hidden rounded-md px-2 py-2 text-xs font-bold text-accent sm:inline-flex">
+                  مراجعة الهوية
+                </Link>
+              )}
               <Link to="/settings" className="hidden h-9 w-9 items-center justify-center rounded-full text-foreground/70 hover:bg-muted sm:inline-flex" aria-label="الإعدادات">
                 <Settings className="h-5 w-5" />
               </Link>
@@ -151,6 +164,7 @@ export function Header({ mode, onModeChange }: HeaderProps) {
                   <UserIcon className="ml-1 inline h-4 w-4" /> ملفي الشخصي
                 </Link>
                 <Link to="/settings" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">الإعدادات</Link>
+                {isStaff && <Link to="/admin/verification" className="rounded-md px-3 py-2 font-bold text-accent">مراجعة الهوية</Link>}
               </>
             )}
             {!user && (

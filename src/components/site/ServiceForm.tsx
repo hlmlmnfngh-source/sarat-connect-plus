@@ -16,6 +16,7 @@ export function ServiceForm({ serviceId }: Props) {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [cats, setCats] = useState<{ id: string; name_ar: string }[]>([]);
+  const [sellerReady, setSellerReady] = useState<boolean | null>(null);
   const [busy, setBusy] = useState(false);
   const [form, setForm] = useState({
     title: "",
@@ -35,6 +36,9 @@ export function ServiceForm({ serviceId }: Props) {
   }, [loading, user, navigate]);
 
   useEffect(() => {
+    if (!user) return;
+    supabase.from("profiles").select("email_verified,verification_status,stripe_onboarded,account_type").eq("id", user.id).maybeSingle()
+      .then(({ data }) => setSellerReady(Boolean(data && data.email_verified && data.verification_status === "approved" && data.stripe_onboarded)));
     supabase
       .from("categories")
       .select("id, name_ar")
@@ -69,6 +73,11 @@ export function ServiceForm({ serviceId }: Props) {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
+    if (!serviceId && sellerReady === false && form.status === "active") {
+      toast.error("لنشر خدمة فعّالة، أكمل تأكيد البريد وتوثيق الهوية وربط حساب استلام المدفوعات.");
+      navigate({ to: "/seller/onboarding" });
+      return;
+    }
     if (form.title.trim().length < 10) return toast.error("العنوان يجب ألا يقل عن ١٠ أحرف");
     if (form.description.trim().length < 30) return toast.error("الوصف يجب ألا يقل عن ٣٠ حرفًا");
     setBusy(true);

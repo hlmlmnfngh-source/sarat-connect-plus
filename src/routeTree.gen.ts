@@ -39,6 +39,11 @@ import { Route as DashboardSellerRouteImport } from './routes/dashboard.seller'
 import { Route as DashboardBuyerRouteImport } from './routes/dashboard.buyer'
 import { Route as CategoriesCategoryRouteImport } from './routes/categories.$category'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
+import { Route as AuthVerifyEmailRouteImport } from './routes/auth.verify-email'
+import { Route as FavoritesRouteImport } from './routes/favorites'
+import { Route as VerificationRouteImport } from './routes/verification'
+import { Route as SellerOnboardingRouteImport } from './routes/seller.onboarding'
+import { Route as AdminVerificationRouteImport } from './routes/admin.verification'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
@@ -50,6 +55,10 @@ import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.
 
 const WalletRoute = WalletRouteImport.update({
   id: '/wallet',
+    | '/auth/verify-email'
+    | '/verification'
+    | '/seller/onboarding'
+    | '/admin/verification'
   path: '/wallet',
   getParentRoute: () => rootRouteImport,
 } as any)
@@ -193,6 +202,11 @@ const CategoriesCategoryRoute = CategoriesCategoryRouteImport.update({
   path: '/categories/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FavoritesRoute = FavoritesRouteImport.update({ id: '/favorites', path: '/favorites', getParentRoute: () => rootRouteImport } as any)
+const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({ id: '/auth/verify-email', path: '/auth/verify-email', getParentRoute: () => rootRouteImport } as any)
+const VerificationRoute = VerificationRouteImport.update({ id: '/verification', path: '/verification', getParentRoute: () => rootRouteImport } as any)
+const SellerOnboardingRoute = SellerOnboardingRouteImport.update({ id: '/seller/onboarding', path: '/seller/onboarding', getParentRoute: () => rootRouteImport } as any)
+const AdminVerificationRoute = AdminVerificationRouteImport.update({ id: '/admin/verification', path: '/admin/verification', getParentRoute: () => rootRouteImport } as any)
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
   id: '/auth/reset-password',
   path: '/auth/reset-password',
@@ -239,6 +253,11 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/favorites': typeof FavoritesRoute
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
+  '/verification': typeof VerificationRoute
+  '/seller/onboarding': typeof SellerOnboardingRoute
+  '/admin/verification': typeof AdminVerificationRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
@@ -279,6 +298,11 @@ export interface FileRoutesByFullPath {
   '/services/$id/': typeof ServicesIdIndexRoute
 }
 export interface FileRoutesByTo {
+  '/favorites': typeof FavoritesRoute
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
+  '/verification': typeof VerificationRoute
+  '/seller/onboarding': typeof SellerOnboardingRoute
+  '/admin/verification': typeof AdminVerificationRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
@@ -316,8 +340,14 @@ export interface FileRoutesByTo {
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
   '/services/$id': typeof ServicesIdIndexRoute
+  '/orders': typeof OrdersRoute
 }
 export interface FileRoutesById {
+  '/favorites': typeof FavoritesRoute
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
+  '/verification': typeof VerificationRoute
+  '/seller/onboarding': typeof SellerOnboardingRoute
+  '/admin/verification': typeof AdminVerificationRoute
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
@@ -356,10 +386,16 @@ export interface FileRoutesById {
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
   '/services/$id/': typeof ServicesIdIndexRoute
+  '/orders': typeof OrdersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/favorites'
+    | '/auth/verify-email'
+    | '/verification'
+    | '/seller/onboarding'
+    | '/admin/verification'
     | '/'
     | '/about'
     | '/blog'
@@ -400,6 +436,11 @@ export interface FileRouteTypes {
     | '/services/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/favorites'
+    | '/auth/verify-email'
+    | '/verification'
+    | '/seller/onboarding'
+    | '/admin/verification'
     | '/'
     | '/about'
     | '/blog'
@@ -438,6 +479,11 @@ export interface FileRouteTypes {
     | '/services/$id/edit'
     | '/services/$id'
   id:
+    | '/favorites'
+    | '/auth/verify-email'
+    | '/verification'
+    | '/seller/onboarding'
+    | '/admin/verification'
     | '__root__'
     | '/'
     | '/about'
@@ -480,6 +526,11 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  FavoritesRoute: typeof FavoritesRoute
+  AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
+  VerificationRoute: typeof VerificationRoute
+  SellerOnboardingRoute: typeof SellerOnboardingRoute
+  AdminVerificationRoute: typeof AdminVerificationRoute
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   BlogRoute: typeof BlogRoute
@@ -521,6 +572,41 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/favorites': {
+      id: '/favorites'
+      path: '/favorites'
+      fullPath: '/favorites'
+      preLoaderRoute: typeof FavoritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/verify-email': {
+      id: '/auth/verify-email'
+      path: '/auth/verify-email'
+      fullPath: '/auth/verify-email'
+      preLoaderRoute: typeof AuthVerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verification': {
+      id: '/verification'
+      path: '/verification'
+      fullPath: '/verification'
+      preLoaderRoute: typeof VerificationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seller/onboarding': {
+      id: '/seller/onboarding'
+      path: '/seller/onboarding'
+      fullPath: '/seller/onboarding'
+      preLoaderRoute: typeof SellerOnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/verification': {
+      id: '/admin/verification'
+      path: '/admin/verification'
+      fullPath: '/admin/verification'
+      preLoaderRoute: typeof AdminVerificationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/wallet': {
       id: '/wallet'
       path: '/wallet'
@@ -830,6 +916,10 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesIdEditRoute: ServicesIdEditRoute,
   OrdersRoute: OrdersRoute,
   ServicesIdIndexRoute: ServicesIdIndexRoute,
+  AuthVerifyEmailRoute: AuthVerifyEmailRoute,
+  VerificationRoute: VerificationRoute,
+  SellerOnboardingRoute: SellerOnboardingRoute,
+  AdminVerificationRoute: AdminVerificationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

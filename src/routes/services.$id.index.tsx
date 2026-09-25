@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Header, type Mode } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Button } from "@/components/ui/button";
-import { Star, Clock, RefreshCw, CheckCircle2, ArrowLeft } from "lucide-react";
+import { Star, Clock, RefreshCw, CheckCircle2, ArrowLeft, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { startCheckout } from "@/lib/checkout";
 import { toast } from "sonner";
@@ -46,6 +46,7 @@ function ServiceDetail() {
   const [pick, setPick] = useState<Pkg["package_type"]>("basic");
   const [buying, setBuying] = useState(false);
   const [requirements, setRequirements] = useState("");
+  const [favorite, setFavorite] = useState(false);
 
   const svcQ = useQuery({
     queryKey: ["service", id],
@@ -63,6 +64,29 @@ function ServiceDetail() {
       return data;
     },
   });
+
+  useQuery({
+    queryKey: ["favorite", id],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return false;
+      const { data } = await supabase.from("favorites").select("id").eq("user_id", user.id).eq("service_id", id).maybeSingle();
+      setFavorite(Boolean(data));
+      return Boolean(data);
+    },
+  });
+
+  const toggleFavorite = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { toast.error("سجّل الدخول لحفظ الخدمة"); return; }
+    if (favorite) {
+      const { error } = await supabase.from("favorites").delete().eq("user_id", user.id).eq("service_id", id);
+      if (error) toast.error(error.message); else setFavorite(false);
+    } else {
+      const { error } = await supabase.from("favorites").insert({ user_id: user.id, service_id: id });
+      if (error) toast.error(error.message); else setFavorite(true);
+    }
+  };
 
   const pkgsQ = useQuery({
     queryKey: ["packages", id],
@@ -111,6 +135,10 @@ function ServiceDetail() {
           <h1 className="mb-4 text-2xl font-extrabold text-primary md:text-3xl">{s.title}</h1>
 
           <div className="mb-6 flex flex-wrap items-center gap-4">
+            <Button variant="outline" size="sm" onClick={() => void toggleFavorite()} className="mr-auto">
+              <Heart className={cn("h-4 w-4", favorite && "fill-current text-accent")} />
+              {favorite ? "محفوظة" : "حفظ الخدمة"}
+            </Button>
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-accent text-sm font-bold text-accent-foreground">
                 {(seller?.full_name ?? "؟")[0]}

@@ -197,6 +197,17 @@ export function useEmailVerification(userId: string | undefined, email: string |
   const [verifying, setVerifying] = useState(false);
   const [emailVerified, setEmailVerified] = useState(false);
 
+  useEffect(() => {
+    let active = true;
+    supabase.auth.getUser().then(async ({ data }) => {
+      const confirmed = Boolean(data.user?.email_confirmed_at);
+      if (!active || !confirmed) return;
+      setEmailVerified(true);
+      if (userId) await supabase.from("profiles").update({ email_verified: true }).eq("id", userId);
+    });
+    return () => { active = false; };
+  }, [userId]);
+
   const sendCode = async () => {
     if (!email) {
       toast.error("لا يوجد بريد إلكتروني مرتبط بحسابك");

@@ -30,6 +30,7 @@ function AuthPage() {
   const [fullName, setFullName] = useState("");
   const [busy, setBusy] = useState(false);
   const [afterVerify, setAfterVerify] = useState<"/" | "/services/create">("/");
+  const [signupVerificationComplete, setSignupVerificationComplete] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
   const { next } = Route.useSearch();
@@ -57,9 +58,10 @@ function AuthPage() {
           },
         });
         if (error) throw error;
-        // بعد التسجيل، اعرض خطوة اختيار الدور
-        setStep("choose-role");
-        toast.success("تم إنشاء الحساب! اختر نوع حسابك.");
+        // التسجيل قد يعيد مستخدمًا بلا جلسة عندما تكون تأكيدات البريد مفعّلة.
+        // لذلك نمر أولًا عبر البريد + الهوية، ثم نختار الدور بعد اكتمال التوثيق.
+        setStep("verify");
+        toast.success("تم إنشاء الحساب. أكمل توثيق البريد والهوية للمتابعة.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
@@ -101,7 +103,8 @@ function AuthPage() {
       }
       toast.success("مرحباً بك كمشتري!");
       setAfterVerify("/");
-      setStep("verify");
+      if (signupVerificationComplete) navigate({ to: "/" });
+      else setStep("verify");
     } catch {
       toast.error("حدث خطأ في حفظ البيانات");
     } finally {
@@ -114,7 +117,14 @@ function AuthPage() {
       <VerificationStep
         userId={user?.id}
         email={user?.email}
-        onDone={() => navigate({ to: afterVerify })}
+        onDone={() => {
+          if (mode === "signup" && !signupVerificationComplete) {
+            setSignupVerificationComplete(true);
+            setStep("choose-role");
+          } else {
+            navigate({ to: afterVerify });
+          }
+        }}
       />
     );
   }
@@ -182,7 +192,8 @@ function AuthPage() {
         onBack={() => setStep("choose-role")}
         onDone={() => {
           setAfterVerify("/services/create");
-          setStep("verify");
+          if (signupVerificationComplete) navigate({ to: "/seller/onboarding" });
+          else setStep("verify");
         }}
       />
     );
