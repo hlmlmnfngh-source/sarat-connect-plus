@@ -103,7 +103,8 @@ function AuthPage() {
       }
       toast.success("مرحباً بك كمشتري!");
       setAfterVerify("/");
-      setStep("verify");
+      if (signupVerificationComplete) navigate({ to: "/" });
+      else setStep("verify");
     } catch {
       toast.error("حدث خطأ في حفظ البيانات");
     } finally {
