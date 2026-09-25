@@ -381,6 +381,7 @@ export interface FileRoutesById {
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
   '/services/$id/': typeof ServicesIdIndexRoute
+  '/orders': typeof OrdersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -471,6 +472,10 @@ export interface FileRouteTypes {
     | '/services/$id/edit'
     | '/services/$id'
   id:
+    | '/auth/verify-email'
+    | '/verification'
+    | '/seller/onboarding'
+    | '/admin/verification'
     | '__root__'
     | '/'
     | '/about'
@@ -558,6 +563,34 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth/verify-email': {
+      id: '/auth/verify-email'
+      path: '/auth/verify-email'
+      fullPath: '/auth/verify-email'
+      preLoaderRoute: typeof AuthVerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verification': {
+      id: '/verification'
+      path: '/verification'
+      fullPath: '/verification'
+      preLoaderRoute: typeof VerificationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seller/onboarding': {
+      id: '/seller/onboarding'
+      path: '/seller/onboarding'
+      fullPath: '/seller/onboarding'
+      preLoaderRoute: typeof SellerOnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/verification': {
+      id: '/admin/verification'
+      path: '/admin/verification'
+      fullPath: '/admin/verification'
+      preLoaderRoute: typeof AdminVerificationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/wallet': {
       id: '/wallet'
       path: '/wallet'
