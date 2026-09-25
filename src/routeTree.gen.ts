@@ -30,6 +30,7 @@ import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
 import { Route as AuthIndexRouteImport } from './routes/auth.index'
 import { Route as ServicesCreateRouteImport } from './routes/services.create'
+import { Route as ProjectsNewRouteImport } from './routes/projects.new'
 import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
 import { Route as ProfileUserIdRouteImport } from './routes/profile.$userId'
 import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
@@ -151,10 +152,15 @@ const ServicesCreateRoute = ServicesCreateRouteImport.update({
   path: '/services/create',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProjectsIdRoute = ProjectsIdRouteImport.update({
-  id: '/projects/$id',
-  path: '/projects/$id',
+const ProjectsNewRoute = ProjectsNewRouteImport.update({
+  id: '/projects/new',
+  path: '/projects/new',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsIdRoute = ProjectsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => ProjectsRoute,
 } as any)
 const ProfileUserIdRoute = ProfileUserIdRouteImport.update({
   id: '/profile/$userId',
@@ -259,6 +265,7 @@ export interface FileRoutesByFullPath {
   '/payment/success': typeof PaymentSuccessRoute
   '/profile/$userId': typeof ProfileUserIdRoute
   '/projects/$id': typeof ProjectsIdRoute
+  '/projects/new': typeof ProjectsNewRoute
   '/services/create': typeof ServicesCreateRoute
   '/auth/': typeof AuthIndexRoute
   '/projects/': typeof ProjectsIndexRoute
@@ -297,6 +304,7 @@ export interface FileRoutesByTo {
   '/payment/success': typeof PaymentSuccessRoute
   '/profile/$userId': typeof ProfileUserIdRoute
   '/projects/$id': typeof ProjectsIdRoute
+  '/projects/new': typeof ProjectsNewRoute
   '/services/create': typeof ServicesCreateRoute
   '/auth': typeof AuthIndexRoute
   '/projects': typeof ProjectsIndexRoute
@@ -336,6 +344,7 @@ export interface FileRoutesById {
   '/payment/success': typeof PaymentSuccessRoute
   '/profile/$userId': typeof ProfileUserIdRoute
   '/projects/$id': typeof ProjectsIdRoute
+  '/projects/new': typeof ProjectsNewRoute
   '/services/create': typeof ServicesCreateRoute
   '/auth/': typeof AuthIndexRoute
   '/projects/': typeof ProjectsIndexRoute
@@ -376,6 +385,7 @@ export interface FileRouteTypes {
     | '/payment/success'
     | '/profile/$userId'
     | '/projects/$id'
+    | '/projects/new'
     | '/services/create'
     | '/auth/'
     | '/projects/'
@@ -414,6 +424,7 @@ export interface FileRouteTypes {
     | '/payment/success'
     | '/profile/$userId'
     | '/projects/$id'
+    | '/projects/new'
     | '/services/create'
     | '/auth'
     | '/projects'
@@ -452,6 +463,7 @@ export interface FileRouteTypes {
     | '/payment/success'
     | '/profile/$userId'
     | '/projects/$id'
+    | '/projects/new'
     | '/services/create'
     | '/auth/'
     | '/projects/'
@@ -490,7 +502,7 @@ export interface RootRouteChildren {
   PaymentCancelledRoute: typeof PaymentCancelledRoute
   PaymentSuccessRoute: typeof PaymentSuccessRoute
   ProfileUserIdRoute: typeof ProfileUserIdRoute
-  ProjectsIdRoute: typeof ProjectsIdRoute
+  ProjectsNewRoute: typeof ProjectsNewRoute
   ServicesCreateRoute: typeof ServicesCreateRoute
   AuthIndexRoute: typeof AuthIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
@@ -650,12 +662,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/projects/new': {
+      id: '/projects/new'
+      path: '/projects/new'
+      fullPath: '/projects/new'
+      preLoaderRoute: typeof ProjectsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects/$id': {
       id: '/projects/$id'
-      path: '/projects/$id'
+      path: '/$id'
       fullPath: '/projects/$id'
       preLoaderRoute: typeof ProjectsIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ProjectsRoute
     }
     '/profile/$userId': {
       id: '/profile/$userId'
@@ -787,7 +806,7 @@ const rootRouteChildren: RootRouteChildren = {
   PaymentCancelledRoute: PaymentCancelledRoute,
   PaymentSuccessRoute: PaymentSuccessRoute,
   ProfileUserIdRoute: ProfileUserIdRoute,
-  ProjectsIdRoute: ProjectsIdRoute,
+  ProjectsNewRoute: ProjectsNewRoute,
   ServicesCreateRoute: ServicesCreateRoute,
   AuthIndexRoute: AuthIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
