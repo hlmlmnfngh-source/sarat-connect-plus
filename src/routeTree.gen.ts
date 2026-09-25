@@ -54,6 +54,10 @@ import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.
 
 const WalletRoute = WalletRouteImport.update({
   id: '/wallet',
+    | '/auth/verify-email'
+    | '/verification'
+    | '/seller/onboarding'
+    | '/admin/verification'
   path: '/wallet',
   getParentRoute: () => rootRouteImport,
 } as any)
@@ -247,6 +251,10 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
+  '/verification': typeof VerificationRoute
+  '/seller/onboarding': typeof SellerOnboardingRoute
+  '/admin/verification': typeof AdminVerificationRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
@@ -268,18 +276,6 @@ export interface FileRoutesByFullPath {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
-  '/auth/verify-email': typeof AuthVerifyEmailRoute
-  '/verification': typeof VerificationRoute
-  '/seller/onboarding': typeof SellerOnboardingRoute
-  '/admin/verification': typeof AdminVerificationRoute
-  '/auth/verify-email': typeof AuthVerifyEmailRoute
-  '/verification': typeof VerificationRoute
-  '/seller/onboarding': typeof SellerOnboardingRoute
-  '/admin/verification': typeof AdminVerificationRoute
-  '/auth/verify-email': typeof AuthVerifyEmailRoute
-  '/verification': typeof VerificationRoute
-  '/seller/onboarding': typeof SellerOnboardingRoute
-  '/admin/verification': typeof AdminVerificationRoute
   '/categories/$category': typeof CategoriesCategoryRoute
   '/dashboard/buyer': typeof DashboardBuyerRoute
   '/dashboard/seller': typeof DashboardSellerRoute
@@ -299,6 +295,10 @@ export interface FileRoutesByFullPath {
   '/services/$id/': typeof ServicesIdIndexRoute
 }
 export interface FileRoutesByTo {
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
+  '/verification': typeof VerificationRoute
+  '/seller/onboarding': typeof SellerOnboardingRoute
+  '/admin/verification': typeof AdminVerificationRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
@@ -336,8 +336,13 @@ export interface FileRoutesByTo {
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
   '/services/$id': typeof ServicesIdIndexRoute
+  '/orders': typeof OrdersRoute
 }
 export interface FileRoutesById {
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
+  '/verification': typeof VerificationRoute
+  '/seller/onboarding': typeof SellerOnboardingRoute
+  '/admin/verification': typeof AdminVerificationRoute
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
@@ -380,6 +385,10 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/auth/verify-email'
+    | '/verification'
+    | '/seller/onboarding'
+    | '/admin/verification'
     | '/'
     | '/about'
     | '/blog'
@@ -420,6 +429,10 @@ export interface FileRouteTypes {
     | '/services/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/auth/verify-email'
+    | '/verification'
+    | '/seller/onboarding'
+    | '/admin/verification'
     | '/'
     | '/about'
     | '/blog'
@@ -500,6 +513,10 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
+  VerificationRoute: typeof VerificationRoute
+  SellerOnboardingRoute: typeof SellerOnboardingRoute
+  AdminVerificationRoute: typeof AdminVerificationRoute
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   BlogRoute: typeof BlogRoute
@@ -850,6 +867,10 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesIdEditRoute: ServicesIdEditRoute,
   OrdersRoute: OrdersRoute,
   ServicesIdIndexRoute: ServicesIdIndexRoute,
+  AuthVerifyEmailRoute: AuthVerifyEmailRoute,
+  VerificationRoute: VerificationRoute,
+  SellerOnboardingRoute: SellerOnboardingRoute,
+  AdminVerificationRoute: AdminVerificationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
