@@ -83,7 +83,7 @@ function ServicesPage() {
     queryKey: ["services", search.q ?? "", search.category ?? "", search.sort ?? "newest", search.min ?? 0, search.max ?? 0, search.delivery ?? 0, search.rating_min ?? 0, search.level ?? "", search.page ?? 1],
     enabled: !search.category || !!catId,
     queryFn: async () => {
-      let q = supabase.from("services").select("*").eq("status", "active");
+      let q = supabase.from("services").select("*, profiles!services_seller_id_fkey(id, full_name, avatar_url, username, is_verified, seller_level)").eq("status", "active");
       if (catId) q = q.eq("category_id", catId);
       if (search.q) q = q.or(`title.ilike.%${search.q}%,description.ilike.%${search.q}%`);
       if (search.min) q = q.gte("price", search.min);
