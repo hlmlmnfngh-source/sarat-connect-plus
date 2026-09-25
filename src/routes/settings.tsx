@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
 import { Switch } from "@/components/ui/switch";
 
 export const Route = createFileRoute("/settings")({
@@ -188,6 +189,17 @@ function SettingsPage() {
           )}
         </Card>
 
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Link to="/auth/verify-email" className="rounded-xl border border-border bg-card p-4 text-sm font-bold text-primary transition hover:border-accent">
+            تأكيد البريد الإلكتروني
+            <span className="mt-1 block text-xs font-normal text-muted-foreground">إرسال رمز من 6 أرقام وإدخاله داخل المنصة.</span>
+          </Link>
+          <Link to="/verification" className="rounded-xl border border-border bg-card p-4 text-sm font-bold text-primary transition hover:border-accent">
+            التحقق من الهوية
+            <span className="mt-1 block text-xs font-normal text-muted-foreground">رفع الوثيقة ومتابعة حالة المراجعة.</span>
+          </Link>
+        </div>
 
         <Card className="p-6">
           <h2 className="mb-4 flex items-center gap-2 text-lg font-bold"><Bell className="h-5 w-5 text-accent" /> تفضيلات الإشعارات</h2>
