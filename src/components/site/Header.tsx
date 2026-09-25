@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export type Mode = "services" | "projects";
 
@@ -114,6 +115,11 @@ export function Header({ mode, onModeChange }: HeaderProps) {
               <Link to="/messages" className="hidden h-9 w-9 items-center justify-center rounded-full text-foreground/70 hover:bg-muted sm:inline-flex">
                 <MessageCircle className="h-5 w-5" />
               </Link>
+              {isStaff && (
+                <Link to="/admin/verification" className="hidden rounded-md px-2 py-2 text-xs font-bold text-accent sm:inline-flex">
+                  مراجعة الهوية
+                </Link>
+              )}
               <Link to="/settings" className="hidden h-9 w-9 items-center justify-center rounded-full text-foreground/70 hover:bg-muted sm:inline-flex" aria-label="الإعدادات">
                 <Settings className="h-5 w-5" />
               </Link>
@@ -158,6 +164,7 @@ export function Header({ mode, onModeChange }: HeaderProps) {
                   <UserIcon className="ml-1 inline h-4 w-4" /> ملفي الشخصي
                 </Link>
                 <Link to="/settings" className="rounded-md px-3 py-2 text-foreground/80 hover:text-foreground">الإعدادات</Link>
+                {isStaff && <Link to="/admin/verification" className="rounded-md px-3 py-2 font-bold text-accent">مراجعة الهوية</Link>}
               </>
             )}
             {!user && (
