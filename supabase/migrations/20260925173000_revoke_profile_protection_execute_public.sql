@@ -1,0 +1,1 @@
+revoke execute on function public.protect_sensitive_profile_fields() from public, anon, authenticated;
