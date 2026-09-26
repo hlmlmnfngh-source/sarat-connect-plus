@@ -207,18 +207,6 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   path: '/auth/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Char91DotwellKnownChar93OauthProtectedResourceRoute =
-  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
-    id: '/.well-known/oauth-protected-resource',
-    path: '/.well-known/oauth-protected-resource',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const Char91DotmcpChar93ListToolsRoute =
-  Char91DotmcpChar93ListToolsRouteImport.update({
-    id: '/.mcp/list-tools',
-    path: '/.mcp/list-tools',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const OrdersRoute = OrdersRouteImport.update({ id: '/orders', path: '/orders', getParentRoute: () => rootRouteImport } as any)
 const ServicesIdIndexRoute = ServicesIdIndexRouteImport.update({
   id: '/services/$id/',
@@ -230,12 +218,6 @@ const ServicesIdEditRoute = ServicesIdEditRouteImport.update({
   path: '/services/$id/edit',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Char91DotmcpChar93InvokeToolToolRoute =
-  Char91DotmcpChar93InvokeToolToolRouteImport.update({
-    id: '/.mcp/invoke-tool/$tool',
-    path: '/.mcp/invoke-tool/$tool',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 export interface FileRoutesByFullPath {
   '/favorites': typeof FavoritesRoute
   '/auth/verify-email': typeof AuthVerifyEmailRoute
@@ -248,7 +230,6 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/fast-services': typeof FastServicesRoute
   '/help': typeof HelpRoute
-  '/mcp': typeof McpRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/pricing': typeof PricingRoute
@@ -259,8 +240,6 @@ export interface FileRoutesByFullPath {
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
-  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
-  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/categories/$category': typeof CategoriesCategoryRoute
@@ -275,8 +254,6 @@ export interface FileRoutesByFullPath {
   '/auth/': typeof AuthIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/services/': typeof ServicesIndexRoute
-  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
-  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
   '/orders': typeof OrdersRoute
   '/services/$id/': typeof ServicesIdIndexRoute
@@ -293,7 +270,6 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/fast-services': typeof FastServicesRoute
   '/help': typeof HelpRoute
-  '/mcp': typeof McpRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/pricing': typeof PricingRoute
@@ -304,8 +280,6 @@ export interface FileRoutesByTo {
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
-  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
-  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/categories/$category': typeof CategoriesCategoryRoute
@@ -320,8 +294,6 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/services': typeof ServicesIndexRoute
-  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
-  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
   '/services/$id': typeof ServicesIdIndexRoute
   '/orders': typeof OrdersRoute
@@ -339,7 +311,6 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/fast-services': typeof FastServicesRoute
   '/help': typeof HelpRoute
-  '/mcp': typeof McpRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/pricing': typeof PricingRoute
@@ -350,8 +321,6 @@ export interface FileRoutesById {
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
-  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
-  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/categories/$category': typeof CategoriesCategoryRoute
@@ -366,8 +335,6 @@ export interface FileRoutesById {
   '/auth/': typeof AuthIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/services/': typeof ServicesIndexRoute
-  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
-  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
   '/services/$id/': typeof ServicesIdIndexRoute
   '/orders': typeof OrdersRoute
