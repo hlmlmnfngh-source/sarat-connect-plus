@@ -19,7 +19,6 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as MessagesRouteImport } from './routes/messages'
-import { Route as McpRouteImport } from './routes/mcp'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as FastServicesRouteImport } from './routes/fast-services'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -45,13 +44,9 @@ import { Route as VerificationRouteImport } from './routes/verification'
 import { Route as SellerOnboardingRouteImport } from './routes/seller.onboarding'
 import { Route as AdminVerificationRouteImport } from './routes/admin.verification'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
-import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
-import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as ServicesIdIndexRouteImport } from './routes/services.$id.index'
 import { Route as OrdersRouteImport } from './routes/orders'
 import { Route as ServicesIdEditRouteImport } from './routes/services.$id.edit'
-import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
-import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
 const WalletRoute = WalletRouteImport.update({
   id: '/wallet',
@@ -105,11 +100,6 @@ const NotificationsRoute = NotificationsRouteImport.update({
 const MessagesRoute = MessagesRouteImport.update({
   id: '/messages',
   path: '/messages',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const McpRoute = McpRouteImport.update({
-  id: '/mcp',
-  path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HelpRoute = HelpRouteImport.update({
@@ -246,12 +236,6 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
-const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
-  id: '/.lovable/oauth/consent',
-  path: '/.lovable/oauth/consent',
-  getParentRoute: () => rootRouteImport,
-} as any)
-
 export interface FileRoutesByFullPath {
   '/favorites': typeof FavoritesRoute
   '/auth/verify-email': typeof AuthVerifyEmailRoute
@@ -883,7 +867,6 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   FastServicesRoute: FastServicesRoute,
   HelpRoute: HelpRoute,
-  McpRoute: McpRoute,
   MessagesRoute: MessagesRoute,
   NotificationsRoute: NotificationsRoute,
   PricingRoute: PricingRoute,
@@ -894,7 +877,6 @@ const rootRouteChildren: RootRouteChildren = {
   SkillsTestRoute: SkillsTestRoute,
   TermsRoute: TermsRoute,
   WalletRoute: WalletRoute,
-  Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
@@ -911,8 +893,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthIndexRoute: AuthIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
-  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
-  Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
   ServicesIdEditRoute: ServicesIdEditRoute,
   OrdersRoute: OrdersRoute,
   ServicesIdIndexRoute: ServicesIdIndexRoute,
