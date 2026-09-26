@@ -19,7 +19,6 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as MessagesRouteImport } from './routes/messages'
-import { Route as McpRouteImport } from './routes/mcp'
 import { Route as HelpRouteImport } from './routes/help'
 import { Route as FastServicesRouteImport } from './routes/fast-services'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -45,13 +44,9 @@ import { Route as VerificationRouteImport } from './routes/verification'
 import { Route as SellerOnboardingRouteImport } from './routes/seller.onboarding'
 import { Route as AdminVerificationRouteImport } from './routes/admin.verification'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
-import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
-import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as ServicesIdIndexRouteImport } from './routes/services.$id.index'
 import { Route as OrdersRouteImport } from './routes/orders'
 import { Route as ServicesIdEditRouteImport } from './routes/services.$id.edit'
-import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
-import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
 const WalletRoute = WalletRouteImport.update({
   id: '/wallet',
@@ -105,11 +100,6 @@ const NotificationsRoute = NotificationsRouteImport.update({
 const MessagesRoute = MessagesRouteImport.update({
   id: '/messages',
   path: '/messages',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const McpRoute = McpRouteImport.update({
-  id: '/mcp',
-  path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HelpRoute = HelpRouteImport.update({
@@ -217,18 +207,6 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   path: '/auth/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Char91DotwellKnownChar93OauthProtectedResourceRoute =
-  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
-    id: '/.well-known/oauth-protected-resource',
-    path: '/.well-known/oauth-protected-resource',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const Char91DotmcpChar93ListToolsRoute =
-  Char91DotmcpChar93ListToolsRouteImport.update({
-    id: '/.mcp/list-tools',
-    path: '/.mcp/list-tools',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const OrdersRoute = OrdersRouteImport.update({ id: '/orders', path: '/orders', getParentRoute: () => rootRouteImport } as any)
 const ServicesIdIndexRoute = ServicesIdIndexRouteImport.update({
   id: '/services/$id/',
@@ -240,18 +218,6 @@ const ServicesIdEditRoute = ServicesIdEditRouteImport.update({
   path: '/services/$id/edit',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Char91DotmcpChar93InvokeToolToolRoute =
-  Char91DotmcpChar93InvokeToolToolRouteImport.update({
-    id: '/.mcp/invoke-tool/$tool',
-    path: '/.mcp/invoke-tool/$tool',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
-  id: '/.lovable/oauth/consent',
-  path: '/.lovable/oauth/consent',
-  getParentRoute: () => rootRouteImport,
-} as any)
-
 export interface FileRoutesByFullPath {
   '/favorites': typeof FavoritesRoute
   '/auth/verify-email': typeof AuthVerifyEmailRoute
@@ -264,7 +230,6 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/fast-services': typeof FastServicesRoute
   '/help': typeof HelpRoute
-  '/mcp': typeof McpRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/pricing': typeof PricingRoute
@@ -275,8 +240,6 @@ export interface FileRoutesByFullPath {
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
-  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
-  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/categories/$category': typeof CategoriesCategoryRoute
@@ -291,8 +254,6 @@ export interface FileRoutesByFullPath {
   '/auth/': typeof AuthIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/services/': typeof ServicesIndexRoute
-  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
-  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
   '/orders': typeof OrdersRoute
   '/services/$id/': typeof ServicesIdIndexRoute
@@ -309,7 +270,6 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/fast-services': typeof FastServicesRoute
   '/help': typeof HelpRoute
-  '/mcp': typeof McpRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/pricing': typeof PricingRoute
@@ -320,8 +280,6 @@ export interface FileRoutesByTo {
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
-  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
-  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/categories/$category': typeof CategoriesCategoryRoute
@@ -336,8 +294,6 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/services': typeof ServicesIndexRoute
-  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
-  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
   '/services/$id': typeof ServicesIdIndexRoute
   '/orders': typeof OrdersRoute
@@ -355,7 +311,6 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/fast-services': typeof FastServicesRoute
   '/help': typeof HelpRoute
-  '/mcp': typeof McpRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
   '/pricing': typeof PricingRoute
@@ -366,8 +321,6 @@ export interface FileRoutesById {
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
   '/wallet': typeof WalletRoute
-  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
-  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
   '/categories/$category': typeof CategoriesCategoryRoute
@@ -382,8 +335,6 @@ export interface FileRoutesById {
   '/auth/': typeof AuthIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/services/': typeof ServicesIndexRoute
-  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
-  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
   '/services/$id/': typeof ServicesIdIndexRoute
   '/orders': typeof OrdersRoute
@@ -402,7 +353,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/fast-services'
     | '/help'
-    | '/mcp'
     | '/messages'
     | '/notifications'
     | '/pricing'
@@ -413,8 +363,6 @@ export interface FileRouteTypes {
     | '/skills-test'
     | '/terms'
     | '/wallet'
-    | '/.mcp/list-tools'
-    | '/.well-known/oauth-protected-resource'
     | '/auth/forgot-password'
     | '/auth/reset-password'
     | '/categories/$category'
@@ -429,8 +377,6 @@ export interface FileRouteTypes {
     | '/auth/'
     | '/projects/'
     | '/services/'
-    | '/.lovable/oauth/consent'
-    | '/.mcp/invoke-tool/$tool'
     | '/services/$id/edit'
     | '/orders'
     | '/services/$id/'
@@ -447,7 +393,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/fast-services'
     | '/help'
-    | '/mcp'
     | '/messages'
     | '/notifications'
     | '/pricing'
@@ -458,8 +403,6 @@ export interface FileRouteTypes {
     | '/skills-test'
     | '/terms'
     | '/wallet'
-    | '/.mcp/list-tools'
-    | '/.well-known/oauth-protected-resource'
     | '/auth/forgot-password'
     | '/auth/reset-password'
     | '/categories/$category'
@@ -474,8 +417,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/projects'
     | '/services'
-    | '/.lovable/oauth/consent'
-    | '/.mcp/invoke-tool/$tool'
     | '/services/$id/edit'
     | '/services/$id'
   id:
@@ -491,7 +432,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/fast-services'
     | '/help'
-    | '/mcp'
     | '/messages'
     | '/notifications'
     | '/pricing'
@@ -502,8 +442,6 @@ export interface FileRouteTypes {
     | '/skills-test'
     | '/terms'
     | '/wallet'
-    | '/.mcp/list-tools'
-    | '/.well-known/oauth-protected-resource'
     | '/auth/forgot-password'
     | '/auth/reset-password'
     | '/categories/$category'
@@ -518,8 +456,6 @@ export interface FileRouteTypes {
     | '/auth/'
     | '/projects/'
     | '/services/'
-    | '/.lovable/oauth/consent'
-    | '/.mcp/invoke-tool/$tool'
     | '/services/$id/edit'
     | '/orders'
     | '/services/$id/'
@@ -537,7 +473,6 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   FastServicesRoute: typeof FastServicesRoute
   HelpRoute: typeof HelpRoute
-  McpRoute: typeof McpRoute
   MessagesRoute: typeof MessagesRoute
   NotificationsRoute: typeof NotificationsRoute
   PricingRoute: typeof PricingRoute
@@ -548,8 +483,6 @@ export interface RootRouteChildren {
   SkillsTestRoute: typeof SkillsTestRoute
   TermsRoute: typeof TermsRoute
   WalletRoute: typeof WalletRoute
-  Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
-  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   CategoriesCategoryRoute: typeof CategoriesCategoryRoute
@@ -564,8 +497,6 @@ export interface RootRouteChildren {
   AuthIndexRoute: typeof AuthIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
-  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
-  Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
   ServicesIdEditRoute: typeof ServicesIdEditRoute
   ServicesIdIndexRoute: typeof ServicesIdIndexRoute
 }
@@ -675,13 +606,6 @@ declare module '@tanstack/react-router' {
       path: '/messages'
       fullPath: '/messages'
       preLoaderRoute: typeof MessagesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mcp': {
-      id: '/mcp'
-      path: '/mcp'
-      fullPath: '/mcp'
-      preLoaderRoute: typeof McpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/help': {
@@ -824,20 +748,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/.well-known/oauth-protected-resource': {
-      id: '/.well-known/oauth-protected-resource'
-      path: '/.well-known/oauth-protected-resource'
-      fullPath: '/.well-known/oauth-protected-resource'
-      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/.mcp/list-tools': {
-      id: '/.mcp/list-tools'
-      path: '/.mcp/list-tools'
-      fullPath: '/.mcp/list-tools'
-      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/orders': {
       id: '/orders'
       path: '/orders'
@@ -859,20 +769,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesIdEditRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/.mcp/invoke-tool/$tool': {
-      id: '/.mcp/invoke-tool/$tool'
-      path: '/.mcp/invoke-tool/$tool'
-      fullPath: '/.mcp/invoke-tool/$tool'
-      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/.lovable/oauth/consent': {
-      id: '/.lovable/oauth/consent'
-      path: '/.lovable/oauth/consent'
-      fullPath: '/.lovable/oauth/consent'
-      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -883,7 +779,6 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   FastServicesRoute: FastServicesRoute,
   HelpRoute: HelpRoute,
-  McpRoute: McpRoute,
   MessagesRoute: MessagesRoute,
   NotificationsRoute: NotificationsRoute,
   PricingRoute: PricingRoute,
@@ -894,9 +789,6 @@ const rootRouteChildren: RootRouteChildren = {
   SkillsTestRoute: SkillsTestRoute,
   TermsRoute: TermsRoute,
   WalletRoute: WalletRoute,
-  Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
-  Char91DotwellKnownChar93OauthProtectedResourceRoute:
-    Char91DotwellKnownChar93OauthProtectedResourceRoute,
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
   CategoriesCategoryRoute: CategoriesCategoryRoute,
@@ -911,8 +803,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthIndexRoute: AuthIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
-  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
-  Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
   ServicesIdEditRoute: ServicesIdEditRoute,
   OrdersRoute: OrdersRoute,
   ServicesIdIndexRoute: ServicesIdIndexRoute,
