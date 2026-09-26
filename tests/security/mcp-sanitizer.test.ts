@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { sanitizePostgrestFilterInput } from "@/lib/sanitizePostgrestFilterInput";
+import { sanitizePostgrestFilterInput } from "../../src/lib/sanitizePostgrestFilterInput";
 
 describe("sanitizePostgrestFilterInput", () => {
   it("passes plain queries through unchanged", () => {
