@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 
-export type OrderAction = "deliver" | "request_revision" | "accept" | "resubmit";
+export type OrderAction = "deliver" | "request_revision" | "complete" | "resubmit";
 
 export async function runOrderAction(orderId: string, action: OrderAction, message?: string) {
   const { data, error } = await supabase.functions.invoke("order-workflow", {
