@@ -164,7 +164,8 @@ serve(async (req) => {
     const customers = await stripe.customers.list({ email: user.email, limit: 1 });
     const customerId = customers.data[0]?.id;
 
-    const origin = req.headers.get("origin") ?? "https://sarat-connect-plus.lovable.app";
+    const origin = req.headers.get("origin");
+    if (!origin) throw new Error("Missing checkout origin");
 
     const totalCents = Math.round(amountUsd * 100);
     const applicationFeeCents = Math.round(totalCents * PLATFORM_FEE_RATE);

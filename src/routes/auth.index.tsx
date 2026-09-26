@@ -4,7 +4,6 @@ import { toast } from "sonner";
 import { Sparkles, Mail, Lock, User as UserIcon, ShoppingBag, Briefcase, X, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/use-auth";
 import { VerificationStep } from "@/components/site/VerificationStep";
 
@@ -77,17 +76,23 @@ function AuthPage() {
 
   const handleGoogle = async () => {
     setBusy(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: next ? window.location.origin + next : window.location.origin,
-    });
-    if (result.error) {
-      toast.error("فشل تسجيل الدخول بجوجل");
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: next ? window.location.origin + next : window.location.origin,
+        },
+      });
+      if (error) throw error;
+      if (data.url) {
+        window.location.assign(data.url);
+      } else {
+        toast.success("مرحباً بك!");
+        setStep("choose-role");
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "فشل تسجيل الدخول بجوجل");
       setBusy(false);
-      return;
-    }
-    if (!result.redirected) {
-      toast.success("مرحباً بك!");
-      setStep("choose-role");
     }
   };
 
