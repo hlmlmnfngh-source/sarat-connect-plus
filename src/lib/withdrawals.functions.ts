@@ -1,1 +1,35 @@
-import { createServerFn } from "@tanstack/react-start";\nimport { z } from "zod";\nimport { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";\n\nconst MIN_WITHDRAWAL = 10;\n\nconst inputSchema = z.object({\n  amount: z.number().finite().positive(),\n});\n\nexport const requestWithdrawal = createServerFn({ method: "POST" })\n  .middleware([requireSupabaseAuth])\n  .inputValidator((input: unknown) => inputSchema.parse(input))\n  .handler(async ({ data, context }) => {\n    const { supabase } = context;\n    const amount = Math.round(data.amount * 100) / 100;\n\n    if (amount < MIN_WITHDRAWAL) {\n      throw new Error(`Minimum withdrawal amount is $${MIN_WITHDRAWAL}.`);\n    }\n\n    const { data: result, error } = await supabase.rpc("request_withdrawal", {\n      p_amount: amount,\n    });\n\n    if (error) {\n      throw new Error(error.message || "Could not submit your withdrawal request.");\n    }\n\n    if (!result?.ok) {\n      throw new Error("Could not submit your withdrawal request.");\n    }\n\n    return result;\n  });\n
+import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+
+const MIN_WITHDRAWAL = 10;
+
+const inputSchema = z.object({
+  amount: z.number().finite().positive(),
+});
+
+export const requestWithdrawal = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => inputSchema.parse(input))
+  .handler(async ({ data, context }) => {
+    const { supabase } = context;
+    const amount = Math.round(data.amount * 100) / 100;
+
+    if (amount < MIN_WITHDRAWAL) {
+      throw new Error(`Minimum withdrawal amount is $${MIN_WITHDRAWAL}.`);
+    }
+
+    const { data: result, error } = await supabase.rpc("request_withdrawal", {
+      p_amount: amount,
+    });
+
+    if (error) {
+      throw new Error(error.message || "Could not submit your withdrawal request.");
+    }
+
+    if (!result?.ok) {
+      throw new Error("Could not submit your withdrawal request.");
+    }
+
+    return result;
+  });
