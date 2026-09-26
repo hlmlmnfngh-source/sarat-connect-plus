@@ -353,7 +353,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/fast-services'
     | '/help'
-    | '/mcp'
     | '/messages'
     | '/notifications'
     | '/pricing'
@@ -364,8 +363,6 @@ export interface FileRouteTypes {
     | '/skills-test'
     | '/terms'
     | '/wallet'
-    | '/.mcp/list-tools'
-    | '/.well-known/oauth-protected-resource'
     | '/auth/forgot-password'
     | '/auth/reset-password'
     | '/categories/$category'
@@ -380,8 +377,6 @@ export interface FileRouteTypes {
     | '/auth/'
     | '/projects/'
     | '/services/'
-    | '/.lovable/oauth/consent'
-    | '/.mcp/invoke-tool/$tool'
     | '/services/$id/edit'
     | '/orders'
     | '/services/$id/'
@@ -398,7 +393,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/fast-services'
     | '/help'
-    | '/mcp'
     | '/messages'
     | '/notifications'
     | '/pricing'
@@ -409,8 +403,6 @@ export interface FileRouteTypes {
     | '/skills-test'
     | '/terms'
     | '/wallet'
-    | '/.mcp/list-tools'
-    | '/.well-known/oauth-protected-resource'
     | '/auth/forgot-password'
     | '/auth/reset-password'
     | '/categories/$category'
@@ -425,8 +417,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/projects'
     | '/services'
-    | '/.lovable/oauth/consent'
-    | '/.mcp/invoke-tool/$tool'
     | '/services/$id/edit'
     | '/services/$id'
   id:
@@ -442,7 +432,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/fast-services'
     | '/help'
-    | '/mcp'
     | '/messages'
     | '/notifications'
     | '/pricing'
@@ -453,8 +442,6 @@ export interface FileRouteTypes {
     | '/skills-test'
     | '/terms'
     | '/wallet'
-    | '/.mcp/list-tools'
-    | '/.well-known/oauth-protected-resource'
     | '/auth/forgot-password'
     | '/auth/reset-password'
     | '/categories/$category'
@@ -469,8 +456,6 @@ export interface FileRouteTypes {
     | '/auth/'
     | '/projects/'
     | '/services/'
-    | '/.lovable/oauth/consent'
-    | '/.mcp/invoke-tool/$tool'
     | '/services/$id/edit'
     | '/orders'
     | '/services/$id/'
@@ -488,7 +473,6 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   FastServicesRoute: typeof FastServicesRoute
   HelpRoute: typeof HelpRoute
-  McpRoute: typeof McpRoute
   MessagesRoute: typeof MessagesRoute
   NotificationsRoute: typeof NotificationsRoute
   PricingRoute: typeof PricingRoute
@@ -499,8 +483,6 @@ export interface RootRouteChildren {
   SkillsTestRoute: typeof SkillsTestRoute
   TermsRoute: typeof TermsRoute
   WalletRoute: typeof WalletRoute
-  Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
-  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   CategoriesCategoryRoute: typeof CategoriesCategoryRoute
@@ -515,8 +497,6 @@ export interface RootRouteChildren {
   AuthIndexRoute: typeof AuthIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
-  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
-  Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
   ServicesIdEditRoute: typeof ServicesIdEditRoute
   ServicesIdIndexRoute: typeof ServicesIdIndexRoute
 }
@@ -626,13 +606,6 @@ declare module '@tanstack/react-router' {
       path: '/messages'
       fullPath: '/messages'
       preLoaderRoute: typeof MessagesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mcp': {
-      id: '/mcp'
-      path: '/mcp'
-      fullPath: '/mcp'
-      preLoaderRoute: typeof McpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/help': {
@@ -775,20 +748,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/.well-known/oauth-protected-resource': {
-      id: '/.well-known/oauth-protected-resource'
-      path: '/.well-known/oauth-protected-resource'
-      fullPath: '/.well-known/oauth-protected-resource'
-      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/.mcp/list-tools': {
-      id: '/.mcp/list-tools'
-      path: '/.mcp/list-tools'
-      fullPath: '/.mcp/list-tools'
-      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/orders': {
       id: '/orders'
       path: '/orders'
@@ -808,20 +767,6 @@ declare module '@tanstack/react-router' {
       path: '/services/$id/edit'
       fullPath: '/services/$id/edit'
       preLoaderRoute: typeof ServicesIdEditRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/.mcp/invoke-tool/$tool': {
-      id: '/.mcp/invoke-tool/$tool'
-      path: '/.mcp/invoke-tool/$tool'
-      fullPath: '/.mcp/invoke-tool/$tool'
-      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/.lovable/oauth/consent': {
-      id: '/.lovable/oauth/consent'
-      path: '/.lovable/oauth/consent'
-      fullPath: '/.lovable/oauth/consent'
-      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -844,8 +789,6 @@ const rootRouteChildren: RootRouteChildren = {
   SkillsTestRoute: SkillsTestRoute,
   TermsRoute: TermsRoute,
   WalletRoute: WalletRoute,
-  Char91DotwellKnownChar93OauthProtectedResourceRoute:
-    Char91DotwellKnownChar93OauthProtectedResourceRoute,
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
   CategoriesCategoryRoute: CategoriesCategoryRoute,
