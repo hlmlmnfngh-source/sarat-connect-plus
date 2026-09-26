@@ -405,7 +405,7 @@ function WalletPage() {
         />
 
         <Stat
-          label="Completed earnings"
+          label="Recent completed earnings"
           value={fmt(completedEarnings, currency)}
         />
 
@@ -581,9 +581,7 @@ function WalletPage() {
           <ul className="divide-y divide-border">
             {ledger.map((entry) => {
               const amount = ledgerAmount(entry);
-              const positive =
-                entry.bucket === "available" ||
-                entry.entry_type === "seller_pending";
+              const positive = amount > 0;
 
               return (
                 <li
