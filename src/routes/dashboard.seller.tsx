@@ -126,7 +126,12 @@ function SellerDashboard() {
                       {STATUS_LABELS[o.status] ?? o.status}
                     </span>
                     <span className="font-extrabold text-primary">${Number(o.price).toFixed(2)}</span>
-                    {o.status === "active" && (\n                      <Link to="/orders">\n                        <Button variant="hero" size="sm">فتح الطلب وتسليم العمل</Button>\n                      </Link>\n                    )}\n                    {o.status === "completed" && !reviewedOrders.includes(o.id) && (
+                    {o.status === "active" && (
+                      <Link to="/orders">
+                        <Button variant="hero" size="sm">فتح الطلب وتسليم العمل</Button>
+                      </Link>
+                    )}
+                    {o.status === "completed" && !reviewedOrders.includes(o.id) && (
                       <Button variant="outline" size="sm" onClick={() => setReviewOrder(o)}>
                         قيّم المشتري
                       </Button>
