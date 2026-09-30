@@ -31,7 +31,6 @@ function SellerDashboard() {
   const [stats, setStats] = useState<Stats>({ earnings: 0, activeOrders: 0, completedOrders: 0, rating: 0 });
   const [orders, setOrders] = useState<Order[]>([]);
   const [services, setServices] = useState<Service[]>([]);
-  const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
   const [reviewedOrders, setReviewedOrders] = useState<string[]>([]);
   const [reviewOrder, setReviewOrder] = useState<Order | null>(null);
@@ -75,23 +74,6 @@ function SellerDashboard() {
       await loadOrders();
     })();
   }, [user]);
-
-  async function markDelivered(orderId: string) {
-    setActionError(null);
-    setUpdatingId(orderId);
-    try {
-      const { error } = await supabase
-        .from("orders")
-        .update({ status: "delivered", delivered_at: new Date().toISOString() })
-        .eq("id", orderId);
-      if (error) throw error;
-      await loadOrders();
-    } catch (err) {
-      setActionError(err instanceof Error ? err.message : "تعذّر تحديث الطلب");
-    } finally {
-      setUpdatingId(null);
-    }
-  }
 
   return (
     <PageShell>
@@ -144,17 +126,7 @@ function SellerDashboard() {
                       {STATUS_LABELS[o.status] ?? o.status}
                     </span>
                     <span className="font-extrabold text-primary">${Number(o.price).toFixed(2)}</span>
-                    {o.status === "active" && (
-                      <Button
-                        variant="hero"
-                        size="sm"
-                        disabled={updatingId === o.id}
-                        onClick={() => markDelivered(o.id)}
-                      >
-                        {updatingId === o.id ? "جارٍ التحديث…" : "تسليم الطلب"}
-                      </Button>
-                    )}
-                    {o.status === "completed" && !reviewedOrders.includes(o.id) && (
+                    {o.status === "active" && (\n                      <Link to="/orders">\n                        <Button variant="hero" size="sm">فتح الطلب وتسليم العمل</Button>\n                      </Link>\n                    )}\n                    {o.status === "completed" && !reviewedOrders.includes(o.id) && (
                       <Button variant="outline" size="sm" onClick={() => setReviewOrder(o)}>
                         قيّم المشتري
                       </Button>
