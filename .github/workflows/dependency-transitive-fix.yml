@@ -17,9 +17,8 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-      - name: Update vulnerable transitive packages
-        run: |
-          bun update baseline-browser-mapping brace-expansion browserslist fast-uri hono ip-address js-yaml nanoid postcss-selector-parser qs --lockfile-only
+      - name: Regenerate lockfile with overrides
+        run: bun install --lockfile-only
       - name: Commit and remove temporary workflow
         run: |
           git config user.name "github-actions[bot]"
@@ -30,5 +29,5 @@ jobs:
             echo "No dependency changes"
             exit 0
           fi
-          git commit -m "fix: refresh vulnerable transitive dependencies"
+          git commit -m "fix: apply dependency security overrides"
           git push origin HEAD:fix/security-dependencies
