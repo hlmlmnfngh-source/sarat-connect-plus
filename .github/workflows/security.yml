@@ -79,9 +79,7 @@ jobs:
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: fs
-          scan-ref: .
-          skip-dirs: node_modules
-          skip-files: package.json,bun.lock
+          scan-ref: src
           scanners: vuln
           ignore-unfixed: true
           severity: HIGH,CRITICAL
