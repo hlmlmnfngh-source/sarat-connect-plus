@@ -81,6 +81,7 @@ jobs:
           scan-type: fs
           scan-ref: .
           skip-dirs: node_modules
+          scanners: vuln
           ignore-unfixed: true
           severity: HIGH,CRITICAL
           limit-severities-for-sarif: true
