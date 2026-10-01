@@ -95,12 +95,12 @@ jobs:
         run: |
           set -o pipefail
           echo "── Running RLS + guard-trigger integration tests ──"
-          if bunx vitest run tests/security --reporter=verbose 2>&1 | tee /tmp/vitest.log; then
+          if bunx vitest@3.2.4 run tests/security --reporter=verbose 2>&1 | tee /tmp/vitest.log; then
             echo ""
             echo "✅ RLS integration tests passed — Data API rejects all disallowed writes."
           else
             echo ""
-            echo "::error::❌ RLS integration tests FAILED. A disallowed write was accepted or an expected policy error was missing. See log above."
+            echo "::error::❌ RLS integration tests FAILED. See log above."
             exit 1
           fi
 
