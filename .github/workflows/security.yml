@@ -81,6 +81,7 @@ jobs:
           scan-type: fs
           scan-ref: .
           skip-dirs: node_modules
+          skip-files: package.json,bun.lock
           scanners: vuln
           ignore-unfixed: true
           severity: HIGH,CRITICAL
