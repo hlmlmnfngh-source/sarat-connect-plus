@@ -2,7 +2,7 @@
   "name": "tanstack_start_ts",
   "private": true,
   "description": "Speeds services marketplace platform",
-  "keywords": ["speeds", "services", "marketplace"],
+  "keywords": ["speeds", "services", "marketplace", "freelance"],
   "sideEffects": false,
   "type": "module",
   "scripts": {
