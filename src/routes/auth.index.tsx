@@ -30,6 +30,7 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [afterVerify, setAfterVerify] = useState<"/" | "/services/create">("/");
   const [signupVerificationComplete, setSignupVerificationComplete] = useState(false);
+  const [pendingSignupRole, setPendingSignupRole] = useState<"buyer" | "seller" | null>(null);
   const navigate = useNavigate();
   const { user } = useAuth();
   const { next } = Route.useSearch();
@@ -57,9 +58,9 @@ function AuthPage() {
           },
         });
         if (error) throw error;
-        // التسجيل قد يعيد مستخدمًا بلا جلسة عندما تكون تأكيدات البريد مفعّلة.
-        // لذلك نمر أولًا عبر البريد + الهوية، ثم نختار الدور بعد اكتمال التوثيق.
-        setStep("verify");
+        // بعد إنشاء الحساب نطلب من المستخدم تحديد طريقة استخدامه للمنصة.
+        // بعدها نكمل التحقق والبيانات الخاصة بالدور المختار.
+        setStep("choose-role");
         toast.success("تم إنشاء الحساب. أكمل توثيق البريد والهوية للمتابعة.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -100,13 +101,15 @@ function AuthPage() {
     setBusy(true);
     try {
       const { data: { user: currentUser } } = await supabase.auth.getUser();
+      if (!currentUser) throw new Error("تعذر الوصول إلى الحساب بعد التسجيل. أعد المحاولة.");
       if (currentUser) {
         await supabase
           .from("profiles")
           .update({ account_type: "buyer" })
           .eq("id", currentUser.id);
       }
-      toast.success("مرحباً بك كمشتري!");
+      toast.success("تم اختيار حساب المشتري!");
+      setPendingSignupRole("buyer");
       setAfterVerify("/");
       if (signupVerificationComplete) navigate({ to: "/" });
       else setStep("verify");
@@ -167,7 +170,10 @@ function AuthPage() {
 
               {/* بائع */}
               <button
-                onClick={() => setStep("seller-details")}
+                onClick={() => {
+                  setPendingSignupRole("seller");
+                  setStep("seller-details");
+                }}
                 disabled={busy}
                 className="group flex flex-col items-center gap-4 rounded-2xl border-2 border-border bg-background p-6 transition-all hover:border-accent hover:shadow-elevated"
               >
