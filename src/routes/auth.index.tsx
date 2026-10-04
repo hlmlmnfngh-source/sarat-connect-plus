@@ -33,6 +33,7 @@ function AuthPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { next } = Route.useSearch();
+  const normalizedEmail = email.trim().replace(/\\(?=@)/g, "");
   const goNext = () => {
     if (next) window.location.href = next;
     else navigate({ to: "/" });
@@ -49,7 +50,7 @@ function AuthPage() {
     try {
       if (mode === "signup") {
         const { error } = await supabase.auth.signUp({
-          email,
+          email: normalizedEmail,
           password,
           options: {
             emailRedirectTo: next ? window.location.origin + next : window.location.origin,
@@ -62,7 +63,7 @@ function AuthPage() {
         setStep("verify");
         toast.success("تم إنشاء الحساب. أكمل توثيق البريد والهوية للمتابعة.");
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({ email: normalizedEmail, password });
         if (error) throw error;
         toast.success("مرحباً بك في سرعات!");
         goNext();
