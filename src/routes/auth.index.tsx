@@ -19,7 +19,7 @@ export const Route = createFileRoute("/auth/")({
   component: AuthPage,
 });
 
-type Step = "auth" | "choose-role" | "seller-details" | "verify";
+type Step = "auth" | "confirm-email" | "choose-role" | "seller-details" | "verify";
 
 function AuthPage() {
   const [mode, setMode] = useState<"login" | "signup">("login");
@@ -30,6 +30,7 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [afterVerify, setAfterVerify] = useState<"/" | "/services/create">("/");
   const [signupVerificationComplete, setSignupVerificationComplete] = useState(false);
+  const [confirmationEmail, setConfirmationEmail] = useState("");
   const navigate = useNavigate();
   const { user } = useAuth();
   const { next } = Route.useSearch();
@@ -40,7 +41,14 @@ function AuthPage() {
   };
 
   useEffect(() => {
-    if (user && step === "auth" && mode === "login") goNext();
+    if (!user || step !== "auth") return;
+    const pendingSignup = window.localStorage.getItem("speeds_pending_signup") === "1";
+    if (pendingSignup) {
+      window.localStorage.removeItem("speeds_pending_signup");
+      setStep("choose-role");
+      return;
+    }
+    if (mode === "login") goNext();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, navigate, step, mode, next]);
 
@@ -58,10 +66,18 @@ function AuthPage() {
           },
         });
         if (error) throw error;
-        // التسجيل قد يعيد مستخدمًا بلا جلسة عندما تكون تأكيدات البريد مفعّلة.
-        // لذلك نمر أولًا عبر البريد + الهوية، ثم نختار الدور بعد اكتمال التوثيق.
-        setStep("verify");
-        toast.success("تم إنشاء الحساب. أكمل توثيق البريد والهوية للمتابعة.");
+
+        window.localStorage.setItem("speeds_pending_signup", "1");
+        setConfirmationEmail(normalizedEmail);
+
+        if (data.session) {
+          window.localStorage.removeItem("speeds_pending_signup");
+          setStep("choose-role");
+          toast.success("تم إنشاء الحساب. اختر نوع حسابك للمتابعة.");
+        } else {
+          setStep("confirm-email");
+          toast.success("تم إنشاء الحساب. تحقق من بريدك الإلكتروني أولًا.");
+        }
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email: normalizedEmail, password });
         if (error) throw error;
@@ -117,6 +133,64 @@ function AuthPage() {
       setBusy(false);
     }
   };
+
+  if (step === "confirm-email") {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gradient-hero px-4 py-10">
+        <div className="w-full max-w-lg">
+          <div className="rounded-3xl bg-card p-8 text-center shadow-elevated">
+            <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-accent shadow-glow">
+              <Mail className="h-7 w-7 text-accent-foreground" />
+            </div>
+            <h2 className="mb-2 text-2xl font-extrabold text-primary">تحقق من بريدك الإلكتروني</h2>
+            <p className="mb-2 text-muted-foreground">
+              أرسلنا رابط تأكيد إلى بريدك الإلكتروني.
+            </p>
+            <p dir="ltr" className="mb-6 break-all font-semibold text-primary">{confirmationEmail}</p>
+            <p className="mb-6 text-sm leading-relaxed text-muted-foreground">
+              افتح رسالة التحقق واضغط على الرابط. بعد نجاح التحقق، ارجع إلى هذه الصفحة أو اضغط الزر أدناه للمتابعة.
+            </p>
+
+            <Button
+              type="button"
+              variant="hero"
+              size="lg"
+              className="w-full"
+              onClick={async () => {
+                setBusy(true);
+                try {
+                  const { data: { session } } = await supabase.auth.getSession();
+                  if (session?.user) {
+                    window.localStorage.removeItem("speeds_pending_signup");
+                    setStep("choose-role");
+                    toast.success("تم تأكيد البريد. اختر نوع حسابك.");
+                  } else {
+                    toast.error("لم يتم تأكيد البريد بعد. افتح رابط التحقق أولًا.");
+                  }
+                } finally {
+                  setBusy(false);
+                }
+              }}
+              disabled={busy}
+            >
+              {busy ? "جارٍ التحقق..." : "تم تأكيد البريد، متابعة"}
+            </Button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setStep("auth");
+                setMode("login");
+              }}
+              className="mt-4 text-sm font-bold text-muted-foreground transition hover:text-primary"
+            >
+              العودة لتسجيل الدخول
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (step === "verify") {
     return (
