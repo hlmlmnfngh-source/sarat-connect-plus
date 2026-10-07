@@ -61,7 +61,7 @@ function AuthPage() {
           email: normalizedEmail,
           password,
           options: {
-            emailRedirectTo: next ? window.location.origin + next : window.location.origin,
+            emailRedirectTo: window.location.origin + "/auth/",
             data: { full_name: fullName },
           },
         });
