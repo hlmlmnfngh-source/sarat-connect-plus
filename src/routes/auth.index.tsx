@@ -123,7 +123,7 @@ function AuthPage() {
           .eq("id", currentUser.id);
       }
       toast.success("مرحباً بك كمشتري!");
-      navigate({ to: next ?? "/" });
+      window.location.href = next ?? "/";
     } catch {
       toast.error("حدث خطأ في حفظ البيانات");
     } finally {
