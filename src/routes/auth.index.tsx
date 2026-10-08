@@ -421,7 +421,6 @@ function SellerDetailsStep({ onBack, onDone }: { onBack: () => void; onDone: () 
           bio: bio.trim(),
           skills,
           years_experience: years,
-          ...(categoryId ? { primary_category_id: categoryId } : {}),
         })
         .eq("id", currentUser.id);
       if (error) throw error;
