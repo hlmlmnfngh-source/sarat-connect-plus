@@ -33,7 +33,7 @@ function AuthPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { next } = Route.useSearch();
-  const normalizedEmail = email.trim().replace(/\\(?=@)/g, "");
+  const normalizedEmail = email.trim().replace(/\\/g, "").replace(/\s+/g, "").toLowerCase();
   const goNext = () => {
     if (next) window.location.href = next;
     else navigate({ to: "/" });
