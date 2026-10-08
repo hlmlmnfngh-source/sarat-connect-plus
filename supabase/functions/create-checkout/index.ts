@@ -142,6 +142,9 @@ serve(async (req) => {
       );
     }
 
+    const origin = req.headers.get("origin");
+    if (!origin) throw new Error("Missing checkout origin");
+
     // Create pending order
     const { data: order, error: orderErr } = await admin
       .from("orders")
@@ -164,13 +167,12 @@ serve(async (req) => {
     const customers = await stripe.customers.list({ email: user.email, limit: 1 });
     const customerId = customers.data[0]?.id;
 
-    const origin = req.headers.get("origin");
-    if (!origin) throw new Error("Missing checkout origin");
-
     const totalCents = Math.round(amountUsd * 100);
     const applicationFeeCents = Math.round(totalCents * PLATFORM_FEE_RATE);
 
-    const session = await stripe.checkout.sessions.create({
+    let session: Stripe.Checkout.Session;
+    try {
+      session = await stripe.checkout.sessions.create({
       mode: "payment",
       customer: customerId,
       customer_email: customerId ? undefined : user.email,
@@ -200,7 +202,18 @@ serve(async (req) => {
       },
       success_url: `${origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/payment/cancelled?order_id=${order.id}`,
-    });
+      });
+    } catch (stripeError) {
+      const { error: cancelError } = await admin
+        .from("orders")
+        .update({ status: "cancelled" })
+        .eq("id", order.id)
+        .eq("status", "pending");
+      if (cancelError) {
+        console.error("Failed to cancel order after checkout creation failed:", cancelError);
+      }
+      throw stripeError;
+    }
 
     await admin
       .from("orders")
