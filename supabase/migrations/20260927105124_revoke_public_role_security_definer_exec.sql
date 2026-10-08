@@ -1,0 +1,3 @@
+-- Migration history baseline marker.
+-- Production already contains the change recorded as 20260927105124 (revoke_public_role_security_definer_exec).
+-- Kept as a no-op so the repository migration history matches the production history.

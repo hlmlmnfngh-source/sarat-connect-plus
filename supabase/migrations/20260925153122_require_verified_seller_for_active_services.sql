@@ -1,0 +1,3 @@
+-- Migration history baseline marker.
+-- Production already contains the change recorded as 20260925153122 (require_verified_seller_for_active_services).
+-- Kept as a no-op so the repository migration history matches the production history.

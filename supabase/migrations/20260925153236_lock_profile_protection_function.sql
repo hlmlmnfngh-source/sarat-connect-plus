@@ -1,0 +1,3 @@
+-- Migration history baseline marker.
+-- Production already contains the change recorded as 20260925153236 (lock_profile_protection_function).
+-- Kept as a no-op so the repository migration history matches the production history.

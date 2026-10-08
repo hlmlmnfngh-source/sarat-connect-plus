@@ -1,0 +1,3 @@
+-- Migration history baseline marker.
+-- Production already contains the change recorded as 20260925152933 (identity_seller_admin_flows).
+-- Kept as a no-op so the repository migration history matches the production history.

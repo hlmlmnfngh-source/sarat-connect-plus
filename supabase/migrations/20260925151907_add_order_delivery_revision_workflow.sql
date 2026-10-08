@@ -1,0 +1,3 @@
+-- Migration history baseline marker.
+-- Production already contains the change recorded as 20260925151907 (add_order_delivery_revision_workflow).
+-- Kept as a no-op so the repository migration history matches the production history.
