@@ -13,8 +13,6 @@ export const requestWithdrawal = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => inputSchema.parse(input))
   .handler(async ({ data, context }) => {
-    const { supabase } = context;
-    void supabase;
     const amount = Math.round(data.amount * 100) / 100;
 
     if (amount < MIN_WITHDRAWAL) {
