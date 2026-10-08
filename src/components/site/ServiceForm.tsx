@@ -44,7 +44,7 @@ export function ServiceForm({ serviceId }: Props) {
       .select("id, name_ar")
       .order("sort_order")
       .then(({ data }) => setCats(data ?? []));
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (!serviceId) return;

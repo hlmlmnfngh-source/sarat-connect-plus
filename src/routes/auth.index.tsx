@@ -28,7 +28,7 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [busy, setBusy] = useState(false);
-  const [afterVerify, setAfterVerify] = useState<"/" | "/services/create">("/");
+  const [afterVerify, setAfterVerify] = useState<"/" | "/services/create" | "/seller/onboarding">("/");
   const [confirmationEmail, setConfirmationEmail] = useState("");
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -261,9 +261,8 @@ function AuthPage() {
       <SellerDetailsStep
         onBack={() => setStep("choose-role")}
         onDone={() => {
-          setAfterVerify("/services/create");
-          if (signupVerificationComplete) navigate({ to: "/seller/onboarding" });
-          else setStep("verify");
+          setAfterVerify("/seller/onboarding");
+          setStep("verify");
         }}
       />
     );
