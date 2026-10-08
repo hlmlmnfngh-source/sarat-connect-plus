@@ -74,5 +74,5 @@ BEGIN
 END;
 $function$;
 
-REVOKE ALL ON FUNCTION public.request_withdrawal_internal(uuid, numeric) FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.request_withdrawal_internal(uuid, numeric) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.request_withdrawal_internal(uuid, numeric) TO service_role;
