@@ -29,7 +29,6 @@ function AuthPage() {
   const [fullName, setFullName] = useState("");
   const [busy, setBusy] = useState(false);
   const [afterVerify, setAfterVerify] = useState<"/" | "/services/create">("/");
-  const [signupVerificationComplete, setSignupVerificationComplete] = useState(false);
   const [confirmationEmail, setConfirmationEmail] = useState("");
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -57,7 +56,7 @@ function AuthPage() {
     setBusy(true);
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email: normalizedEmail,
           password,
           options: {
@@ -124,9 +123,7 @@ function AuthPage() {
           .eq("id", currentUser.id);
       }
       toast.success("مرحباً بك كمشتري!");
-      setAfterVerify("/");
-      if (signupVerificationComplete) navigate({ to: "/" });
-      else setStep("verify");
+      navigate({ to: next ?? "/" });
     } catch {
       toast.error("حدث خطأ في حفظ البيانات");
     } finally {
@@ -197,14 +194,7 @@ function AuthPage() {
       <VerificationStep
         userId={user?.id}
         email={user?.email}
-        onDone={() => {
-          if (mode === "signup" && !signupVerificationComplete) {
-            setSignupVerificationComplete(true);
-            setStep("choose-role");
-          } else {
-            navigate({ to: afterVerify });
-          }
-        }}
+        onDone={() => navigate({ to: afterVerify })}
       />
     );
   }
