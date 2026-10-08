@@ -1,0 +1,3 @@
+-- Migration history baseline marker.
+-- Production already contains the change recorded as 20260926165618 (20260926000002_harden_order_completion_updates).
+-- Kept as a no-op so the repository migration history matches the production history.

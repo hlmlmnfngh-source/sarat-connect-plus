@@ -1,0 +1,3 @@
+-- Migration history baseline marker.
+-- Production already contains the change recorded as 20260927105039 (harden_security_definer_rpc_grants).
+-- Kept as a no-op so the repository migration history matches the production history.

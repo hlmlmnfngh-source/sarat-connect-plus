@@ -1,0 +1,3 @@
+-- Migration history baseline marker.
+-- Production already contains the change recorded as 20260925153311 (optimize_verified_service_policies).
+-- Kept as a no-op so the repository migration history matches the production history.
