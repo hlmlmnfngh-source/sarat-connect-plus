@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+Disallow: /auth
+Disallow: /dashboard/
+Disallow: /wallet
+Disallow: /orders
+Disallow: /messages
+Disallow: /notifications
+Disallow: /settings
+Disallow: /admin/
+Disallow: /verification
+Disallow: /seller/onboarding
+Disallow: /payment/
+
+Sitemap: https://sarat-connect-plus.vercel.app/sitemap.xml
