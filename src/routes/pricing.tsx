@@ -1,8 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Check } from "lucide-react";
 import { PageShell, PageHero } from "@/components/site/PageShell";
 import { Button } from "@/components/ui/button";
-import { Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/pricing")({
   head: () => ({ meta: [{ title: "الأسعار والعمولة — سرعات" }, { name: "description", content: "لا توجد اشتراكات شهرية؛ عمولة المنصة 20% على كل طلب مكتمل." }] }),
