@@ -1,7 +1,7 @@
 {
-  "name": "tanstack_start_ts",
+  "name": "sarat",
   "private": true,
-  "description": "Speeds services marketplace platform",
+  "description": "Arabic freelance services and custom projects marketplace built with TanStack Start and Supabase",
   "keywords": ["speeds", "services", "marketplace", "freelance"],
   "sideEffects": false,
   "type": "module",
