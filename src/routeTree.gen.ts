@@ -9,117 +9,48 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WalletRouteImport } from './routes/wallet'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as SkillsTestRouteImport } from './routes/skills-test'
-import { Route as SettingsRouteImport } from './routes/settings'
-import { Route as SecurityRouteImport } from './routes/security'
-import { Route as SearchRouteImport } from './routes/search'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as PricingRouteImport } from './routes/pricing'
-import { Route as NotificationsRouteImport } from './routes/notifications'
-import { Route as MessagesRouteImport } from './routes/messages'
-import { Route as HelpRouteImport } from './routes/help'
-import { Route as FastServicesRouteImport } from './routes/fast-services'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as BlogRouteImport } from './routes/blog'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ServicesIndexRouteImport } from './routes/services.index'
-import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as FastServicesRouteImport } from './routes/fast-services'
+import { Route as FavoritesRouteImport } from './routes/favorites'
+import { Route as HelpRouteImport } from './routes/help'
+import { Route as MessagesRouteImport } from './routes/messages'
+import { Route as NotificationsRouteImport } from './routes/notifications'
+import { Route as OrdersRouteImport } from './routes/orders'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as SearchRouteImport } from './routes/search'
+import { Route as SecurityRouteImport } from './routes/security'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SkillsTestRouteImport } from './routes/skills-test'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as VerificationRouteImport } from './routes/verification'
+import { Route as WalletRouteImport } from './routes/wallet'
+import { Route as AdminVerificationRouteImport } from './routes/admin.verification'
 import { Route as AuthIndexRouteImport } from './routes/auth.index'
-import { Route as ServicesCreateRouteImport } from './routes/services.create'
-import { Route as ProjectsNewRouteImport } from './routes/projects.new'
-import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
-import { Route as ProfileUserIdRouteImport } from './routes/profile.$userId'
-import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
-import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled'
-import { Route as DashboardSellerRouteImport } from './routes/dashboard.seller'
-import { Route as DashboardBuyerRouteImport } from './routes/dashboard.buyer'
-import { Route as CategoriesCategoryRouteImport } from './routes/categories.$category'
+import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
 import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
 import { Route as AuthVerifyEmailRouteImport } from './routes/auth.verify-email'
-import { Route as FavoritesRouteImport } from './routes/favorites'
-import { Route as VerificationRouteImport } from './routes/verification'
+import { Route as CategoriesCategoryRouteImport } from './routes/categories.$category'
+import { Route as DashboardBuyerRouteImport } from './routes/dashboard.buyer'
+import { Route as DashboardSellerRouteImport } from './routes/dashboard.seller'
+import { Route as PaymentCancelledRouteImport } from './routes/payment.cancelled'
+import { Route as PaymentSuccessRouteImport } from './routes/payment.success'
+import { Route as ProfileUserIdRouteImport } from './routes/profile.$userId'
+import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
+import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
+import { Route as ProjectsNewRouteImport } from './routes/projects.new'
 import { Route as SellerOnboardingRouteImport } from './routes/seller.onboarding'
-import { Route as AdminVerificationRouteImport } from './routes/admin.verification'
-import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
+import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as ServicesCreateRouteImport } from './routes/services.create'
 import { Route as ServicesIdIndexRouteImport } from './routes/services.$id.index'
-import { Route as OrdersRouteImport } from './routes/orders'
 import { Route as ServicesIdEditRouteImport } from './routes/services.$id.edit'
 
-const WalletRoute = WalletRouteImport.update({
-  id: '/wallet',
-    | '/auth/verify-email'
-    | '/verification'
-    | '/seller/onboarding'
-    | '/admin/verification'
-  path: '/wallet',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SkillsTestRoute = SkillsTestRouteImport.update({
-  id: '/skills-test',
-  path: '/skills-test',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SettingsRoute = SettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SecurityRoute = SecurityRouteImport.update({
-  id: '/security',
-  path: '/security',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SearchRoute = SearchRouteImport.update({
-  id: '/search',
-  path: '/search',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PricingRoute = PricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NotificationsRoute = NotificationsRouteImport.update({
-  id: '/notifications',
-  path: '/notifications',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MessagesRoute = MessagesRouteImport.update({
-  id: '/messages',
-  path: '/messages',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HelpRoute = HelpRouteImport.update({
-  id: '/help',
-  path: '/help',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FastServicesRoute = FastServicesRouteImport.update({
-  id: '/fast-services',
-  path: '/fast-services',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -127,19 +58,94 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesIndexRoute = ServicesIndexRouteImport.update({
-  id: '/services/',
-  path: '/services/',
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
-  id: '/projects/',
-  path: '/projects/',
+const FastServicesRoute = FastServicesRouteImport.update({
+  id: '/fast-services',
+  path: '/fast-services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FavoritesRoute = FavoritesRouteImport.update({
+  id: '/favorites',
+  path: '/favorites',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MessagesRoute = MessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrdersRoute = OrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SecurityRoute = SecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SkillsTestRoute = SkillsTestRouteImport.update({
+  id: '/skills-test',
+  path: '/skills-test',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerificationRoute = VerificationRouteImport.update({
+  id: '/verification',
+  path: '/verification',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WalletRoute = WalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminVerificationRoute = AdminVerificationRouteImport.update({
+  id: '/admin/verification',
+  path: '/admin/verification',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthIndexRoute = AuthIndexRouteImport.update({
@@ -147,44 +153,19 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
   path: '/auth/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesCreateRoute = ServicesCreateRouteImport.update({
-  id: '/services/create',
-  path: '/services/create',
+const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
+  id: '/auth/forgot-password',
+  path: '/auth/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProjectsNewRoute = ProjectsNewRouteImport.update({
-  id: '/projects/new',
-  path: '/projects/new',
+const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
+  id: '/auth/reset-password',
+  path: '/auth/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProjectsIdRoute = ProjectsIdRouteImport.update({
-  id: '/projects/$id',
-  path: '/projects/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileUserIdRoute = ProfileUserIdRouteImport.update({
-  id: '/profile/$userId',
-  path: '/profile/$userId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PaymentSuccessRoute = PaymentSuccessRouteImport.update({
-  id: '/payment/success',
-  path: '/payment/success',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PaymentCancelledRoute = PaymentCancelledRouteImport.update({
-  id: '/payment/cancelled',
-  path: '/payment/cancelled',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardSellerRoute = DashboardSellerRouteImport.update({
-  id: '/dashboard/seller',
-  path: '/dashboard/seller',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardBuyerRoute = DashboardBuyerRouteImport.update({
-  id: '/dashboard/buyer',
-  path: '/dashboard/buyer',
+const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
+  id: '/auth/verify-email',
+  path: '/auth/verify-email',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CategoriesCategoryRoute = CategoriesCategoryRouteImport.update({
@@ -192,22 +173,61 @@ const CategoriesCategoryRoute = CategoriesCategoryRouteImport.update({
   path: '/categories/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FavoritesRoute = FavoritesRouteImport.update({ id: '/favorites', path: '/favorites', getParentRoute: () => rootRouteImport } as any)
-const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({ id: '/auth/verify-email', path: '/auth/verify-email', getParentRoute: () => rootRouteImport } as any)
-const VerificationRoute = VerificationRouteImport.update({ id: '/verification', path: '/verification', getParentRoute: () => rootRouteImport } as any)
-const SellerOnboardingRoute = SellerOnboardingRouteImport.update({ id: '/seller/onboarding', path: '/seller/onboarding', getParentRoute: () => rootRouteImport } as any)
-const AdminVerificationRoute = AdminVerificationRouteImport.update({ id: '/admin/verification', path: '/admin/verification', getParentRoute: () => rootRouteImport } as any)
-const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
-  id: '/auth/reset-password',
-  path: '/auth/reset-password',
+const DashboardBuyerRoute = DashboardBuyerRouteImport.update({
+  id: '/dashboard/buyer',
+  path: '/dashboard/buyer',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
-  id: '/auth/forgot-password',
-  path: '/auth/forgot-password',
+const DashboardSellerRoute = DashboardSellerRouteImport.update({
+  id: '/dashboard/seller',
+  path: '/dashboard/seller',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OrdersRoute = OrdersRouteImport.update({ id: '/orders', path: '/orders', getParentRoute: () => rootRouteImport } as any)
+const PaymentCancelledRoute = PaymentCancelledRouteImport.update({
+  id: '/payment/cancelled',
+  path: '/payment/cancelled',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentSuccessRoute = PaymentSuccessRouteImport.update({
+  id: '/payment/success',
+  path: '/payment/success',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileUserIdRoute = ProfileUserIdRouteImport.update({
+  id: '/profile/$userId',
+  path: '/profile/$userId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
+  id: '/projects/',
+  path: '/projects/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsIdRoute = ProjectsIdRouteImport.update({
+  id: '/projects/$id',
+  path: '/projects/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsNewRoute = ProjectsNewRouteImport.update({
+  id: '/projects/new',
+  path: '/projects/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SellerOnboardingRoute = SellerOnboardingRouteImport.update({
+  id: '/seller/onboarding',
+  path: '/seller/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/services/',
+  path: '/services/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesCreateRoute = ServicesCreateRouteImport.update({
+  id: '/services/create',
+  path: '/services/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesIdIndexRoute = ServicesIdIndexRouteImport.update({
   id: '/services/$id/',
   path: '/services/$id/',
@@ -218,20 +238,18 @@ const ServicesIdEditRoute = ServicesIdEditRouteImport.update({
   path: '/services/$id/edit',
   getParentRoute: () => rootRouteImport,
 } as any)
+
 export interface FileRoutesByFullPath {
-  '/favorites': typeof FavoritesRoute
-  '/auth/verify-email': typeof AuthVerifyEmailRoute
-  '/verification': typeof VerificationRoute
-  '/seller/onboarding': typeof SellerOnboardingRoute
-  '/admin/verification': typeof AdminVerificationRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/fast-services': typeof FastServicesRoute
+  '/favorites': typeof FavoritesRoute
   '/help': typeof HelpRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
+  '/orders': typeof OrdersRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/search': typeof SearchRoute
@@ -239,9 +257,12 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
+  '/verification': typeof VerificationRoute
   '/wallet': typeof WalletRoute
+  '/admin/verification': typeof AdminVerificationRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/categories/$category': typeof CategoriesCategoryRoute
   '/dashboard/buyer': typeof DashboardBuyerRoute
   '/dashboard/seller': typeof DashboardSellerRoute
@@ -250,28 +271,25 @@ export interface FileRoutesByFullPath {
   '/profile/$userId': typeof ProfileUserIdRoute
   '/projects/$id': typeof ProjectsIdRoute
   '/projects/new': typeof ProjectsNewRoute
+  '/seller/onboarding': typeof SellerOnboardingRoute
   '/services/create': typeof ServicesCreateRoute
   '/auth/': typeof AuthIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
-  '/orders': typeof OrdersRoute
   '/services/$id/': typeof ServicesIdIndexRoute
 }
 export interface FileRoutesByTo {
-  '/favorites': typeof FavoritesRoute
-  '/auth/verify-email': typeof AuthVerifyEmailRoute
-  '/verification': typeof VerificationRoute
-  '/seller/onboarding': typeof SellerOnboardingRoute
-  '/admin/verification': typeof AdminVerificationRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/fast-services': typeof FastServicesRoute
+  '/favorites': typeof FavoritesRoute
   '/help': typeof HelpRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
+  '/orders': typeof OrdersRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/search': typeof SearchRoute
@@ -279,9 +297,12 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
+  '/verification': typeof VerificationRoute
   '/wallet': typeof WalletRoute
+  '/admin/verification': typeof AdminVerificationRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/categories/$category': typeof CategoriesCategoryRoute
   '/dashboard/buyer': typeof DashboardBuyerRoute
   '/dashboard/seller': typeof DashboardSellerRoute
@@ -290,29 +311,26 @@ export interface FileRoutesByTo {
   '/profile/$userId': typeof ProfileUserIdRoute
   '/projects/$id': typeof ProjectsIdRoute
   '/projects/new': typeof ProjectsNewRoute
+  '/seller/onboarding': typeof SellerOnboardingRoute
   '/services/create': typeof ServicesCreateRoute
   '/auth': typeof AuthIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/services': typeof ServicesIndexRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
   '/services/$id': typeof ServicesIdIndexRoute
-  '/orders': typeof OrdersRoute
 }
 export interface FileRoutesById {
-  '/favorites': typeof FavoritesRoute
-  '/auth/verify-email': typeof AuthVerifyEmailRoute
-  '/verification': typeof VerificationRoute
-  '/seller/onboarding': typeof SellerOnboardingRoute
-  '/admin/verification': typeof AdminVerificationRoute
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/fast-services': typeof FastServicesRoute
+  '/favorites': typeof FavoritesRoute
   '/help': typeof HelpRoute
   '/messages': typeof MessagesRoute
   '/notifications': typeof NotificationsRoute
+  '/orders': typeof OrdersRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/search': typeof SearchRoute
@@ -320,9 +338,12 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/skills-test': typeof SkillsTestRoute
   '/terms': typeof TermsRoute
+  '/verification': typeof VerificationRoute
   '/wallet': typeof WalletRoute
+  '/admin/verification': typeof AdminVerificationRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+  '/auth/verify-email': typeof AuthVerifyEmailRoute
   '/categories/$category': typeof CategoriesCategoryRoute
   '/dashboard/buyer': typeof DashboardBuyerRoute
   '/dashboard/seller': typeof DashboardSellerRoute
@@ -331,30 +352,27 @@ export interface FileRoutesById {
   '/profile/$userId': typeof ProfileUserIdRoute
   '/projects/$id': typeof ProjectsIdRoute
   '/projects/new': typeof ProjectsNewRoute
+  '/seller/onboarding': typeof SellerOnboardingRoute
   '/services/create': typeof ServicesCreateRoute
   '/auth/': typeof AuthIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/services/$id/edit': typeof ServicesIdEditRoute
   '/services/$id/': typeof ServicesIdIndexRoute
-  '/orders': typeof OrdersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/favorites'
-    | '/auth/verify-email'
-    | '/verification'
-    | '/seller/onboarding'
-    | '/admin/verification'
     | '/'
     | '/about'
     | '/blog'
     | '/contact'
     | '/fast-services'
+    | '/favorites'
     | '/help'
     | '/messages'
     | '/notifications'
+    | '/orders'
     | '/pricing'
     | '/privacy'
     | '/search'
@@ -362,9 +380,12 @@ export interface FileRouteTypes {
     | '/settings'
     | '/skills-test'
     | '/terms'
+    | '/verification'
     | '/wallet'
+    | '/admin/verification'
     | '/auth/forgot-password'
     | '/auth/reset-password'
+    | '/auth/verify-email'
     | '/categories/$category'
     | '/dashboard/buyer'
     | '/dashboard/seller'
@@ -373,28 +394,25 @@ export interface FileRouteTypes {
     | '/profile/$userId'
     | '/projects/$id'
     | '/projects/new'
+    | '/seller/onboarding'
     | '/services/create'
     | '/auth/'
     | '/projects/'
     | '/services/'
     | '/services/$id/edit'
-    | '/orders'
     | '/services/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/favorites'
-    | '/auth/verify-email'
-    | '/verification'
-    | '/seller/onboarding'
-    | '/admin/verification'
     | '/'
     | '/about'
     | '/blog'
     | '/contact'
     | '/fast-services'
+    | '/favorites'
     | '/help'
     | '/messages'
     | '/notifications'
+    | '/orders'
     | '/pricing'
     | '/privacy'
     | '/search'
@@ -402,9 +420,12 @@ export interface FileRouteTypes {
     | '/settings'
     | '/skills-test'
     | '/terms'
+    | '/verification'
     | '/wallet'
+    | '/admin/verification'
     | '/auth/forgot-password'
     | '/auth/reset-password'
+    | '/auth/verify-email'
     | '/categories/$category'
     | '/dashboard/buyer'
     | '/dashboard/seller'
@@ -413,6 +434,7 @@ export interface FileRouteTypes {
     | '/profile/$userId'
     | '/projects/$id'
     | '/projects/new'
+    | '/seller/onboarding'
     | '/services/create'
     | '/auth'
     | '/projects'
@@ -420,20 +442,17 @@ export interface FileRouteTypes {
     | '/services/$id/edit'
     | '/services/$id'
   id:
-    | '/favorites'
-    | '/auth/verify-email'
-    | '/verification'
-    | '/seller/onboarding'
-    | '/admin/verification'
     | '__root__'
     | '/'
     | '/about'
     | '/blog'
     | '/contact'
     | '/fast-services'
+    | '/favorites'
     | '/help'
     | '/messages'
     | '/notifications'
+    | '/orders'
     | '/pricing'
     | '/privacy'
     | '/search'
@@ -441,9 +460,12 @@ export interface FileRouteTypes {
     | '/settings'
     | '/skills-test'
     | '/terms'
+    | '/verification'
     | '/wallet'
+    | '/admin/verification'
     | '/auth/forgot-password'
     | '/auth/reset-password'
+    | '/auth/verify-email'
     | '/categories/$category'
     | '/dashboard/buyer'
     | '/dashboard/seller'
@@ -452,29 +474,26 @@ export interface FileRouteTypes {
     | '/profile/$userId'
     | '/projects/$id'
     | '/projects/new'
+    | '/seller/onboarding'
     | '/services/create'
     | '/auth/'
     | '/projects/'
     | '/services/'
     | '/services/$id/edit'
-    | '/orders'
     | '/services/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  FavoritesRoute: typeof FavoritesRoute
-  AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
-  VerificationRoute: typeof VerificationRoute
-  SellerOnboardingRoute: typeof SellerOnboardingRoute
-  AdminVerificationRoute: typeof AdminVerificationRoute
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   BlogRoute: typeof BlogRoute
   ContactRoute: typeof ContactRoute
   FastServicesRoute: typeof FastServicesRoute
+  FavoritesRoute: typeof FavoritesRoute
   HelpRoute: typeof HelpRoute
   MessagesRoute: typeof MessagesRoute
   NotificationsRoute: typeof NotificationsRoute
+  OrdersRoute: typeof OrdersRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   SearchRoute: typeof SearchRoute
@@ -482,9 +501,12 @@ export interface RootRouteChildren {
   SettingsRoute: typeof SettingsRoute
   SkillsTestRoute: typeof SkillsTestRoute
   TermsRoute: typeof TermsRoute
+  VerificationRoute: typeof VerificationRoute
   WalletRoute: typeof WalletRoute
+  AdminVerificationRoute: typeof AdminVerificationRoute
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthResetPasswordRoute: typeof AuthResetPasswordRoute
+  AuthVerifyEmailRoute: typeof AuthVerifyEmailRoute
   CategoriesCategoryRoute: typeof CategoriesCategoryRoute
   DashboardBuyerRoute: typeof DashboardBuyerRoute
   DashboardSellerRoute: typeof DashboardSellerRoute
@@ -493,6 +515,7 @@ export interface RootRouteChildren {
   ProfileUserIdRoute: typeof ProfileUserIdRoute
   ProjectsIdRoute: typeof ProjectsIdRoute
   ProjectsNewRoute: typeof ProjectsNewRoute
+  SellerOnboardingRoute: typeof SellerOnboardingRoute
   ServicesCreateRoute: typeof ServicesCreateRoute
   AuthIndexRoute: typeof AuthIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
@@ -503,137 +526,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/favorites': {
-      id: '/favorites'
-      path: '/favorites'
-      fullPath: '/favorites'
-      preLoaderRoute: typeof FavoritesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth/verify-email': {
-      id: '/auth/verify-email'
-      path: '/auth/verify-email'
-      fullPath: '/auth/verify-email'
-      preLoaderRoute: typeof AuthVerifyEmailRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/verification': {
-      id: '/verification'
-      path: '/verification'
-      fullPath: '/verification'
-      preLoaderRoute: typeof VerificationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/seller/onboarding': {
-      id: '/seller/onboarding'
-      path: '/seller/onboarding'
-      fullPath: '/seller/onboarding'
-      preLoaderRoute: typeof SellerOnboardingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/verification': {
-      id: '/admin/verification'
-      path: '/admin/verification'
-      fullPath: '/admin/verification'
-      preLoaderRoute: typeof AdminVerificationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/wallet': {
-      id: '/wallet'
-      path: '/wallet'
-      fullPath: '/wallet'
-      preLoaderRoute: typeof WalletRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/skills-test': {
-      id: '/skills-test'
-      path: '/skills-test'
-      fullPath: '/skills-test'
-      preLoaderRoute: typeof SkillsTestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/settings': {
-      id: '/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/security': {
-      id: '/security'
-      path: '/security'
-      fullPath: '/security'
-      preLoaderRoute: typeof SecurityRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/search': {
-      id: '/search'
-      path: '/search'
-      fullPath: '/search'
-      preLoaderRoute: typeof SearchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pricing': {
-      id: '/pricing'
-      path: '/pricing'
-      fullPath: '/pricing'
-      preLoaderRoute: typeof PricingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/notifications': {
-      id: '/notifications'
-      path: '/notifications'
-      fullPath: '/notifications'
-      preLoaderRoute: typeof NotificationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/messages': {
-      id: '/messages'
-      path: '/messages'
-      fullPath: '/messages'
-      preLoaderRoute: typeof MessagesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/help': {
-      id: '/help'
-      path: '/help'
-      fullPath: '/help'
-      preLoaderRoute: typeof HelpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/fast-services': {
-      id: '/fast-services'
-      path: '/fast-services'
-      fullPath: '/fast-services'
-      preLoaderRoute: typeof FastServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -643,25 +540,130 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/services/': {
-      id: '/services/'
-      path: '/services'
-      fullPath: '/services/'
-      preLoaderRoute: typeof ServicesIndexRouteImport
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/projects/': {
-      id: '/projects/'
-      path: '/projects'
-      fullPath: '/projects/'
-      preLoaderRoute: typeof ProjectsIndexRouteImport
+    '/fast-services': {
+      id: '/fast-services'
+      path: '/fast-services'
+      fullPath: '/fast-services'
+      preLoaderRoute: typeof FastServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/favorites': {
+      id: '/favorites'
+      path: '/favorites'
+      fullPath: '/favorites'
+      preLoaderRoute: typeof FavoritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/messages': {
+      id: '/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof MessagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/orders': {
+      id: '/orders'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof OrdersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/security': {
+      id: '/security'
+      path: '/security'
+      fullPath: '/security'
+      preLoaderRoute: typeof SecurityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/skills-test': {
+      id: '/skills-test'
+      path: '/skills-test'
+      fullPath: '/skills-test'
+      preLoaderRoute: typeof SkillsTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verification': {
+      id: '/verification'
+      path: '/verification'
+      fullPath: '/verification'
+      preLoaderRoute: typeof VerificationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wallet': {
+      id: '/wallet'
+      path: '/wallet'
+      fullPath: '/wallet'
+      preLoaderRoute: typeof WalletRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/verification': {
+      id: '/admin/verification'
+      path: '/admin/verification'
+      fullPath: '/admin/verification'
+      preLoaderRoute: typeof AdminVerificationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/': {
@@ -671,67 +673,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/services/create': {
-      id: '/services/create'
-      path: '/services/create'
-      fullPath: '/services/create'
-      preLoaderRoute: typeof ServicesCreateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projects/new': {
-      id: '/projects/new'
-      path: '/projects/new'
-      fullPath: '/projects/new'
-      preLoaderRoute: typeof ProjectsNewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projects/$id': {
-      id: '/projects/$id'
-      path: '/projects/$id'
-      fullPath: '/projects/$id'
-      preLoaderRoute: typeof ProjectsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile/$userId': {
-      id: '/profile/$userId'
-      path: '/profile/$userId'
-      fullPath: '/profile/$userId'
-      preLoaderRoute: typeof ProfileUserIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/payment/success': {
-      id: '/payment/success'
-      path: '/payment/success'
-      fullPath: '/payment/success'
-      preLoaderRoute: typeof PaymentSuccessRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/payment/cancelled': {
-      id: '/payment/cancelled'
-      path: '/payment/cancelled'
-      fullPath: '/payment/cancelled'
-      preLoaderRoute: typeof PaymentCancelledRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard/seller': {
-      id: '/dashboard/seller'
-      path: '/dashboard/seller'
-      fullPath: '/dashboard/seller'
-      preLoaderRoute: typeof DashboardSellerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard/buyer': {
-      id: '/dashboard/buyer'
-      path: '/dashboard/buyer'
-      fullPath: '/dashboard/buyer'
-      preLoaderRoute: typeof DashboardBuyerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/categories/$category': {
-      id: '/categories/$category'
-      path: '/categories/$category'
-      fullPath: '/categories/$category'
-      preLoaderRoute: typeof CategoriesCategoryRouteImport
+    '/auth/forgot-password': {
+      id: '/auth/forgot-password'
+      path: '/auth/forgot-password'
+      fullPath: '/auth/forgot-password'
+      preLoaderRoute: typeof AuthForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/reset-password': {
@@ -741,18 +687,95 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth/forgot-password': {
-      id: '/auth/forgot-password'
-      path: '/auth/forgot-password'
-      fullPath: '/auth/forgot-password'
-      preLoaderRoute: typeof AuthForgotPasswordRouteImport
+    '/auth/verify-email': {
+      id: '/auth/verify-email'
+      path: '/auth/verify-email'
+      fullPath: '/auth/verify-email'
+      preLoaderRoute: typeof AuthVerifyEmailRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/orders': {
-      id: '/orders'
-      path: '/orders'
-      fullPath: '/orders'
-      preLoaderRoute: typeof OrdersRouteImport
+    '/categories/$category': {
+      id: '/categories/$category'
+      path: '/categories/$category'
+      fullPath: '/categories/$category'
+      preLoaderRoute: typeof CategoriesCategoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/buyer': {
+      id: '/dashboard/buyer'
+      path: '/dashboard/buyer'
+      fullPath: '/dashboard/buyer'
+      preLoaderRoute: typeof DashboardBuyerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/seller': {
+      id: '/dashboard/seller'
+      path: '/dashboard/seller'
+      fullPath: '/dashboard/seller'
+      preLoaderRoute: typeof DashboardSellerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payment/cancelled': {
+      id: '/payment/cancelled'
+      path: '/payment/cancelled'
+      fullPath: '/payment/cancelled'
+      preLoaderRoute: typeof PaymentCancelledRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payment/success': {
+      id: '/payment/success'
+      path: '/payment/success'
+      fullPath: '/payment/success'
+      preLoaderRoute: typeof PaymentSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile/$userId': {
+      id: '/profile/$userId'
+      path: '/profile/$userId'
+      fullPath: '/profile/$userId'
+      preLoaderRoute: typeof ProfileUserIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/': {
+      id: '/projects/'
+      path: '/projects'
+      fullPath: '/projects/'
+      preLoaderRoute: typeof ProjectsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/$id': {
+      id: '/projects/$id'
+      path: '/projects/$id'
+      fullPath: '/projects/$id'
+      preLoaderRoute: typeof ProjectsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/new': {
+      id: '/projects/new'
+      path: '/projects/new'
+      fullPath: '/projects/new'
+      preLoaderRoute: typeof ProjectsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seller/onboarding': {
+      id: '/seller/onboarding'
+      path: '/seller/onboarding'
+      fullPath: '/seller/onboarding'
+      preLoaderRoute: typeof SellerOnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/': {
+      id: '/services/'
+      path: '/services'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/create': {
+      id: '/services/create'
+      path: '/services/create'
+      fullPath: '/services/create'
+      preLoaderRoute: typeof ServicesCreateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services/$id/': {
@@ -778,9 +801,11 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRoute,
   ContactRoute: ContactRoute,
   FastServicesRoute: FastServicesRoute,
+  FavoritesRoute: FavoritesRoute,
   HelpRoute: HelpRoute,
   MessagesRoute: MessagesRoute,
   NotificationsRoute: NotificationsRoute,
+  OrdersRoute: OrdersRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   SearchRoute: SearchRoute,
@@ -788,9 +813,12 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsRoute: SettingsRoute,
   SkillsTestRoute: SkillsTestRoute,
   TermsRoute: TermsRoute,
+  VerificationRoute: VerificationRoute,
   WalletRoute: WalletRoute,
+  AdminVerificationRoute: AdminVerificationRoute,
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthResetPasswordRoute: AuthResetPasswordRoute,
+  AuthVerifyEmailRoute: AuthVerifyEmailRoute,
   CategoriesCategoryRoute: CategoriesCategoryRoute,
   DashboardBuyerRoute: DashboardBuyerRoute,
   DashboardSellerRoute: DashboardSellerRoute,
@@ -799,17 +827,13 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileUserIdRoute: ProfileUserIdRoute,
   ProjectsIdRoute: ProjectsIdRoute,
   ProjectsNewRoute: ProjectsNewRoute,
+  SellerOnboardingRoute: SellerOnboardingRoute,
   ServicesCreateRoute: ServicesCreateRoute,
   AuthIndexRoute: AuthIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
   ServicesIdEditRoute: ServicesIdEditRoute,
-  OrdersRoute: OrdersRoute,
   ServicesIdIndexRoute: ServicesIdIndexRoute,
-  AuthVerifyEmailRoute: AuthVerifyEmailRoute,
-  VerificationRoute: VerificationRoute,
-  SellerOnboardingRoute: SellerOnboardingRoute,
-  AdminVerificationRoute: AdminVerificationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
