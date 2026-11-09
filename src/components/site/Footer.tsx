@@ -10,8 +10,6 @@ export function Footer() {
         { label: "كيف تعمل", to: "/" },
         { label: "الأسعار", to: "/pricing" },
         { label: "خدمات سريعة", to: "/fast-services" },
-        { label: "اختبارات المهارات", to: "/skills-test" },
-        { label: "المدونة", to: "/blog" },
       ],
     },
     {
